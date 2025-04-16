@@ -5,8 +5,11 @@ pluginManagement {
     repositories {
         google {
             mavenContent {
+                @Suppress("UnstableApiUsage")
                 includeGroupAndSubgroups("androidx")
+                @Suppress("UnstableApiUsage")
                 includeGroupAndSubgroups("com.android")
+                @Suppress("UnstableApiUsage")
                 includeGroupAndSubgroups("com.google")
             }
         }
@@ -16,6 +19,7 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
     repositories {
         google {
             mavenContent {

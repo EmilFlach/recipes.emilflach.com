@@ -90,8 +90,8 @@ fun App() {
 @Composable
 @Preview
 fun recipeCard(recipe: Recipe) {
-    return Card() {
-        Column() {
+    return Card {
+        Column {
             AsyncImage(
                 model = recipe.image,
                 contentScale = ContentScale.FillWidth,
