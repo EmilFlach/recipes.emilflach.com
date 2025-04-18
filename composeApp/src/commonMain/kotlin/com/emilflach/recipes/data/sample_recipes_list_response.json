@@ -41,21 +41,38 @@
       "image": null,
       "recipeServings": 6,
       "recipeYieldQuantity": 0,
-      "recipeYield": null,
+      "recipeYield": "",
       "totalTime": "55",
       "prepTime": "10",
       "cookTime": null,
       "performTime": "45",
       "description": "",
-      "recipeCategory": [],
-      "tags": [],
+      "recipeCategory": [
+        {
+          "id": "b5aa431d-d6cf-48f2-b08a-b80d9a4f699e",
+          "name": "Cooking",
+          "slug": "cooking"
+        },
+        {
+          "id": "ae623b50-d7f6-451c-b822-721dcdef5f78",
+          "name": "Vegetarian",
+          "slug": "vegetarian"
+        }
+      ],
+      "tags": [
+        {
+          "id": "ad988306-1e20-4efb-a51c-d03d31d794e9",
+          "name": "650 kcal",
+          "slug": "650-kcal"
+        }
+      ],
       "tools": [],
       "rating": null,
       "orgURL": null,
       "dateAdded": "2025-04-01",
-      "dateUpdated": "2025-04-01T11:34:15.663976+00:00",
+      "dateUpdated": "2025-04-17T06:43:24.058513+00:00",
       "createdAt": "2025-04-01T11:20:32.769044+00:00",
-      "updatedAt": "2025-04-01T11:34:15.667586+00:00",
+      "updatedAt": "2025-04-17T06:43:24.062475+00:00",
       "lastMade": null
     },
     {

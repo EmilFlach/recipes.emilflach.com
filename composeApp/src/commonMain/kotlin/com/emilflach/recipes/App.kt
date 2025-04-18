@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.data.Recipe
+import com.emilflach.recipes.components.RecipeCard
 import com.emilflach.recipes.data.RecipeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -76,34 +77,11 @@ fun App() {
                                 )
                             }
                             items(recipes.count()) { i ->
-                                recipeCard(recipes[i])
+                                RecipeCard(recipes[i])
                             }
                         }
                     )
                 }
-            }
-        }
-    }
-}
-
-
-@Composable
-@Preview
-fun recipeCard(recipe: Recipe) {
-    return Card {
-        Column {
-            AsyncImage(
-                model = recipe.image,
-                contentScale = ContentScale.FillWidth,
-                contentDescription = recipe.name,
-                modifier = Modifier.fillMaxWidth()
-            )
-            recipe.name?.let {
-                Text(
-                    text = it,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
             }
         }
     }

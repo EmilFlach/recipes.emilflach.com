@@ -17,7 +17,7 @@ internal fun RecipesAppTheme(
             fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 36.sp
         ),
         h3 = TextStyle(
-            fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 36.sp
+            fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 24.sp
         ),
         body1 = TextStyle(
             fontFamily = FontFamily.Default, fontWeight = FontWeight.Normal, fontSize = 16.sp

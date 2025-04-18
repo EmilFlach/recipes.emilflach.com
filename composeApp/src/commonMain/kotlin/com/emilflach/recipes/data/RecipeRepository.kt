@@ -58,10 +58,7 @@ class RecipeRepository {
     }
 
     private suspend fun fetchAllRecipes(): RecipesListResponse {
-        println(client.get("http://192.168.1.111:9925/api/recipes").body<String>())
         val recipes: RecipesListResponse = client.get("http://192.168.1.111:9925/api/recipes").body()
-        println(recipes)
         return recipes
     }
-
 }
