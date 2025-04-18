@@ -20,7 +20,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -33,7 +33,7 @@ kotlin {
     }
 
     jvm("desktop")
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName = "composeApp"
@@ -53,14 +53,15 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            implementation(libs.coil.core)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -86,6 +87,9 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.ktor.client.java)
+        }
+        wasmJsMain.dependencies {
+            implementation(libs.ktor.client.js.wasm.js)
         }
     }
 }
@@ -142,5 +146,3 @@ composeCompiler {
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("com.emilflach.recipes.DevMainKt")
 }
-
-

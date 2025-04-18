@@ -1,6 +1,5 @@
 package com.emilflach.recipes
 
-import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -22,11 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.emilflach.recipes.components.RecipeCard
 import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.data.RecipeRepository
@@ -58,9 +54,15 @@ fun App() {
             when {
                 isLoading -> {
                     // Show loading indicator
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
+                    BoxWithConstraints(
+                        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                        )
+
+                    }
                 }
                 error != null -> {
                     // Show error message
@@ -77,13 +79,19 @@ fun App() {
                                 text = "Emil & Lucia's ${recipes.count()} recipes",
                                 style = MaterialTheme.typography.h1,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(horizontal = 32.dp, vertical = 32.dp)
+                                modifier = Modifier.padding(horizontal = 32.dp, vertical = 32.dp),
                             )
                         }
                         item {
                             Text(
                                 text = "Weeknights",
                                 style = MaterialTheme.typography.h2,
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 0.dp)
+                            )
+                            Text(
+                                text = "Less than 20 minutes and vegetarian",
+                                style = MaterialTheme.typography.body1,
                                 textAlign = TextAlign.Start,
                                 modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
                             )
