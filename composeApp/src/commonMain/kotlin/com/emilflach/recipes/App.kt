@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
@@ -62,13 +63,10 @@ fun App() {
                     )
                 }
                 else -> {
-                    // Show content
-                    LazyVerticalStaggeredGrid(
-                        columns = StaggeredGridCells.Adaptive(300.dp),
-                        verticalItemSpacing = 16.dp,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    LazyColumn (
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                         content = {
-                            item(span = StaggeredGridItemSpan.FullLine) {
+                            item {
                                 Text(
                                     text = "Emil & Lucia's ${recipes.count()} recipes",
                                     style = MaterialTheme.typography.h1,

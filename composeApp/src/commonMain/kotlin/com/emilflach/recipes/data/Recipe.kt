@@ -22,7 +22,7 @@ data class Recipe(
     val groupId: String? = null,
     val name: String? = null,
     val slug: String? = null,
-    var image: String? = null,
+    val image: String? = null,
     val recipeServings: String? = null,
     val recipeYieldQuantity: String? = null,
     val recipeYield: String? = null,
@@ -50,9 +50,18 @@ data class Recipe(
     val extras: Map<String, String> = emptyMap(), //TODO Convert to correct type
     val comments: List<String> = emptyList() //TODO Convert to correct type
 ) {
-    init {
-        image = "http://192.168.1.111:9925/api/media/recipes/$id/images/min-original.webp?rnd=1&version=$image"
-    }
+    val imageUrl: String
+        get() = "http://192.168.1.111:9925/api/media/recipes/$id/images/min-original.webp?rnd=1&version=$image"
+
+    val calories: String?
+        get() = tags.find { it.slug.contains("kcal") }?.name
+
+    val servingsCount: Int
+        get() = recipeServings?.toDouble()?.toInt() ?: 0
+
+    val yieldCount: Int
+        get() = recipeYieldQuantity?.toDouble()?.toInt() ?: 0
+
 }
 
 @Serializable
@@ -65,8 +74,8 @@ data class RecipeCategory (
 @Serializable
 data class RecipeTag(
     val id: String? = null,
-    val name: String? = null,
-    val slug: String? = null
+    val name: String,
+    val slug: String
 )
 
 @Serializable
