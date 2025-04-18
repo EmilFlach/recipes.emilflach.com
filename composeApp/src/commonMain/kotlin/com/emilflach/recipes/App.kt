@@ -75,11 +75,12 @@ fun App() {
                 else -> {
                     LazyColumn {
                         item {
+                            val recipeCount = remember { recipes.count() }
                             Text(
-                                text = "Emil & Lucia's ${recipes.count()} recipes",
+                                text = "Emil & Lucia's $recipeCount recipes",
                                 style = MaterialTheme.typography.h1,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(horizontal = 32.dp, vertical = 32.dp),
+                                modifier = Modifier.padding(top = 80.dp, start = 16.dp, end = 16.dp, bottom = 32.dp),
                             )
                         }
                         item {
@@ -100,13 +101,13 @@ fun App() {
                             ) {
                                 val itemWidth = maxWidth * 0.9f
                                 LazyHorizontalGrid(
-                                    modifier = Modifier.height(700.dp),
+                                    modifier = Modifier.height(500.dp),
                                     rows = GridCells.Fixed(3),
                                     verticalArrangement = Arrangement.spacedBy(32.dp)
                                 ) {
-                                    val shuffledRecipes = recipes.shuffled()
-                                    items(recipes.count()) { i ->
-                                        RecipeCard(shuffledRecipes[i], itemWidth)
+                                    val recipeCount = recipes.count()
+                                    items(recipeCount) { i ->
+                                        RecipeCard(recipes[i], itemWidth)
                                     }
                                 }
                             }
@@ -123,13 +124,12 @@ fun App() {
                             ) {
                                 val itemWidth = maxWidth * 0.9f
                                 LazyHorizontalGrid(
-                                    modifier = Modifier.height(700.dp).padding(bottom = 32.dp),
+                                    modifier = Modifier.height(500.dp).padding(bottom = 32.dp),
                                     rows = GridCells.Fixed(3),
                                     verticalArrangement = Arrangement.spacedBy(32.dp),
                                 ) {
-                                    val shuffledRecipes = recipes.shuffled()
                                     items(recipes.count()) { i ->
-                                        RecipeCard(shuffledRecipes[i], itemWidth)
+                                        RecipeCard(recipes[i], itemWidth)
                                     }
                                 }
                             }
