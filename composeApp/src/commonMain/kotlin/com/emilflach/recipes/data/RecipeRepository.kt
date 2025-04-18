@@ -25,7 +25,7 @@ class RecipeRepository {
                 loadTokens {
                     // Load your JWT token here
                     BearerTokens(
-                        accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODA3ZTVkYS1mZmZjLTQ5YzUtYmRlZi1jZTI1YmU1OWFlODgiLCJleHAiOjE3NDQ5ODQ4MjAsImlzcyI6Im1lYWxpZSJ9.74iySXAcCq3w-66zzrIkmnDdNxzWzxM93zso5dvWSg4",
+                        accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODA3ZTVkYS1mZmZjLTQ5YzUtYmRlZi1jZTI1YmU1OWFlODgiLCJleHAiOjE3NDUxNTc5MTgsImlzcyI6Im1lYWxpZSJ9.ctBfZoRAPDhaRUh1oyLLbuy4YDtr_isqoEHgexQ5fGc",
                         refreshToken = ""
                     )
                 }

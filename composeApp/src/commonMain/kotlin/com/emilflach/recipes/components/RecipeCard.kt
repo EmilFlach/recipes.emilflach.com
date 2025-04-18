@@ -1,8 +1,8 @@
 package com.emilflach.recipes.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,17 +11,20 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.data.Recipe
-import com.emilflach.recipes.data.RecipeTag
+
 
 @Composable
-fun RecipeCard(recipe: Recipe) {
-    Card (modifier = Modifier.width(480.dp)) {
+fun RecipeCard(recipe: Recipe, itemWidth: Dp) {
+    Card (modifier = Modifier
+        .width(itemWidth)
+        .padding(start = 16.dp, end = 16.dp)
+    ){
         Row {
             Column (modifier = Modifier.fillMaxWidth(0.5f)) {
                 recipe.name?.let {
@@ -46,7 +49,7 @@ fun RecipeCard(recipe: Recipe) {
                 contentDescription = recipe.name,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .fillMaxHeight()
             )
         }
     }
