@@ -55,7 +55,7 @@ class RecipeRepository {
             val randomHeight = Random.nextInt(minSize, maxSize)
             val image =  "https://picsum.photos/seed/$randomSeed/$randomWidth/$randomHeight.jpg"
 
-            result.add(Recipe(name = "Example title: $i", image = image))
+            result.add(Recipe(name = "Example title: $i", id = "$i", slug = "slug-$i", image = image))
         }
         return RecipesListResponse(
             items = result

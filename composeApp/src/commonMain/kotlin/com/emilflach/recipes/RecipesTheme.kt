@@ -17,7 +17,7 @@ internal fun RecipesAppTheme(
     val typography = remember {
         Typography(
             h1 = TextStyle(
-                fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 36.sp
+                fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 44.sp
             ),
             h2 = TextStyle(
                 fontFamily = FontFamily.Serif, fontWeight = FontWeight.Normal, fontSize = 24.sp

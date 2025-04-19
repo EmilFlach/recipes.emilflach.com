@@ -1,5 +1,6 @@
 package com.emilflach.recipes.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,15 +18,23 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.data.Recipe
 
-
 @Composable
 fun RecipeCard(recipe: Recipe, itemWidth: Dp) {
     Card (modifier = Modifier
         .width(itemWidth)
-        .padding(start = 16.dp, end = 16.dp)
+        .padding(start = 16.dp, end = 8.dp)
+        .clickable {}
     ){
         Row {
-            Column (modifier = Modifier.fillMaxWidth(0.5f)) {
+            AsyncImage(
+                model = recipe.imageUrl,
+                contentScale = ContentScale.Crop,
+                contentDescription = recipe.name,
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .fillMaxHeight()
+            )
+            Column (modifier = Modifier.fillMaxWidth(1f)) {
                 recipe.name?.let {
                     Text(
                         text = it,
@@ -43,14 +52,7 @@ fun RecipeCard(recipe: Recipe, itemWidth: Dp) {
                     )
                 }
             }
-            AsyncImage(
-                model = recipe.imageUrl,
-                contentScale = ContentScale.Crop,
-                contentDescription = recipe.name,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-            )
+
         }
     }
 }

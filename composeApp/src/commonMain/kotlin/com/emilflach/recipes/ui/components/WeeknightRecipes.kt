@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -32,15 +33,14 @@ fun WeeknightRecipes(recipes: List<Recipe>) {
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
     ) {
-        val itemWidth = maxWidth * 0.9f
+        val itemWidth = maxWidth * 0.92f
         LazyHorizontalGrid(
             modifier = Modifier.height(500.dp),
             rows = GridCells.Fixed(3),
-            verticalArrangement = Arrangement.spacedBy(32.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            val recipeCount = recipes.count()
-            items(recipeCount) { i ->
-                RecipeCard(recipes[i], itemWidth)
+            itemsIndexed(recipes, key = {_, recipe -> recipe.slug}) { _, recipe ->
+                RecipeCard(recipe, itemWidth)
             }
         }
     }

@@ -16,12 +16,12 @@ data class RecipesListResponse(
 
 @Serializable
 data class Recipe(
-    val id: String? = null,
+    val id: String,
+    val slug: String,
     val userId: String? = null,
     val householdId: String? = null,
     val groupId: String? = null,
     val name: String? = null,
-    val slug: String? = null,
     val image: String? = null,
     val recipeServings: String? = null,
     val recipeYieldQuantity: String? = null,
