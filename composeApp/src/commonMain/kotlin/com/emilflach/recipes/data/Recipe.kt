@@ -4,17 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecipesListResponse(
-    val page: String? = null,
-    @SerialName("per_page") val perPage: String? = null,
-    val total: String? = null,
-    @SerialName("total_pages") val totalPages: String? = null,
-    val items: List<Recipe>,
-    val next: String? = null,
-    val previous: String? = null
-)
-
-@Serializable
 data class Recipe(
     val id: String,
     val slug: String,
@@ -62,6 +51,17 @@ data class Recipe(
     val yieldCount: Int
         get() = recipeYieldQuantity?.toInt() ?: 0
 }
+
+@Serializable
+data class RecipesListResponse(
+    val page: String? = null,
+    @SerialName("per_page") val perPage: String? = null,
+    val total: String? = null,
+    @SerialName("total_pages") val totalPages: String? = null,
+    val items: List<Recipe>,
+    val next: String? = null,
+    val previous: String? = null
+)
 
 @Serializable
 data class RecipeCategory(
