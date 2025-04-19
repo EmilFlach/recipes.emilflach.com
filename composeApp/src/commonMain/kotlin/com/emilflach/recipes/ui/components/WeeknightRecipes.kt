@@ -17,7 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
 
 @Composable
-fun WeeknightRecipes(recipes: List<Recipe>) {
+fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (String) -> Unit
+) {
+
     Text(
         text = "Weeknights",
         style = MaterialTheme.typography.h2,
@@ -42,7 +44,7 @@ fun WeeknightRecipes(recipes: List<Recipe>) {
         ) {
             itemsIndexed(recipes, key = {_, recipe -> recipe.slug}) { _, recipe ->
                 val isLastPage = recipes.indexOf(recipe) >= recipes.size - rows
-                RecipeCard(recipe, itemWidth, isLastPage)
+                RecipeCard(recipe, itemWidth, isLastPage, onRecipeClick)
             }
         }
     }

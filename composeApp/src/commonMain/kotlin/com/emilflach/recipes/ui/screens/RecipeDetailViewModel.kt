@@ -7,11 +7,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class RecipesViewModel(
+
+class RecipeDetailViewModel (
     private val recipeRepository: RecipeRepository
 ): BaseViewModel() {
-    private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
-    val recipes: StateFlow<List<Recipe>> = _recipes.asStateFlow()
+    private val _recipe = MutableStateFlow<Recipe?>(null)
+    val recipe: StateFlow<Recipe?> = _recipe.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -22,11 +23,11 @@ class RecipesViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
-    fun loadRecipes() {
+    fun loadRecipeBySlug(slug: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                _recipes.value = recipeRepository.getRecipes().items
+                _recipe.value = recipeRepository.getRecipeBySlug(slug)
             } catch(e: Exception) {
                 _errorMessage.value = e.message
                 _isError.value = true

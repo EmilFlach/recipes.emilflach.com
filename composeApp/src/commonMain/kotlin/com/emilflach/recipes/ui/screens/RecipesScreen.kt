@@ -25,7 +25,8 @@ import com.emilflach.recipes.ui.components.WeeknightRecipes
 
 @Composable
 fun RecipesScreen(
-    viewModel: RecipesViewModel
+    viewModel: RecipesViewModel,
+    onRecipeClick: (String) -> Unit
 ) {
     val recipes by viewModel.recipes.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -63,11 +64,11 @@ fun RecipesScreen(
                             Spacer(modifier = Modifier.height(48.dp))
                         }
                         item {
-                            WeeknightRecipes(recipes)
+                            WeeknightRecipes(recipes, onRecipeClick)
                             Spacer(modifier = Modifier.height(60.dp))
                         }
                         item {
-                            SpecialOccasionRecipes(recipes)
+                            SpecialOccasionRecipes(recipes, onRecipeClick)
                             Spacer(modifier = Modifier.height(32.dp))
                         }
                     }

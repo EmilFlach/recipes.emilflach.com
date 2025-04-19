@@ -24,7 +24,12 @@ import com.emilflach.recipes.data.Recipe
 
 
 @Composable
-fun HighlightedRecipeCard(recipe: Recipe, itemWidth: Dp, isLastItem: Boolean = false) {
+fun HighlightedRecipeCard(
+    recipe: Recipe,
+    itemWidth: Dp,
+    isLastItem: Boolean = false,
+    onRecipeClick: (String) -> Unit
+) {
     var endPadding = 8.dp
     if(isLastItem)
         endPadding = 16.dp
@@ -32,7 +37,7 @@ fun HighlightedRecipeCard(recipe: Recipe, itemWidth: Dp, isLastItem: Boolean = f
     Card (modifier = Modifier
         .width(itemWidth)
         .padding(start = 16.dp, end = endPadding)
-        .clickable {}
+        .clickable { onRecipeClick(recipe.slug) }
     ){
         BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
             AsyncImage(

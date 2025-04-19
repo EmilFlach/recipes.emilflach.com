@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
 
 @Composable
-fun SpecialOccasionRecipes(recipes: List<Recipe>) {
+fun SpecialOccasionRecipes(recipes: List<Recipe>, onRecipeClick: (String) -> Unit) {
     Text(
         text = "Special occasions",
         style = MaterialTheme.typography.h2,
@@ -39,7 +39,7 @@ fun SpecialOccasionRecipes(recipes: List<Recipe>) {
         ) {
             itemsIndexed(recipes, key = {_, recipe -> recipe.slug}) { _, recipe ->
                 val isLastItem = recipes.indexOf(recipe) >= recipes.size - 1
-                HighlightedRecipeCard(recipe, itemWidth, isLastItem)
+                HighlightedRecipeCard(recipe, itemWidth, isLastItem, onRecipeClick)
             }
         }
     }

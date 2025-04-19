@@ -42,10 +42,17 @@ class RecipeRepository {
         }
     }
 
+    suspend fun getRecipeBySlug(slug: String): Recipe {
+        val recipe: Recipe = client.get("http://192.168.1.111:9925/api/recipes/$slug").body()
+        return recipe
+    }
+
     private suspend fun fetchAllRecipes(): RecipesListResponse {
         val recipes: RecipesListResponse = client.get("http://192.168.1.111:9925/api/recipes").body()
         return recipes
     }
+
+
 
     private fun generateRandomRecipes (count: Int = 10, minSize: Int = 500, maxSize: Int = 800): RecipesListResponse {
         val result = mutableListOf<Recipe>()
