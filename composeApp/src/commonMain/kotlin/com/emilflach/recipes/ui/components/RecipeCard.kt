@@ -1,4 +1,4 @@
-package com.emilflach.recipes.components
+package com.emilflach.recipes.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +31,7 @@ fun RecipeCard(recipe: Recipe, itemWidth: Dp) {
                         text = it,
                         modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                         style = MaterialTheme.typography.h3,
+                        maxLines = 2
                     )
                 }
                 RecipeServings(recipe)
@@ -52,28 +53,4 @@ fun RecipeCard(recipe: Recipe, itemWidth: Dp) {
             )
         }
     }
-}
-
-@Composable
-fun RecipeServings(recipe: Recipe) {
-    val servingsText = when {
-        recipe.yieldCount > 0 -> "${recipe.yieldCount} ${recipe.recipeYield}"
-        recipe.servingsCount > 0 -> "Serves ${recipe.servingsCount}"
-        else -> return
-    }
-
-    Row {
-        Text(
-            text = servingsText,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-        )
-        recipe.calories?.let {
-            Text(
-                text = "($it)",
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier.padding(start = 4.dp, end = 16.dp, top = 18.dp),
-            )
-        }
-    }
-
 }

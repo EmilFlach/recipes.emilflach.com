@@ -34,12 +34,17 @@ class RecipeRepository {
         }
     }
 
-    suspend fun getRecipes(random: Boolean = true): RecipesListResponse {
+    suspend fun getRecipes(random: Boolean = false): RecipesListResponse {
         return if(random) {
             generateRandomRecipes()
         } else {
             fetchAllRecipes()
         }
+    }
+
+    private suspend fun fetchAllRecipes(): RecipesListResponse {
+        val recipes: RecipesListResponse = client.get("http://192.168.1.111:9925/api/recipes").body()
+        return recipes
     }
 
     private fun generateRandomRecipes (count: Int = 10, minSize: Int = 500, maxSize: Int = 800): RecipesListResponse {
@@ -55,10 +60,5 @@ class RecipeRepository {
         return RecipesListResponse(
             items = result
         )
-    }
-
-    private suspend fun fetchAllRecipes(): RecipesListResponse {
-        val recipes: RecipesListResponse = client.get("http://192.168.1.111:9925/api/recipes").body()
-        return recipes
     }
 }
