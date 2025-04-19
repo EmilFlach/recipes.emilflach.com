@@ -24,10 +24,14 @@ import com.emilflach.recipes.data.Recipe
 
 
 @Composable
-fun HighlightedRecipeCard(recipe: Recipe, itemWidth: Dp) {
+fun HighlightedRecipeCard(recipe: Recipe, itemWidth: Dp, isLastItem: Boolean = false) {
+    var endPadding = 8.dp
+    if(isLastItem)
+        endPadding = 16.dp
+
     Card (modifier = Modifier
         .width(itemWidth)
-        .padding(start = 16.dp, end = 8.dp)
+        .padding(start = 16.dp, end = endPadding)
         .clickable {}
     ){
         BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {

@@ -38,7 +38,8 @@ fun SpecialOccasionRecipes(recipes: List<Recipe>) {
             rows = GridCells.Fixed(1)
         ) {
             itemsIndexed(recipes, key = {_, recipe -> recipe.slug}) { _, recipe ->
-                HighlightedRecipeCard(recipe, itemWidth)
+                val isLastItem = recipes.indexOf(recipe) >= recipes.size - 1
+                HighlightedRecipeCard(recipe, itemWidth, isLastItem)
             }
         }
     }

@@ -19,10 +19,14 @@ import coil3.compose.AsyncImage
 import com.emilflach.recipes.data.Recipe
 
 @Composable
-fun RecipeCard(recipe: Recipe, itemWidth: Dp) {
+fun RecipeCard(recipe: Recipe, itemWidth: Dp, isLastPage: Boolean = false) {
+    var endPadding = 8.dp
+    if(isLastPage)
+        endPadding = 16.dp
+
     Card (modifier = Modifier
         .width(itemWidth)
-        .padding(start = 16.dp, end = 8.dp)
+        .padding(start = 16.dp, end = endPadding)
         .clickable {}
     ){
         Row {
