@@ -20,8 +20,8 @@ import com.emilflach.recipes.ui.screens.Screen
 @Composable
 fun App() {
     val navController = rememberNavController()
-    val recipesViewModel = RecipesViewModel(RecipeRepository())
-    val recipeDetailViewModel = RecipeDetailViewModel(RecipeRepository())
+    val recipesViewModel = RecipesViewModel(RecipeRepository)
+    val recipeDetailViewModel = RecipeDetailViewModel(RecipeRepository)
 
     NavHost(navController = navController, startDestination = Screen.RecipesList.route) {
         composable(

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -34,7 +35,9 @@ fun RecipesScreen(
     val errorMessage by viewModel.errorMessage.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadRecipes()
+        if (recipes.isEmpty()) {
+            viewModel.loadRecipes()
+        }
     }
     RecipesAppTheme {
         Column {
@@ -52,7 +55,10 @@ fun RecipesScreen(
                     )
                 }
                 else -> {
-                    LazyColumn {
+                    val listState = rememberLazyListState()
+                    LazyColumn(
+                        state = listState
+                    ) {
                         item {
                             Spacer(modifier = Modifier.height(100.dp))
                             Text(

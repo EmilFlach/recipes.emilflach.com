@@ -43,8 +43,10 @@ fun RecipeDetailScreen(
     val isError by viewModel.isError.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.loadRecipeBySlug(recipeSlug)
+    LaunchedEffect(recipeSlug) {
+        if (recipe == null || recipe?.slug != recipeSlug) {
+            viewModel.loadRecipeBySlug(recipeSlug)
+        }
     }
     RecipesAppTheme {
         LazyColumn(
@@ -61,7 +63,9 @@ fun RecipeDetailScreen(
                             model = recipe?.imageUrl,
                             contentDescription = recipe?.name,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight()
                         )
                     }
                     Box(
@@ -76,11 +80,13 @@ fun RecipeDetailScreen(
                             )
                     )
 
+
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = "Back",
                             tint = Color.White,
+                            modifier = Modifier.padding(top = 48.dp)
                         )
                     }
                 }
