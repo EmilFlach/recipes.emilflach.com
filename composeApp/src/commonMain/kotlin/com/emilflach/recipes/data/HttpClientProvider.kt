@@ -11,7 +11,7 @@ import kotlinx.serialization.json.Json
 
 object HttpClientProvider {
     const val BASE_URL = "http://192.168.1.111:9925/api"
-    private const val JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODA3ZTVkYS1mZmZjLTQ5YzUtYmRlZi1jZTI1YmU1OWFlODgiLCJleHAiOjE3NDUyMzcxMzksImlzcyI6Im1lYWxpZSJ9.jn_dQwnppvQdrbx1H9zmZ-RE5_sus62jb_87rNPFyHQ"
+    private const val JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODA3ZTVkYS1mZmZjLTQ5YzUtYmRlZi1jZTI1YmU1OWFlODgiLCJleHAiOjE3NDU0MjgwMDcsImlzcyI6Im1lYWxpZSJ9.fx-8eZZi7jsnm1kAlcQsUi_wwaSOmZjx6Oqp8yKEzwE"
 
     fun createHttpClient(): HttpClient {
         return HttpClient(CIO) {

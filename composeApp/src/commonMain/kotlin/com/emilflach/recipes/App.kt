@@ -41,8 +41,9 @@ fun App() {
             )
         }) {
             RecipesScreen(
-                viewModel = recipesViewModel, onRecipeClick = { recipeId ->
-                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId))
+                viewModel = recipesViewModel, onRecipeClick = { recipe ->
+                    recipeDetailViewModel.setRecipe(recipe)
+                    navController.navigate(Screen.RecipeDetail.createRoute(recipe.slug))
                 })
         }
 
@@ -70,4 +71,3 @@ fun App() {
         }
     }
 }
-

@@ -23,14 +23,35 @@ class RecipeDetailViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
-    fun loadRecipeBySlug(slug: String) {
+    fun setRecipe(recipe: Recipe) {
+        _recipe.value = recipe
+    }
+
+    fun getRecipeBySlug(recipeSlug: String) {
         viewModelScope.launch {
             _isLoading.value = true
             _recipe.value = null
             _isError.value = false
             _errorMessage.value = null
             try {
-                _recipe.value = recipeRepository.getRecipeBySlug(slug)
+                _recipe.value = recipeRepository.getRecipeBySlug(recipeSlug)
+            } catch (e: Exception) {
+                _errorMessage.value = e.message
+                _isError.value = true
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun enrichRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _recipe.value = recipe
+            _isError.value = false
+            _errorMessage.value = null
+            try {
+                _recipe.value = recipeRepository.enrichRecipe(recipe)
             } catch (e: Exception) {
                 _errorMessage.value = e.message
                 _isError.value = true

@@ -18,7 +18,8 @@ object RecipeRepository {
             }
         }
 
-        val recipes: RecipesListResponse = client.get("${HttpClientProvider.BASE_URL}/recipes").body()
+        val recipes: RecipesListResponse =
+            client.get("${HttpClientProvider.BASE_URL}/recipes").body()
         cacheMutex.withLock {
             recipesCache = recipes
         }
@@ -37,5 +38,20 @@ object RecipeRepository {
             recipeCache[slug] = recipe
         }
         return recipe
+    }
+
+    suspend fun enrichRecipe(recipe: Recipe, forceRefresh: Boolean = false): Recipe {
+        if (!forceRefresh) {
+            cacheMutex.withLock {
+                recipeCache[recipe.slug]?.let { return it }
+            }
+        }
+
+        val enrichedRecipe: Recipe =
+            client.get("${HttpClientProvider.BASE_URL}/recipes/${recipe.slug}").body()
+        cacheMutex.withLock {
+            recipeCache[recipe.slug] = enrichedRecipe
+        }
+        return enrichedRecipe
     }
 }

@@ -36,14 +36,18 @@ import com.emilflach.recipes.RecipesAppTheme
 fun RecipeDetailScreen(
     viewModel: RecipeDetailViewModel, recipeSlug: String, onBackClick: () -> Unit
 ) {
-    val recipe by viewModel.recipe.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val isError by viewModel.isError.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
+    val viewModelRecipe by viewModel.recipe.collectAsState()
 
-    LaunchedEffect(recipeSlug) {
-        if (recipe == null || recipe?.slug != recipeSlug) {
-            viewModel.loadRecipeBySlug(recipeSlug)
+    val recipe = viewModelRecipe
+    LaunchedEffect(recipeSlug, recipe) {
+        if (recipe != null) {
+            viewModel.enrichRecipe(recipe)
+        }
+        else {
+            viewModel.getRecipeBySlug(recipeSlug)
         }
     }
     RecipesAppTheme {
@@ -54,10 +58,10 @@ fun RecipeDetailScreen(
                 BoxWithConstraints(
                     modifier = Modifier.fillMaxWidth().height(400.dp)
                 ) {
-                    if (recipe != null && !isLoading) {
+                    if (recipe != null) {
                         AsyncImage(
-                            model = recipe?.imageUrl,
-                            contentDescription = recipe?.name,
+                            model = recipe.imageUrl,
+                            contentDescription = recipe.name,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxWidth().fillMaxHeight()
                         )
@@ -110,12 +114,14 @@ fun RecipeDetailScreen(
 
                 else -> {
                     item {
-                        Text(
-                            text = recipe?.name ?: "",
-                            style = MaterialTheme.typography.h1,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        )
+                        if (recipe != null) {
+                            Text(
+                                text = recipe.name ?: "",
+                                style = MaterialTheme.typography.h1,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            )
+                        }
                     }
                     item {
                         Text(
@@ -125,8 +131,8 @@ fun RecipeDetailScreen(
                                 .padding(horizontal = 16.dp, vertical = 16.dp),
                         )
                     }
-                    recipe?.let {
-                        itemsIndexed(it.recipeIngredient) { _, ingredient ->
+                    if (recipe != null) {
+                        itemsIndexed(recipe.recipeIngredient) { _, ingredient ->
                             Text(
                                 text = "${ingredient.quantity} ${ingredient.unit?.name} ${ingredient.food?.name}",
                                 style = MaterialTheme.typography.body1,
@@ -142,8 +148,8 @@ fun RecipeDetailScreen(
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         )
                     }
-                    recipe?.let {
-                        itemsIndexed(it.recipeInstructions) { index, instruction ->
+                    if (recipe != null) {
+                        itemsIndexed(recipe.recipeInstructions) { index, instruction ->
                             Text(
                                 text = "${index + 1}. ${instruction.text}",
                                 style = MaterialTheme.typography.body1,
@@ -151,7 +157,6 @@ fun RecipeDetailScreen(
                             )
                         }
                     }
-
                 }
             }
         }

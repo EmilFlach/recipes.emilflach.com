@@ -23,7 +23,7 @@ fun RecipeCard(
     recipe: Recipe,
     itemWidth: Dp,
     isLastPage: Boolean = false,
-    onRecipeClick: (String) -> Unit
+    onRecipeClick: (Recipe) -> Unit
 ) {
     var endPadding = 8.dp
     if(isLastPage)
@@ -33,7 +33,7 @@ fun RecipeCard(
         .width(itemWidth)
         .padding(start = 16.dp, end = endPadding)
         .clickable {
-            onRecipeClick(recipe.slug)
+            onRecipeClick(recipe)
         }
     ){
         Row {

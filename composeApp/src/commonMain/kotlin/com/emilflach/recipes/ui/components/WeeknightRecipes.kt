@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
 
 @Composable
-fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (String) -> Unit
+fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
 ) {
 
     Text(

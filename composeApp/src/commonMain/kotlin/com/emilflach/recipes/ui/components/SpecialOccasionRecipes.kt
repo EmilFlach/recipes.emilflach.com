@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
 
 @Composable
-fun SpecialOccasionRecipes(recipes: List<Recipe>, onRecipeClick: (String) -> Unit) {
+fun SpecialOccasionRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit) {
     Text(
         text = "Special occasions",
         style = MaterialTheme.typography.h2,

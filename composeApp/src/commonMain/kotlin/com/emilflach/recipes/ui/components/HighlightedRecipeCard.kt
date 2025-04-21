@@ -28,7 +28,7 @@ fun HighlightedRecipeCard(
     recipe: Recipe,
     itemWidth: Dp,
     isLastItem: Boolean = false,
-    onRecipeClick: (String) -> Unit
+    onRecipeClick: (Recipe) -> Unit
 ) {
     var endPadding = 8.dp
     if(isLastItem)
@@ -37,7 +37,7 @@ fun HighlightedRecipeCard(
     Card (modifier = Modifier
         .width(itemWidth)
         .padding(start = 16.dp, end = endPadding)
-        .clickable { onRecipeClick(recipe.slug) }
+        .clickable { onRecipeClick(recipe) }
     ){
         BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
             AsyncImage(

@@ -21,13 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.RecipesAppTheme
+import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.ui.components.SpecialOccasionRecipes
 import com.emilflach.recipes.ui.components.WeeknightRecipes
 
 @Composable
 fun RecipesScreen(
     viewModel: RecipesViewModel,
-    onRecipeClick: (String) -> Unit
+    onRecipeClick: (Recipe) -> Unit
 ) {
     val recipes by viewModel.recipes.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
