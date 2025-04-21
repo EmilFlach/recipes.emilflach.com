@@ -34,9 +34,7 @@ import com.emilflach.recipes.RecipesAppTheme
 
 @Composable
 fun RecipeDetailScreen(
-    viewModel: RecipeDetailViewModel,
-    recipeSlug: String,
-    onBackClick: () -> Unit
+    viewModel: RecipeDetailViewModel, recipeSlug: String, onBackClick: () -> Unit
 ) {
     val recipe by viewModel.recipe.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -54,30 +52,23 @@ fun RecipeDetailScreen(
         ) {
             item {
                 BoxWithConstraints(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(400.dp)
+                    modifier = Modifier.fillMaxWidth().height(400.dp)
                 ) {
-                    if (recipe != null) {
+                    if (recipe != null && !isLoading) {
                         AsyncImage(
                             model = recipe?.imageUrl,
                             contentDescription = recipe?.name,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight()
+                            modifier = Modifier.fillMaxWidth().fillMaxHeight()
                         )
                     }
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .background(
-                                Brush.verticalGradient(
-                                    0f to Color.Black,
-                                    0.3f to Color.Transparent,
-                                )
+                        modifier = Modifier.fillMaxWidth().fillMaxHeight().background(
+                            Brush.verticalGradient(
+                                0f to Color.Black,
+                                0.3f to Color.Transparent,
                             )
+                        )
                     )
 
 
@@ -96,11 +87,13 @@ fun RecipeDetailScreen(
             when {
                 isLoading -> {
                     item {
-                        BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-                            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                        Box(
+                            modifier = Modifier.fillMaxWidth().padding(32.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
                     }
-
                 }
 
                 isError -> {

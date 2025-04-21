@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class RecipeDetailViewModel (
+class RecipeDetailViewModel(
     private val recipeRepository: RecipeRepository
-): BaseViewModel() {
+) : BaseViewModel() {
     private val _recipe = MutableStateFlow<Recipe?>(null)
     val recipe: StateFlow<Recipe?> = _recipe.asStateFlow()
 
@@ -26,9 +26,12 @@ class RecipeDetailViewModel (
     fun loadRecipeBySlug(slug: String) {
         viewModelScope.launch {
             _isLoading.value = true
+            _recipe.value = null
+            _isError.value = false
+            _errorMessage.value = null
             try {
                 _recipe.value = recipeRepository.getRecipeBySlug(slug)
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 _errorMessage.value = e.message
                 _isError.value = true
             } finally {
