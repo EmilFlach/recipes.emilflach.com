@@ -1,5 +1,6 @@
 package com.emilflach.recipes.ui.screens
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -36,7 +35,6 @@ import com.emilflach.recipes.RecipesAppTheme
 fun RecipeDetailScreen(
     viewModel: RecipeDetailViewModel, recipeSlug: String, onBackClick: () -> Unit
 ) {
-    val isLoading by viewModel.isLoading.collectAsState()
     val isError by viewModel.isError.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val viewModelRecipe by viewModel.recipe.collectAsState()
@@ -45,116 +43,111 @@ fun RecipeDetailScreen(
     LaunchedEffect(recipeSlug, recipe) {
         if (recipe != null) {
             viewModel.enrichRecipe(recipe)
-        }
-        else {
+        } else {
             viewModel.getRecipeBySlug(recipeSlug)
         }
     }
     RecipesAppTheme {
-        LazyColumn(
-            modifier = Modifier.background(MaterialTheme.colors.background)
-        ) {
-            item {
-                BoxWithConstraints(
-                    modifier = Modifier.fillMaxWidth().height(400.dp)
-                ) {
-                    if (recipe != null) {
-                        AsyncImage(
-                            model = recipe.imageUrl,
-                            contentDescription = recipe.name,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxWidth().fillMaxHeight()
-                        )
-                    }
-                    Box(
-                        modifier = Modifier.fillMaxWidth().fillMaxHeight().background(
-                            Brush.verticalGradient(
-                                0f to Color.Black,
-                                0.3f to Color.Transparent,
-                            )
-                        )
-                    )
-
-
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = "Back",
-                            tint = Color.White,
-                            modifier = Modifier.padding(top = 48.dp)
-                        )
-                    }
-                }
-
-            }
-
-            when {
-                isLoading -> {
-                    item {
-                        Box(
-                            modifier = Modifier.fillMaxWidth().padding(32.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-
-                isError -> {
-                    item {
-                        Text(
-                            text = "Error: $errorMessage",
-                            color = MaterialTheme.colors.error,
-                            modifier = Modifier.padding(16.dp)
-                        )
-
-                    }
-
-                }
-
-                else -> {
-                    item {
+        AnimatedContent(
+            targetState = recipe,
+            contentKey = { it?.slug ?: "" }
+        ) { recipe ->
+            LazyColumn(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.background)
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+            ) {
+                item {
+                    BoxWithConstraints(
+                        modifier = Modifier.fillMaxWidth().height(400.dp)
+                    ) {
                         if (recipe != null) {
-                            Text(
-                                text = recipe.name ?: "",
-                                style = MaterialTheme.typography.h1,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            AsyncImage(
+                                model = recipe.imageUrl,
+                                contentDescription = recipe.name,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                            )
+                        }
+                        Box(
+                            modifier = Modifier.fillMaxWidth().fillMaxHeight().background(
+                                Brush.verticalGradient(
+                                    0f to Color.Black,
+                                    0.3f to Color.Transparent,
+                                )
+                            )
+                        )
+                        IconButton(onClick = onBackClick) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                contentDescription = "Back",
+                                tint = Color.White,
+                                modifier = Modifier.padding(top = 48.dp)
                             )
                         }
                     }
-                    item {
-                        Text(
-                            text = "Ingredients",
-                            style = MaterialTheme.typography.h2,
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 16.dp),
-                        )
-                    }
-                    if (recipe != null) {
-                        itemsIndexed(recipe.recipeIngredient) { _, ingredient ->
+                }
+                when {
+                    isError -> {
+                        item {
                             Text(
-                                text = "${ingredient.quantity} ${ingredient.unit?.name} ${ingredient.food?.name}",
-                                style = MaterialTheme.typography.body1,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                                text = "Error: $errorMessage",
+                                color = MaterialTheme.colors.error,
+                                modifier = Modifier.padding(16.dp)
+                            )
+
+                        }
+
+                    }
+
+                    else -> {
+                        item {
+                            if (recipe != null) {
+                                Text(
+                                    text = recipe.name ?: "",
+                                    style = MaterialTheme.typography.h1,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                )
+                            }
+                        }
+                        item {
+                            Text(
+                                text = "Ingredients",
+                                style = MaterialTheme.typography.h2,
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 16.dp),
                             )
                         }
-                    }
-                    item {
-                        Spacer(modifier = Modifier.height(32.dp))
-                        Text(
-                            text = "Procedure",
-                            style = MaterialTheme.typography.h2,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                        )
-                    }
-                    if (recipe != null) {
-                        itemsIndexed(recipe.recipeInstructions) { index, instruction ->
+                        if (recipe != null) {
+                            itemsIndexed(recipe.recipeIngredient) { _, ingredient ->
+                                Text(
+                                    text = "${ingredient.quantity} ${ingredient.unit?.name} ${ingredient.food?.name}",
+                                    style = MaterialTheme.typography.body1,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                                )
+                            }
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(32.dp))
                             Text(
-                                text = "${index + 1}. ${instruction.text}",
-                                style = MaterialTheme.typography.body1,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+                                text = "Procedure",
+                                style = MaterialTheme.typography.h2,
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                             )
+                        }
+                        if (recipe != null) {
+                            itemsIndexed(recipe.recipeInstructions) { index, instruction ->
+                                Text(
+                                    text = "${index + 1}. ${instruction.text}",
+                                    style = MaterialTheme.typography.body1,
+                                    modifier = Modifier.padding(
+                                        horizontal = 16.dp,
+                                        vertical = 16.dp
+                                    )
+                                )
+                            }
                         }
                     }
                 }

@@ -30,16 +30,18 @@ fun App() {
     }
 
     NavHost(navController = navController, startDestination = Screen.RecipesList.route) {
-        composable(Screen.RecipesList.route, enterTransition = {
-            fadeIn(
-                animationSpec = tween(50)
-            )
-        }, exitTransition = {
-
-            fadeOut(
-                animationSpec = tween(1000)
-            )
-        }) {
+        composable(Screen.RecipesList.route,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(50)
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {
             RecipesScreen(
                 viewModel = recipesViewModel, onRecipeClick = { recipe ->
                     recipeDetailViewModel.setRecipe(recipe)
