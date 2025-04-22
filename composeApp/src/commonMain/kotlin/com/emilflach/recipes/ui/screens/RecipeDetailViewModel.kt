@@ -14,9 +14,6 @@ class RecipeDetailViewModel(
     private val _recipe = MutableStateFlow<Recipe?>(null)
     val recipe: StateFlow<Recipe?> = _recipe.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
     private val _isError = MutableStateFlow(false)
     val isError: StateFlow<Boolean> = _isError.asStateFlow()
 
@@ -29,7 +26,6 @@ class RecipeDetailViewModel(
 
     fun getRecipeBySlug(recipeSlug: String) {
         viewModelScope.launch {
-            _isLoading.value = true
             _recipe.value = null
             _isError.value = false
             _errorMessage.value = null
@@ -38,15 +34,12 @@ class RecipeDetailViewModel(
             } catch (e: Exception) {
                 _errorMessage.value = e.message
                 _isError.value = true
-            } finally {
-                _isLoading.value = false
             }
         }
     }
 
     fun enrichRecipe(recipe: Recipe) {
         viewModelScope.launch {
-            _isLoading.value = true
             _recipe.value = recipe
             _isError.value = false
             _errorMessage.value = null
@@ -55,8 +48,6 @@ class RecipeDetailViewModel(
             } catch (e: Exception) {
                 _errorMessage.value = e.message
                 _isError.value = true
-            } finally {
-                _isLoading.value = false
             }
         }
     }
