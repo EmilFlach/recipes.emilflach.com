@@ -40,7 +40,7 @@ data class Recipe(
     val comments: List<RecipeComment> = emptyList()
 ) {
     val imageUrl: String
-        get() = "http://192.168.1.111:9925/api/media/recipes/$id/images/min-original.webp?rnd=1&version=$image"
+        get() = "https://mealie.emilflach.com/api/media/recipes/$id/images/min-original.webp?rnd=1&version=$image"
 
     val calories: String?
         get() = tags.find { it.slug.contains("kcal") }?.name
