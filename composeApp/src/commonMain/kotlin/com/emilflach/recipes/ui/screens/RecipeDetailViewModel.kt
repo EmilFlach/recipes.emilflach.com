@@ -23,7 +23,7 @@ class RecipeDetailViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
-    val formattedIngredients: StateFlow<List<String>> =
+    val formattedIngredients: StateFlow<List<Pair<String, String?>>> =
         recipe.map { it?.formatIngredients() ?: emptyList() }
             .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 

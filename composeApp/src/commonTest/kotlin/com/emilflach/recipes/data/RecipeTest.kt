@@ -23,7 +23,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("Non-food item"), result)
+        assertEquals(listOf("Non-food item"), result.map { it.first })
     }
 
     @Test
@@ -56,7 +56,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("2 cups flour"), result)
+        assertEquals(listOf("2 cups flour"), result.map { it.first })
     }
 
     @Test
@@ -89,7 +89,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("2tbsp sugar"), result)
+        assertEquals(listOf("2tbsp sugar"), result.map { it.first })
     }
 
     @Test
@@ -122,7 +122,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("1.5 cups milk"), result)
+        assertEquals(listOf("1.5 cups milk"), result.map { it.first })
     }
 
     @Test
@@ -150,7 +150,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("2 apples"), result)
+        assertEquals(listOf("2 apples"), result.map { it.first })
     }
 
     @Test
@@ -178,7 +178,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("1 apple"), result)
+        assertEquals(listOf("1 apple"), result.map { it.first })
     }
 
     @Test
@@ -206,7 +206,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("salt"), result)
+        assertEquals(listOf("salt"), result.map { it.first })
     }
 
     @Test
@@ -234,7 +234,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("peas"), result)
+        assertEquals(listOf("peas"), result.map { it.first })
     }
 
     @Test
@@ -287,7 +287,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("2 cups flour", "1tsp salt", "A pinch of love"), result)
+        assertEquals(listOf("2 cups flour", "1tsp salt", "A pinch of love"), result.map { it.first })
     }
 
     @Test
@@ -320,7 +320,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("100g flour"), result)
+        assertEquals(listOf("100g flour"), result.map { it.first })
     }
 
     @Test
@@ -353,7 +353,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("1g yeast"), result)
+        assertEquals(listOf("1g yeast"), result.map { it.first })
     }
 
     @Test
@@ -386,7 +386,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("2kg potatoes"), result)
+        assertEquals(listOf("2kg potatoes"), result.map { it.first })
     }
 
     @Test
@@ -419,7 +419,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("1kg rice"), result)
+        assertEquals(listOf("1kg rice"), result.map { it.first })
     }
 
     @Test
@@ -452,7 +452,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("250ml milk"), result)
+        assertEquals(listOf("250ml milk"), result.map { it.first })
     }
 
     @Test
@@ -485,7 +485,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("2l water"), result)
+        assertEquals(listOf("2l water"), result.map { it.first })
     }
 
     @Test
@@ -518,7 +518,7 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("0.5l cream"), result)
+        assertEquals(listOf("0.5l cream"), result.map { it.first })
     }
 
     @Test
@@ -583,6 +583,6 @@ class RecipeTest {
         val result = recipe.formatIngredients()
 
         // Assert
-        assertEquals(listOf("500g flour", "250ml milk", "0.25kg butter"), result)
+        assertEquals(listOf("500g flour", "250ml milk", "0.25kg butter"), result.map { it.first })
     }
 }

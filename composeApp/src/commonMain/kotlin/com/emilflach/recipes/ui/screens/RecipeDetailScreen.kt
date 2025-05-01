@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.RecipesAppTheme
+import com.emilflach.recipes.ui.components.recipeIngredient
 
 
 @Composable
@@ -124,11 +125,7 @@ fun RecipeDetailScreen(
                         }
                         if (recipe != null) {
                             itemsIndexed(ingredients) { _, ingredient ->
-                                Text(
-                                    text = ingredient,
-                                    style = MaterialTheme.typography.body1,
-                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-                                )
+                                recipeIngredient(ingredient.first, ingredient.second)
                             }
                         }
                         item {

@@ -51,15 +51,17 @@ data class Recipe(
     val yieldCount: Int
         get() = recipeYieldQuantity?.toInt() ?: 0
 
-    fun formatIngredients(): List<String> {
+    fun formatIngredients(): List<Pair<String, String?>> {
         return recipeIngredient.map { ingredient ->
+            val note = ingredient.note.takeIf { it.isNotEmpty() && it != ingredient.display }
+
             if (!ingredient.isFood) {
                 // With recipes that are not properly configured, scaling will not work
                 // This is a string the backend prepares for poorly configured recipes
-                return@map ingredient.display
+                return@map Pair(ingredient.display, note)
             }
 
-            buildString {
+            Pair(buildString {
                 ingredient.quantity?.let { quantity ->
                     append(quantity.formatAmount())
                 }
@@ -82,7 +84,7 @@ data class Recipe(
                         else -> ingredient.food?.name
                     } ?: ""
                 )
-            }.trim()
+            }.trim(), note)
         }
     }
 
