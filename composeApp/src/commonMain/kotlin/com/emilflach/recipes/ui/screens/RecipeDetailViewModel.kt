@@ -3,8 +3,11 @@ package com.emilflach.recipes.ui.screens
 import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.data.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
@@ -19,6 +22,11 @@ class RecipeDetailViewModel(
 
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
+    val formattedIngredients: StateFlow<List<String>> =
+        recipe.map { it?.formatIngredients() ?: emptyList() }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
 
     fun setRecipe(recipe: Recipe) {
         _recipe.value = recipe

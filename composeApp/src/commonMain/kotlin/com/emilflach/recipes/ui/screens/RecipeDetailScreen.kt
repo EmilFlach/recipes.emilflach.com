@@ -38,6 +38,8 @@ fun RecipeDetailScreen(
     val isError by viewModel.isError.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val viewModelRecipe by viewModel.recipe.collectAsState()
+    val ingredients by viewModel.formattedIngredients.collectAsState()
+
 
     val recipe = viewModelRecipe
     LaunchedEffect(recipeSlug, recipe) {
@@ -121,9 +123,9 @@ fun RecipeDetailScreen(
                             )
                         }
                         if (recipe != null) {
-                            itemsIndexed(recipe.recipeIngredient) { _, ingredient ->
+                            itemsIndexed(ingredients) { _, ingredient ->
                                 Text(
-                                    text = "${ingredient.quantity} ${ingredient.unit?.name} ${ingredient.food?.name}",
+                                    text = ingredient,
                                     style = MaterialTheme.typography.body1,
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                                 )

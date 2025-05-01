@@ -50,6 +50,59 @@ data class Recipe(
 
     val yieldCount: Int
         get() = recipeYieldQuantity?.toInt() ?: 0
+
+    fun formatIngredients(): List<String> {
+        return recipeIngredient.map { ingredient ->
+            println(ingredient.display)
+            if (!ingredient.isFood) {
+                // With recipes that are not properly configured, scaling will not work
+                // This is a string the backend prepares for poorly configured recipes
+                return@map ingredient.display
+            }
+
+            buildString {
+                ingredient.quantity?.let { quantity ->
+                    append(quantity.formatAmount())
+                }
+
+                ingredient.unit?.let { unit ->
+                    if (!unit.abbreviation.isNullOrEmpty()) {
+                        append(unit.abbreviation)
+                    } else {
+                        append(" ")
+                        append(if (shouldPluralizeFood(ingredient)) unit.pluralName else unit.name)
+                    }
+
+                }
+
+                if(ingredient.quantity != null || ingredient.unit != null) append(" ")
+
+                append(
+                    when {
+                        shouldPluralizeFood(ingredient) -> ingredient.food?.pluralName
+                        else -> ingredient.food?.name
+                    } ?: ""
+                )
+            }.trim()
+        }
+    }
+
+    private fun shouldPluralizeFood(ingredient: RecipeIngredient): Boolean {
+        if (!ingredient.food?.pluralName.isNullOrEmpty() && ingredient.quantity == null) return true
+
+        return ingredient.quantity != null &&
+                ingredient.quantity > 1.0 &&
+                !ingredient.food?.pluralName.isNullOrEmpty()
+    }
+
+    private fun Double.formatAmount(): String {
+        return if (this % 1 == 0.0) {
+            toInt().toString()
+        } else {
+            toString()
+        }
+    }
+
 }
 
 @Serializable
@@ -91,6 +144,7 @@ data class RecipeIngredient(
     val referenceId: String? = null,
     val ingredientReferences: List<IngredientReference> = emptyList()
 )
+
 
 @Serializable
 data class Unit(
