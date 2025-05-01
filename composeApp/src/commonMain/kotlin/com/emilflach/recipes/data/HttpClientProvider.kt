@@ -15,8 +15,8 @@ import kotlinx.serialization.json.Json
 expect fun createHttpClientEngine(): HttpClientEngineFactory<*>
 
 object HttpClientProvider {
-    const val BASE_URL = "https://mealie.emilflach.com/api"
-    private const val JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMjlkNTU2NC1hNjgxLTQyMmYtYTZmNS0zMDQzMzYzOGI4ZjgiLCJleHAiOjE3NDU3MzY1MjZ9.sP8VJYCkHfUiW62pKSwZMR6mKoOD5BXpD9c0_pUKC34"
+    val BASE_URL = AppConfig.BASE_URL
+    private val JWT_TOKEN = AppConfig.JWT_TOKEN
 
     // Common configuration for all platforms
     fun <T : HttpClientEngineConfig> configureClient(config: HttpClientConfig<T>) {
