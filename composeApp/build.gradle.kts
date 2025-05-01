@@ -87,6 +87,9 @@ kotlin {
             implementation(libs.ktor.client.cio)
             implementation(libs.navigation.compose)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
         appleMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }

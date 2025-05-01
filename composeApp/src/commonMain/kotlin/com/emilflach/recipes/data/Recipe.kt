@@ -53,7 +53,6 @@ data class Recipe(
 
     fun formatIngredients(): List<String> {
         return recipeIngredient.map { ingredient ->
-            println(ingredient.display)
             if (!ingredient.isFood) {
                 // With recipes that are not properly configured, scaling will not work
                 // This is a string the backend prepares for poorly configured recipes
@@ -70,7 +69,7 @@ data class Recipe(
                         append(unit.abbreviation)
                     } else {
                         append(" ")
-                        append(if (shouldPluralizeFood(ingredient)) unit.pluralName else unit.name)
+                        append(if (shouldPluralizeUnit(ingredient)) unit.pluralName else unit.name)
                     }
 
                 }
@@ -93,6 +92,12 @@ data class Recipe(
         return ingredient.quantity != null &&
                 ingredient.quantity > 1.0 &&
                 !ingredient.food?.pluralName.isNullOrEmpty()
+    }
+
+    private fun shouldPluralizeUnit(ingredient: RecipeIngredient): Boolean {
+        return ingredient.quantity != null &&
+                ingredient.quantity > 1.0 &&
+                !ingredient.unit?.pluralName.isNullOrEmpty()
     }
 
     private fun Double.formatAmount(): String {
