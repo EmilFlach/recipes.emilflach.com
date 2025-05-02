@@ -125,7 +125,7 @@ fun RecipeDetailScreen(
                         }
                         if (recipe != null) {
                             itemsIndexed(ingredients) { _, ingredient ->
-                                recipeIngredient(ingredient.first, ingredient.second)
+                                recipeIngredient(ingredient)
                             }
                         }
                         item {

@@ -51,17 +51,21 @@ data class Recipe(
     val yieldCount: Int
         get() = recipeYieldQuantity?.toInt() ?: 0
 
-    fun formatIngredients(): List<Pair<String, String?>> {
+    fun formatIngredients(): List<Ingredient> {
         return recipeIngredient.map { ingredient ->
             val note = ingredient.note.takeIf { it.isNotEmpty() && it != ingredient.display }
+
+            val url = ingredient.food?.let { food ->
+                food.description.takeIf { it.isNotEmpty() && it.contains("https://") }
+            }
 
             if (!ingredient.isFood) {
                 // With recipes that are not properly configured, scaling will not work
                 // This is a string the backend prepares for poorly configured recipes
-                return@map Pair(ingredient.display, note)
+                return@map Ingredient(ingredient.display, note, url)
             }
 
-            Pair(buildString {
+            Ingredient(buildString {
                 ingredient.quantity?.let { quantity ->
                     append(quantity.formatAmount())
                 }
@@ -73,10 +77,9 @@ data class Recipe(
                         append(" ")
                         append(if (shouldPluralizeUnit(ingredient)) unit.pluralName else unit.name)
                     }
-
                 }
 
-                if(ingredient.quantity != null || ingredient.unit != null) append(" ")
+                if (ingredient.quantity != null || ingredient.unit != null) append(" ")
 
                 append(
                     when {
@@ -84,7 +87,7 @@ data class Recipe(
                         else -> ingredient.food?.name
                     } ?: ""
                 )
-            }.trim(), note)
+            }.trim(), note, url)
         }
     }
 
@@ -152,6 +155,11 @@ data class RecipeIngredient(
     val ingredientReferences: List<IngredientReference> = emptyList()
 )
 
+data class Ingredient(
+    val ingredient: String,
+    val note: String?,
+    val url: String?
+)
 
 @Serializable
 data class Unit(

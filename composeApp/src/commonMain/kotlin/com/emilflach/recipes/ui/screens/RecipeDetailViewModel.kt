@@ -1,5 +1,6 @@
 package com.emilflach.recipes.ui.screens
 
+import com.emilflach.recipes.data.Ingredient
 import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.data.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,7 @@ class RecipeDetailViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
-    val formattedIngredients: StateFlow<List<Pair<String, String?>>> =
+    val formattedIngredients: StateFlow<List<Ingredient>> =
         recipe.map { it?.formatIngredients() ?: emptyList() }
             .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
