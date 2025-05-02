@@ -37,13 +37,18 @@ fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
     ) {
         val itemWidth = maxWidth * 0.92f
         val rows = 3
+        val totalPages = (recipes.size + rows - 1) / rows
+
         LazyHorizontalGrid(
             modifier = Modifier.height(500.dp),
             rows = GridCells.Fixed(rows),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            itemsIndexed(recipes, key = {_, recipe -> recipe.slug}) { _, recipe ->
-                val isLastPage = recipes.indexOf(recipe) >= recipes.size - rows
+
+            itemsIndexed(recipes, key = {_, recipe -> recipe.slug})
+            { index, recipe ->
+                val page = index / rows
+                val isLastPage = page == totalPages - 1
                 RecipeCard(recipe, itemWidth, isLastPage, onRecipeClick)
             }
         }
