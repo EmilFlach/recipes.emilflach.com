@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Ingredient
+import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
 fun recipeIngredient(ingredient: Ingredient) {
@@ -49,7 +50,7 @@ fun recipeIngredient(ingredient: Ingredient) {
                         Icon(
                             imageVector = Icons.Filled.Info,
                             contentDescription = "Open URL",
-                            tint = MaterialTheme.colors.primaryVariant,
+                            tint = MaterialTheme.recipesColors.foregroundSupport,
                             modifier = Modifier.height(24.dp)
                         )
                     }

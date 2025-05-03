@@ -15,12 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.data.Recipe
+import com.emilflach.recipes.ui.theme.recipesColors
 
 
 @Composable
@@ -54,15 +54,15 @@ fun HighlightedRecipeCard(
                     .fillMaxHeight()
                     .background(
                         Brush.verticalGradient(
-                            0.6f to Color.Transparent,
-                            1f to Color.Black)
+                            0.6f to MaterialTheme.recipesColors.foregroundDefault.copy(alpha = 0f),
+                            1f to MaterialTheme.recipesColors.foregroundDefault.copy(alpha = 0.9f))
                     )
             )
             recipe.name?.let {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.h3,
-                    color = MaterialTheme.colors.onPrimary,
+                    color = MaterialTheme.recipesColors.onBackgroundBrand,
                     modifier = Modifier
                         .align(Alignment.BottomStart)
                         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),

@@ -8,11 +8,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.emilflach.recipes.ui.theme.ProvideRecipesColors
+import com.emilflach.recipes.ui.theme.RecipesColors
+import com.emilflach.recipes.ui.theme.toMaterialColors
 
 @Composable
 internal fun RecipesAppTheme(
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
+    val colors = if (darkTheme) RecipesColors.Dark else RecipesColors.Light
 
     val typography = remember {
         Typography(
@@ -34,7 +39,11 @@ internal fun RecipesAppTheme(
         )
     }
 
-    MaterialTheme(
-        typography = typography, content = content
-    )
+    ProvideRecipesColors(colors = colors) {
+        MaterialTheme(
+            colors = colors.toMaterialColors(),
+            typography = typography, 
+            content = content
+        )
+    }
 }

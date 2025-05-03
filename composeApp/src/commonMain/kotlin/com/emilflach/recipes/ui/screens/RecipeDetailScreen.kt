@@ -23,13 +23,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.RecipesAppTheme
 import com.emilflach.recipes.ui.components.recipeIngredient
+import com.emilflach.recipes.ui.theme.recipesColors
 
 
 @Composable
@@ -57,7 +57,7 @@ fun RecipeDetailScreen(
         ) { recipe ->
             LazyColumn(
                 modifier = Modifier
-                    .background(MaterialTheme.colors.background)
+                    .background(MaterialTheme.recipesColors.backgroundPage)
                     .fillMaxHeight()
                     .fillMaxWidth()
             ) {
@@ -76,8 +76,8 @@ fun RecipeDetailScreen(
                         Box(
                             modifier = Modifier.fillMaxWidth().fillMaxHeight().background(
                                 Brush.verticalGradient(
-                                    0f to Color.Black,
-                                    0.3f to Color.Transparent,
+                                    0f to MaterialTheme.recipesColors.foregroundDefault.copy(alpha = 0.9f),
+                                    0.3f to MaterialTheme.recipesColors.foregroundDefault.copy(alpha = 0f),
                                 )
                             )
                         )
@@ -85,7 +85,7 @@ fun RecipeDetailScreen(
                             Icon(
                                 imageVector = Icons.AutoMirrored.Default.ArrowBack,
                                 contentDescription = "Back",
-                                tint = Color.White,
+                                tint = MaterialTheme.recipesColors.onBackgroundBrand,
                                 modifier = Modifier.padding(top = 48.dp)
                             )
                         }
@@ -96,7 +96,7 @@ fun RecipeDetailScreen(
                         item {
                             Text(
                                 text = "Error: $errorMessage",
-                                color = MaterialTheme.colors.error,
+                                color = MaterialTheme.recipesColors.foregroundDanger,
                                 modifier = Modifier.padding(16.dp)
                             )
 
