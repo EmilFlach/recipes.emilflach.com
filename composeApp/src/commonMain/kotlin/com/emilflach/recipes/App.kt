@@ -29,46 +29,48 @@ fun App() {
         ImageLoader.Builder(context).crossfade(true).build()
     }
 
-    NavHost(navController = navController, startDestination = Screen.RecipesList.route) {
-        composable(Screen.RecipesList.route,
-            enterTransition = {
-                fadeIn(
-                    animationSpec = tween(50)
-                )
-            },
-            exitTransition = {
-                fadeOut(
-                    animationSpec = tween(1000)
-                )
+    RecipesAppTheme {
+        NavHost(navController = navController, startDestination = Screen.RecipesList.route) {
+            composable(Screen.RecipesList.route,
+                enterTransition = {
+                    fadeIn(
+                        animationSpec = tween(50)
+                    )
+                },
+                exitTransition = {
+                    fadeOut(
+                        animationSpec = tween(1000)
+                    )
+                }
+            ) {
+                RecipesScreen(
+                    viewModel = recipesViewModel, onRecipeClick = { recipe ->
+                        recipeDetailViewModel.setRecipe(recipe)
+                        navController.navigate(Screen.RecipeDetail.createRoute(recipe.slug))
+                    })
             }
-        ) {
-            RecipesScreen(
-                viewModel = recipesViewModel, onRecipeClick = { recipe ->
-                    recipeDetailViewModel.setRecipe(recipe)
-                    navController.navigate(Screen.RecipeDetail.createRoute(recipe.slug))
-                })
-        }
 
-        composable(
-            route = Screen.RecipeDetail.route,
-            arguments = listOf(navArgument("recipeSlug") { type = NavType.StringType }),
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(300)
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(200)
-                )
-            },
-        ) { backStackEntry ->
-            val recipeSlug = backStackEntry.arguments?.getString("recipeSlug")
-            recipeSlug?.let {
-                RecipeDetailScreen(
-                    viewModel = recipeDetailViewModel,
-                    recipeSlug = it,
-                    onBackClick = { navController.popBackStack() })
+            composable(
+                route = Screen.RecipeDetail.route,
+                arguments = listOf(navArgument("recipeSlug") { type = NavType.StringType }),
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(300)
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(200)
+                    )
+                },
+            ) { backStackEntry ->
+                val recipeSlug = backStackEntry.arguments?.getString("recipeSlug")
+                recipeSlug?.let {
+                    RecipeDetailScreen(
+                        viewModel = recipeDetailViewModel,
+                        recipeSlug = it,
+                        onBackClick = { navController.popBackStack() })
+                }
             }
         }
     }

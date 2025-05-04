@@ -54,8 +54,9 @@ fun HighlightedRecipeCard(
                     .fillMaxHeight()
                     .background(
                         Brush.verticalGradient(
-                            0.6f to MaterialTheme.recipesColors.foregroundDefault.copy(alpha = 0f),
-                            1f to MaterialTheme.recipesColors.foregroundDefault.copy(alpha = 0.9f))
+                            // Gradient hacks, no semantic colors here, onSecondary is always black
+                            0.6f to MaterialTheme.colors.onSecondary.copy(alpha = 0f),
+                            1f to MaterialTheme.colors.onSecondary.copy(alpha = 0.9f))
                     )
             )
             recipe.name?.let {
