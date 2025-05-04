@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 /**
  * Extension properties to access RecipesColors from MaterialTheme
  */
+@Suppress("UnusedReceiverParameter")
 val MaterialTheme.recipesColors: RecipesColors
     @Composable
     @ReadOnlyComposable
