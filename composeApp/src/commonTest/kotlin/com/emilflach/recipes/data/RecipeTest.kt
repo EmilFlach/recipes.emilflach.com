@@ -3,6 +3,10 @@ package com.emilflach.recipes.data
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+// Extension property to make tests work with the new Ingredient class
+private val Ingredient.first: String
+    get() = this.ingredient
+
 class RecipeTest {
 
     @Test
