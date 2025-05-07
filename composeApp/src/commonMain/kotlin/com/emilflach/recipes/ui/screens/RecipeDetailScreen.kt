@@ -39,6 +39,7 @@ fun RecipeDetailScreen(
     val errorMessage by viewModel.errorMessage.collectAsState()
     val viewModelRecipe by viewModel.recipe.collectAsState()
     val ingredients by viewModel.formattedIngredients.collectAsState()
+    val sectionedInstructions by viewModel.sectionedInstructions.collectAsState()
 
 
     val recipeData = viewModelRecipe
@@ -136,17 +137,44 @@ fun RecipeDetailScreen(
                         )
                     }
                     if (recipe != null) {
-                        itemsIndexed(recipe.recipeInstructions) { index, instruction ->
-                            Text(
-                                text = "${index + 1}. ${instruction.text}",
-                                style = MaterialTheme.typography.body1,
-                                modifier = Modifier.padding(
-                                    horizontal = 16.dp,
-                                    vertical = 16.dp
+                        if(recipe.hasInstructionSections) {
+                            sectionedInstructions.forEach { section ->
+                                item {
+                                    Text(
+                                        text = section.title,
+                                        style = MaterialTheme.typography.h3,
+                                        modifier = Modifier.padding(
+                                            horizontal = 16.dp,
+                                            vertical = 16.dp
+                                        )
+                                    )
+                                }
+
+                                itemsIndexed(section.instructions) { index, instruction ->
+                                    Text(
+                                        text = "${index + 1}. ${instruction.text}",
+                                        style = MaterialTheme.typography.body1,
+                                        modifier = Modifier.padding(
+                                            horizontal = 16.dp,
+                                            vertical = 16.dp
+                                        )
+                                    )
+                                }
+                            }
+                        } else {
+                            itemsIndexed(recipe.recipeInstructions) { index, instruction ->
+                                Text(
+                                    text = "${index + 1}. ${instruction.text}",
+                                    style = MaterialTheme.typography.body1,
+                                    modifier = Modifier.padding(
+                                        horizontal = 16.dp,
+                                        vertical = 16.dp
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
+
                 }
             }
         }

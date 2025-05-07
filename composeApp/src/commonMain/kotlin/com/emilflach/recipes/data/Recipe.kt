@@ -51,6 +51,48 @@ data class Recipe(
     val yieldCount: Int
         get() = recipeYieldQuantity?.toInt() ?: 0
 
+    val hasInstructionSections: Boolean
+        get() = recipeInstructions.isNotEmpty() && recipeInstructions.any { it.title.isNotEmpty() }
+
+    fun sectionedInstructions(): List<InstructionSection> {
+        val instructions = instructionsWithReferencedIngredients()
+        if (instructions.isEmpty()) return emptyList()
+
+        // The list is ordered
+        // Find an instructions with a title
+        // The instruction with a title is a new section
+        // Include all instructions without a title in this section
+        // When a new title is found, create a new section
+        // Repeat for all instructions
+        return instructions.fold(mutableListOf()) { sections, currentInstruction ->
+            when {
+                currentInstruction.section.isNullOrEmpty() && sections.isNotEmpty() -> {
+                    sections.last().instructions.add(currentInstruction)
+                    sections
+                }
+                !currentInstruction.section.isNullOrEmpty() -> {
+                    sections.add(
+                        InstructionSection(
+                            title = currentInstruction.section,
+                            instructions = mutableListOf(currentInstruction)
+                        )
+                    )
+                    sections
+                }
+                else -> sections
+            }
+        }
+    }
+
+    fun instructionsWithReferencedIngredients(): List<Instruction> {
+        val ingredients = formatIngredients()
+        return recipeInstructions.map { instruction ->
+            Instruction(instruction.id, instruction.text, instruction.title, instruction.ingredientReferences.map { reference ->
+                ingredients.find { it.id == reference.referenceId } ?: Ingredient("", "", null, null)
+            })
+        }
+    }
+
     fun formatIngredients(): List<Ingredient> {
         return recipeIngredient.map { ingredient ->
             val note = ingredient.note.takeIf { it.isNotEmpty() && it != ingredient.display }
@@ -62,10 +104,10 @@ data class Recipe(
             if (!ingredient.isFood) {
                 // With recipes that are not properly configured, scaling will not work
                 // This is a string the backend prepares for poorly configured recipes
-                return@map Ingredient(ingredient.display, note, url)
+                return@map Ingredient(ingredient.referenceId, ingredient.display, note, url)
             }
 
-            Ingredient(buildString {
+            Ingredient(ingredient.referenceId, buildString {
                 ingredient.quantity?.let { quantity ->
                     append(quantity.formatAmount())
                 }
@@ -151,15 +193,31 @@ data class RecipeIngredient(
     val display: String,
     val title: String? = null,
     val originalText: String? = null,
-    val referenceId: String? = null,
+    val referenceId: String,
     val ingredientReferences: List<IngredientReference> = emptyList()
 )
 
+
 data class Ingredient(
+    val id: String,
     val ingredient: String,
     val note: String?,
     val url: String?
 )
+
+data class Instruction(
+    val id: String,
+    val text: String,
+    val section: String? = null,
+    val ingredients: List<Ingredient> = emptyList()
+)
+
+data class InstructionSection(
+    val title: String,
+    val instructions: MutableList<Instruction>
+)
+
+
 
 @Serializable
 data class Unit(
