@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +49,7 @@ fun recipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false)
                         modifier = Modifier.height(24.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.Info,
+                            imageVector = Icons.Outlined.Info,
                             contentDescription = "Open URL",
                             tint = MaterialTheme.recipesColors.foregroundSupport,
                             modifier = Modifier.height(24.dp)

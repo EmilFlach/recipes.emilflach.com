@@ -7,25 +7,27 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 // Light theme palette
-val LightBrandPrimary = Color(0xFFF14A00) // Bright orange (brand color)
-val LightBackground = Color(0xFFFAFAFA) // Very light gray
-val LightSurface1 = Color(0xFFFFFFFF) // White
+val LightBrandPrimary = Color(0xFF538538) // Bright orange (brand color)
+val LightBackground = Color(0xFFf7f1e7) // Very light gray
+val LightSurface1 = Color(0xFFfefdfb) // White
+val LightForeground = Color(0xFF24150f) // Very dark gray for text
+val LightForegroundSupport = Color(0xFF672013) // Medium gray for support text
+
 val LightSurface2 = Color(0xFFF5F5F5) // Light gray
 val LightSurface3 = Color(0xFFEEEEEE) // Slightly darker gray
 val LightDisabled = Color(0xFFEEEEEE) // Light gray for disabled state
-val LightForeground = Color(0xFF212121) // Very dark gray for text
-val LightForegroundSupport = Color(0xFF757575) // Medium gray for support text
 val LightForegroundDisabled = Color(0xFFBDBDBD) // Light gray for disabled text
 
 // Dark theme palette
-val DarkBrandPrimary = Color(0xFFF14A00) // Bright orange (brand color)
-val DarkBackground = Color(0xFF0A0119) // Darkened purple
-val DarkSurface1 = Color(0xFF150038) // Darkened slightly lighter purple
+val DarkBrandPrimary = Color(0xFF538538) // Bright orange (brand color)
+val DarkBackground = Color(0xFF24150f) // Darkened purple
+val DarkSurface1 = Color(0xFF672013) // Darkened slightly lighter purple
+val DarkForeground = Color(0xFFf7f1e7) // Almost white for better readability
+val DarkForegroundSupport = Color(0xFFdcd0bb) // Darkened light purple for support text
+
 val DarkSurface2 = Color(0xFF3A0055) // Darkened medium purple
 val DarkSurface3 = Color(0xFF450065) // Darkened lighter purple
 val DarkDisabled = Color(0xFF2A0048) // Darkened disabled state with purple hue
-val DarkForeground = Color(0xFFF5F5F5) // Almost white for better readability
-val DarkForegroundSupport = Color(0xFFB0B0B0) // Darkened light purple for support text
 val DarkForegroundDisabled = Color(0xFF705080) // Darkened disabled text with purple hue
 
 // Neutral palette

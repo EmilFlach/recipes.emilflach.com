@@ -65,7 +65,7 @@ fun recipeSection(section: InstructionSection) {
                     contentDescription = if (isExpanded)
                         "Collapse section" else
                         "Expand section",
-                    tint = MaterialTheme.recipesColors.onBackgroundBrand,
+                    tint = MaterialTheme.recipesColors.foregroundDefault,
                     modifier = Modifier.graphicsLayer {
                         rotationZ = rotationState
                     }
