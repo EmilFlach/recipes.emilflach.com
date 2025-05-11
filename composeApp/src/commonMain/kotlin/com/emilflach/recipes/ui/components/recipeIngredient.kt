@@ -22,7 +22,7 @@ import com.emilflach.recipes.data.Ingredient
 import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
-fun recipeIngredient(ingredient: Ingredient) {
+fun recipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false) {
     val checkedState = remember { mutableStateOf(false) }
     Row (
         verticalAlignment = Alignment.CenterVertically,
@@ -39,7 +39,7 @@ fun recipeIngredient(ingredient: Ingredient) {
                     text = ingredient.ingredient,
                     style = MaterialTheme.typography.body1,
                 )
-                if (!ingredient.url.isNullOrEmpty()) {
+                if (!ingredient.url.isNullOrEmpty() && !displayBasicsOnly) {
                     val uriHandler = LocalUriHandler.current
                     IconButton(
                         onClick = {
@@ -56,7 +56,7 @@ fun recipeIngredient(ingredient: Ingredient) {
                     }
                 }
             }
-            if (!ingredient.note.isNullOrEmpty()) {
+            if (!ingredient.note.isNullOrEmpty()  && !displayBasicsOnly) {
                 Text(
                     text = ingredient.note,
                     style = MaterialTheme.typography.body2,

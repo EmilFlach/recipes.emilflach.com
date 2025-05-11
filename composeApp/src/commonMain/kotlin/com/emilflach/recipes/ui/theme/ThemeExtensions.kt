@@ -69,6 +69,12 @@ fun createTypography(darkTheme: Boolean): Typography {
             fontSize = 18.sp,
             color = colors.foregroundDefault
         ),
+        h4 = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = colors.foregroundDefault
+        ),
         body1 = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,

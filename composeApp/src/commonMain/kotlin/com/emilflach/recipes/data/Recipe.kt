@@ -55,7 +55,7 @@ data class Recipe(
         get() = recipeInstructions.isNotEmpty() && recipeInstructions.any { it.title.isNotEmpty() }
 
     fun sectionedInstructions(): List<InstructionSection> {
-        val instructions = instructionsWithReferencedIngredients()
+        val instructions = instructionsWithIngredients()
         if (instructions.isEmpty()) return emptyList()
 
         // The list is ordered
@@ -74,7 +74,8 @@ data class Recipe(
                     sections.add(
                         InstructionSection(
                             title = currentInstruction.section,
-                            instructions = mutableListOf(currentInstruction)
+                            subtitle = currentInstruction.text,
+                            instructions = mutableListOf()
                         )
                     )
                     sections
@@ -84,7 +85,7 @@ data class Recipe(
         }
     }
 
-    fun instructionsWithReferencedIngredients(): List<Instruction> {
+    fun instructionsWithIngredients(): List<Instruction> {
         val ingredients = formatIngredients()
         return recipeInstructions.map { instruction ->
             Instruction(instruction.id, instruction.text, instruction.title, instruction.ingredientReferences.map { reference ->
@@ -214,6 +215,7 @@ data class Instruction(
 
 data class InstructionSection(
     val title: String,
+    val subtitle: String,
     val instructions: MutableList<Instruction>
 )
 

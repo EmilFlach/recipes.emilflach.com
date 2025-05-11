@@ -28,6 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.ui.components.recipeIngredient
+import com.emilflach.recipes.ui.components.recipeInstruction
+import com.emilflach.recipes.ui.components.recipeSection
 import com.emilflach.recipes.ui.theme.recipesColors
 
 
@@ -39,7 +41,9 @@ fun RecipeDetailScreen(
     val errorMessage by viewModel.errorMessage.collectAsState()
     val viewModelRecipe by viewModel.recipe.collectAsState()
     val ingredients by viewModel.formattedIngredients.collectAsState()
+    val instructions by viewModel.instructions.collectAsState()
     val sectionedInstructions by viewModel.sectionedInstructions.collectAsState()
+
 
 
     val recipeData = viewModelRecipe
@@ -105,8 +109,8 @@ fun RecipeDetailScreen(
                 }
 
                 else -> {
-                    item {
-                        if (recipe != null) {
+                    recipe?.let { recipe ->
+                        item {
                             Text(
                                 text = recipe.name ?: "",
                                 style = MaterialTheme.typography.h1,
@@ -114,67 +118,40 @@ fun RecipeDetailScreen(
                                 modifier = Modifier.fillMaxWidth().padding(16.dp),
                             )
                         }
-                    }
-                    item {
-                        Text(
-                            text = "Ingredients",
-                            style = MaterialTheme.typography.h2,
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 16.dp),
-                        )
-                    }
-                    if (recipe != null) {
+
+                        item {
+                            Text(
+                                text = "Ingredients",
+                                style = MaterialTheme.typography.h2,
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                            )
+                        }
                         itemsIndexed(ingredients) { _, ingredient ->
                             recipeIngredient(ingredient)
                         }
-                    }
-                    item {
-                        Spacer(modifier = Modifier.height(32.dp))
-                        Text(
-                            text = "Procedure",
-                            style = MaterialTheme.typography.h2,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                        )
-                    }
-                    if (recipe != null) {
+
+                        item {
+                            Spacer(modifier = Modifier.height(32.dp))
+                            Text(
+                                text = "Procedure",
+                                style = MaterialTheme.typography.h2,
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                            )
+                        }
+
                         if(recipe.hasInstructionSections) {
                             sectionedInstructions.forEach { section ->
                                 item {
-                                    Text(
-                                        text = section.title,
-                                        style = MaterialTheme.typography.h3,
-                                        modifier = Modifier.padding(
-                                            horizontal = 16.dp,
-                                            vertical = 16.dp
-                                        )
-                                    )
-                                }
-
-                                itemsIndexed(section.instructions) { index, instruction ->
-                                    Text(
-                                        text = "${index + 1}. ${instruction.text}",
-                                        style = MaterialTheme.typography.body1,
-                                        modifier = Modifier.padding(
-                                            horizontal = 16.dp,
-                                            vertical = 16.dp
-                                        )
-                                    )
+                                    recipeSection(section)
                                 }
                             }
                         } else {
-                            itemsIndexed(recipe.recipeInstructions) { index, instruction ->
-                                Text(
-                                    text = "${index + 1}. ${instruction.text}",
-                                    style = MaterialTheme.typography.body1,
-                                    modifier = Modifier.padding(
-                                        horizontal = 16.dp,
-                                        vertical = 16.dp
-                                    )
-                                )
+                            itemsIndexed(instructions) { index, instruction ->
+                                recipeInstruction(index, instruction)
                             }
                         }
                     }
-
                 }
             }
         }

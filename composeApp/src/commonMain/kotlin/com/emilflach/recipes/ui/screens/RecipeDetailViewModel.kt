@@ -1,6 +1,7 @@
 package com.emilflach.recipes.ui.screens
 
 import com.emilflach.recipes.data.Ingredient
+import com.emilflach.recipes.data.Instruction
 import com.emilflach.recipes.data.InstructionSection
 import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.data.RecipeRepository
@@ -31,6 +32,10 @@ class RecipeDetailViewModel(
 
     val sectionedInstructions: StateFlow<List<InstructionSection>> =
         recipe.map { it?.sectionedInstructions() ?: emptyList() }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    val instructions: StateFlow<List<Instruction>> =
+        recipe.map { it?.instructionsWithIngredients() ?: emptyList() }
             .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
 
