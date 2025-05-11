@@ -18,7 +18,8 @@ class RecipeTest {
             recipeIngredient = listOf(
                 RecipeIngredient(
                     isFood = false,
-                    display = "Non-food item"
+                    display = "Non-food item",
+                    referenceId = "ref1"
                 )
             )
         )
@@ -51,7 +52,8 @@ class RecipeTest {
                         name = "flour",
                         pluralName = null
                     ),
-                    display = "2 cups flour"
+                    display = "2 cups flour",
+                    referenceId = "ref2"
                 )
             )
         )
@@ -84,7 +86,8 @@ class RecipeTest {
                         name = "sugar",
                         pluralName = null
                     ),
-                    display = "2 tbsp sugar"
+                    display = "2 tbsp sugar",
+                    referenceId = "ref3"
                 )
             )
         )
@@ -117,7 +120,8 @@ class RecipeTest {
                         name = "milk",
                         pluralName = null
                     ),
-                    display = "1.5 cups milk"
+                    display = "1.5 cups milk",
+                    referenceId = "ref4"
                 )
             )
         )
@@ -145,7 +149,8 @@ class RecipeTest {
                         name = "apple",
                         pluralName = "apples"
                     ),
-                    display = "2 apples"
+                    display = "2 apples",
+                    referenceId = "ref5"
                 )
             )
         )
@@ -173,7 +178,8 @@ class RecipeTest {
                         name = "apple",
                         pluralName = "apples"
                     ),
-                    display = "1 apple"
+                    display = "1 apple",
+                    referenceId = "ref6"
                 )
             )
         )
@@ -201,7 +207,8 @@ class RecipeTest {
                         name = "salt",
                         pluralName = null
                     ),
-                    display = "salt to taste"
+                    display = "salt to taste",
+                    referenceId = "ref7"
                 )
             )
         )
@@ -229,7 +236,8 @@ class RecipeTest {
                         name = "pea",
                         pluralName = "peas"
                     ),
-                    display = "peas"
+                    display = "peas",
+                    referenceId = "ref8"
                 )
             )
         )
@@ -262,7 +270,8 @@ class RecipeTest {
                         name = "flour",
                         pluralName = null
                     ),
-                    display = "2 cups flour"
+                    display = "2 cups flour",
+                    referenceId = "ref9"
                 ),
                 RecipeIngredient(
                     isFood = true,
@@ -278,11 +287,13 @@ class RecipeTest {
                         name = "salt",
                         pluralName = null
                     ),
-                    display = "1 tsp salt"
+                    display = "1 tsp salt",
+                    referenceId = "ref10"
                 ),
                 RecipeIngredient(
                     isFood = false,
-                    display = "A pinch of love"
+                    display = "A pinch of love",
+                    referenceId = "ref11"
                 )
             )
         )
@@ -315,7 +326,8 @@ class RecipeTest {
                         name = "flour",
                         pluralName = null
                     ),
-                    display = "100 g flour"
+                    display = "100 g flour",
+                    referenceId = "ref12"
                 )
             )
         )
@@ -348,7 +360,8 @@ class RecipeTest {
                         name = "yeast",
                         pluralName = null
                     ),
-                    display = "1 g yeast"
+                    display = "1 g yeast",
+                    referenceId = "ref13"
                 )
             )
         )
@@ -381,7 +394,8 @@ class RecipeTest {
                         name = "potato",
                         pluralName = "potatoes"
                     ),
-                    display = "2 kg potatoes"
+                    display = "2 kg potatoes",
+                    referenceId = "ref14"
                 )
             )
         )
@@ -414,7 +428,8 @@ class RecipeTest {
                         name = "rice",
                         pluralName = null
                     ),
-                    display = "1 kg rice"
+                    display = "1 kg rice",
+                    referenceId = "ref15"
                 )
             )
         )
@@ -447,7 +462,8 @@ class RecipeTest {
                         name = "milk",
                         pluralName = null
                     ),
-                    display = "250 ml milk"
+                    display = "250 ml milk",
+                    referenceId = "ref16"
                 )
             )
         )
@@ -480,7 +496,8 @@ class RecipeTest {
                         name = "water",
                         pluralName = null
                     ),
-                    display = "2 l water"
+                    display = "2 l water",
+                    referenceId = "ref17"
                 )
             )
         )
@@ -513,7 +530,8 @@ class RecipeTest {
                         name = "cream",
                         pluralName = null
                     ),
-                    display = "0.5 l cream"
+                    display = "0.5 l cream",
+                    referenceId = "ref18"
                 )
             )
         )
@@ -546,7 +564,8 @@ class RecipeTest {
                         name = "flour",
                         pluralName = null
                     ),
-                    display = "500 g flour"
+                    display = "500 g flour",
+                    referenceId = "ref19"
                 ),
                 RecipeIngredient(
                     isFood = true,
@@ -562,7 +581,8 @@ class RecipeTest {
                         name = "milk",
                         pluralName = null
                     ),
-                    display = "250 ml milk"
+                    display = "250 ml milk",
+                    referenceId = "ref20"
                 ),
                 RecipeIngredient(
                     isFood = true,
@@ -578,7 +598,8 @@ class RecipeTest {
                         name = "butter",
                         pluralName = null
                     ),
-                    display = "0.25 kg butter"
+                    display = "0.25 kg butter",
+                    referenceId = "ref21"
                 )
             )
         )
