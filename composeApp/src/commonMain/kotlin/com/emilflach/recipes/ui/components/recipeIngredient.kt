@@ -10,7 +10,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +24,13 @@ import com.emilflach.recipes.ui.theme.recipesColors
 @Composable
 fun recipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false) {
     val checkedState = remember { mutableStateOf(false) }
+    if(!ingredient.sectionTitle.isNullOrEmpty() && !displayBasicsOnly) {
+        Text(
+            text = ingredient.sectionTitle,
+            style = MaterialTheme.typography.h3,
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+        )
+    }
     Row (
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(bottom = 12.dp, end = 16.dp)
@@ -37,7 +43,7 @@ fun recipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false)
         Column {
             Row (verticalAlignment = Alignment.CenterVertically){
                 Text(
-                    text = ingredient.ingredient,
+                    text = ingredient.text,
                     style = MaterialTheme.typography.body1,
                 )
                 if (!ingredient.url.isNullOrEmpty() && !displayBasicsOnly) {
@@ -67,5 +73,4 @@ fun recipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false)
 
         }
     }
-
 }

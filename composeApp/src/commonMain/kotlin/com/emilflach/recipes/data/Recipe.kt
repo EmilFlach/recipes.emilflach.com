@@ -89,7 +89,7 @@ data class Recipe(
         val ingredients = formatIngredients()
         return recipeInstructions.map { instruction ->
             Instruction(instruction.id, instruction.text, instruction.title, instruction.ingredientReferences.map { reference ->
-                ingredients.find { it.id == reference.referenceId } ?: Ingredient("", "", null, null)
+                ingredients.find { it.id == reference.referenceId } ?: Ingredient("", "", null, null, null)
             })
         }
     }
@@ -97,6 +97,7 @@ data class Recipe(
     fun formatIngredients(): List<Ingredient> {
         return recipeIngredient.map { ingredient ->
             val note = ingredient.note.takeIf { it.isNotEmpty() && it != ingredient.display }
+            val sectionTitle = ingredient.title
 
             val url = ingredient.food?.let { food ->
                 food.description.takeIf { it.isNotEmpty() && it.contains("https://") }
@@ -105,7 +106,7 @@ data class Recipe(
             if (!ingredient.isFood) {
                 // With recipes that are not properly configured, scaling will not work
                 // This is a string the backend prepares for poorly configured recipes
-                return@map Ingredient(ingredient.referenceId, ingredient.display, note, url)
+                return@map Ingredient(ingredient.referenceId, ingredient.display, sectionTitle, note, url)
             }
 
             Ingredient(ingredient.referenceId, buildString {
@@ -130,7 +131,7 @@ data class Recipe(
                         else -> ingredient.food?.name
                     } ?: ""
                 )
-            }.trim(), note, url)
+            }.trim(), sectionTitle, note, url)
         }
     }
 
@@ -201,7 +202,8 @@ data class RecipeIngredient(
 
 data class Ingredient(
     val id: String,
-    val ingredient: String,
+    val text: String,
+    val sectionTitle: String? = null,
     val note: String?,
     val url: String?
 )

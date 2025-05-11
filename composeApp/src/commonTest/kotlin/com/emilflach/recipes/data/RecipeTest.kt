@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 // Extension property to make tests work with the new Ingredient class
 private val Ingredient.first: String
-    get() = this.ingredient
+    get() = this.text
 
 class RecipeTest {
 

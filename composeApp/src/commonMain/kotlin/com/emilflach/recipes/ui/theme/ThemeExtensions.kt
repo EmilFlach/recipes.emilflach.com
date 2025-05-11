@@ -60,12 +60,12 @@ fun createTypography(darkTheme: Boolean): Typography {
         h2 = TextStyle(
             fontFamily = FontFamily.Serif,
             fontWeight = FontWeight.Normal,
-            fontSize = 24.sp,
+            fontSize = 28.sp,
             color = colors.foregroundDefault
         ),
         h3 = TextStyle(
             fontFamily = FontFamily.Serif,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Normal,
             fontSize = 18.sp,
             color = colors.foregroundDefault
         ),

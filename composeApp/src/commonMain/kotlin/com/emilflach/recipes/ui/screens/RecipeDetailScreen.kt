@@ -151,6 +151,9 @@ fun RecipeDetailScreen(
                                 recipeInstruction(index, instruction)
                             }
                         }
+                        item {
+                            Spacer(modifier = Modifier.height(32.dp))
+                        }
                     }
                 }
             }
