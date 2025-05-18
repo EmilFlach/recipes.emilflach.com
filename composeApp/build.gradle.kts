@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha05"
+    id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha09"
     kotlin("plugin.serialization").version("2.1.20")
 }
 
@@ -135,6 +135,7 @@ android {
 dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.foundation.layout.android)
     debugImplementation(compose.uiTooling)
 }
 

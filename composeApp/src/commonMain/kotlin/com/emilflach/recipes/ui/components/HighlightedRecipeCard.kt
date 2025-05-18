@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.data.Recipe
@@ -26,17 +24,11 @@ import com.emilflach.recipes.ui.theme.recipesColors
 @Composable
 fun HighlightedRecipeCard(
     recipe: Recipe,
-    itemWidth: Dp,
-    isLastItem: Boolean = false,
-    onRecipeClick: (Recipe) -> Unit
+    onRecipeClick: (Recipe) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    var endPadding = 8.dp
-    if(isLastItem)
-        endPadding = 16.dp
 
-    Card (modifier = Modifier
-        .width(itemWidth)
-        .padding(start = 16.dp, end = endPadding)
+    Card (modifier = modifier
         .clickable { onRecipeClick(recipe) }
     ){
         BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {

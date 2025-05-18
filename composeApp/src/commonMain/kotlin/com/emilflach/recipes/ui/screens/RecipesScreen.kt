@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
+import com.emilflach.recipes.ui.components.DessertRecipes
 import com.emilflach.recipes.ui.components.SpecialOccasionRecipes
 import com.emilflach.recipes.ui.components.WeeknightRecipes
 
@@ -77,6 +78,10 @@ fun RecipesScreen(
                     }
                     item {
                         SpecialOccasionRecipes(recipes, onRecipeClick)
+                        Spacer(modifier = Modifier.height(60.dp))
+                    }
+                    item {
+                        DessertRecipes(recipes, onRecipeClick)
                         Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
