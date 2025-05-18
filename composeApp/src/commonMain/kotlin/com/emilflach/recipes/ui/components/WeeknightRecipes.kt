@@ -31,7 +31,7 @@ fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
         modifier = Modifier.padding(horizontal = 16.dp)
     )
     Text(
-        text = "Less than 20 minutes and vegetarian",
+        text = "Low effort and vegetarian",
         style = MaterialTheme.typography.body1,
         textAlign = TextAlign.Start,
         modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
