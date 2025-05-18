@@ -19,7 +19,7 @@ object RecipeRepository {
         }
 
         val recipes: RecipesListResponse =
-            client.get("${HttpClientProvider.BASE_URL}/recipes").body()
+            client.get("${HttpClientProvider.BASE_URL}/recipes?requireAllCategories=true").body()
         cacheMutex.withLock {
             recipesCache = recipes
         }

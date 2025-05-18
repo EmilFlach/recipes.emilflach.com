@@ -31,7 +31,7 @@ fun DessertRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit) {
         modifier = Modifier.padding(horizontal = 16.dp)
     )
     Text(
-        text = "When the moment call for a bake-off",
+        text = "When the moment calls for a bake-off",
         style = MaterialTheme.typography.body1,
         textAlign = TextAlign.Start,
         modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)

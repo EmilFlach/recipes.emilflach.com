@@ -22,11 +22,23 @@ class RecipesViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
+    private val _weeknightRecipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val weeknightRecipes: StateFlow<List<Recipe>> = _weeknightRecipes.asStateFlow()
+
+    private val _specialOccasionRecipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val specialOccasionRecipes: StateFlow<List<Recipe>> = _specialOccasionRecipes.asStateFlow()
+
+    private val _bakingRecipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val bakingRecipes: StateFlow<List<Recipe>> = _bakingRecipes.asStateFlow()
+
     fun loadRecipes() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 _recipes.value = recipeRepository.getRecipes().items
+                _weeknightRecipes.value = recipesByCategory(_recipes.value, "Weeknight")
+                _specialOccasionRecipes.value = recipesByCategory(_recipes.value, "Special Occasion")
+                _bakingRecipes.value = recipesByCategory(_recipes.value, "Baking")
             } catch(e: Exception) {
                 _errorMessage.value = e.message
                 _isError.value = true
@@ -35,4 +47,11 @@ class RecipesViewModel(
             }
         }
     }
+
+    private fun recipesByCategory(recipes: List<Recipe>, keyword: String): List<Recipe> =
+        recipes.filter { recipe ->
+            recipe.recipeCategory.any { category ->
+                category.name?.equals(keyword) ?: false
+            }
+        }
 }

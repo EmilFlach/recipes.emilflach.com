@@ -35,11 +35,12 @@ fun RecipesScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val isError by viewModel.isError.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
+    val weeknightRecipes by viewModel.weeknightRecipes.collectAsState()
+    val specialOccasionRecipes by viewModel.specialOccasionRecipes.collectAsState()
+    val bakingRecipes by viewModel.bakingRecipes.collectAsState()
 
     LaunchedEffect(Unit) {
-        if (recipes.isEmpty()) {
-            viewModel.loadRecipes()
-        }
+        viewModel.loadRecipes()
     }
     Column (
         modifier = Modifier.background(MaterialTheme.colors.background)
@@ -73,15 +74,15 @@ fun RecipesScreen(
                         Spacer(modifier = Modifier.height(48.dp))
                     }
                     item {
-                        WeeknightRecipes(recipes, onRecipeClick)
+                        WeeknightRecipes(weeknightRecipes, onRecipeClick)
                         Spacer(modifier = Modifier.height(60.dp))
                     }
                     item {
-                        SpecialOccasionRecipes(recipes, onRecipeClick)
+                        SpecialOccasionRecipes(specialOccasionRecipes, onRecipeClick)
                         Spacer(modifier = Modifier.height(60.dp))
                     }
                     item {
-                        DessertRecipes(recipes, onRecipeClick)
+                        DessertRecipes(bakingRecipes, onRecipeClick)
                         Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
