@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
@@ -17,17 +18,20 @@ fun RecipeServings(recipe: Recipe) {
         else -> return
     }
 
-    Row {
-        Text(
-            text = servingsText,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-        )
+    Row (
+        verticalAlignment = CenterVertically,
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+    ){
         recipe.calories?.let {
             Text(
-                text = "($it)",
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier.padding(start = 4.dp, end = 16.dp, top = 18.dp),
+                text = it,
             )
         }
+        Text(
+            text = "($servingsText)",
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier.padding(start = 4.dp)
+        )
+
     }
 }
