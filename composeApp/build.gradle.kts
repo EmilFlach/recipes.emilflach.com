@@ -1,16 +1,15 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.compose.reload.ComposeHotRun
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha09"
+    alias(libs.plugins.composeHotReload)
     kotlin("plugin.serialization").version("2.1.20")
 }
 
@@ -86,6 +85,7 @@ kotlin {
             implementation(libs.ktor.client.auth)
             implementation(libs.ktor.client.cio)
             implementation(libs.navigation.compose)
+            implementation(libs.material.icons.core)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -153,8 +153,4 @@ compose.desktop {
 
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
-
-tasks.register<ComposeHotRun>("runHot") {
-    mainClass.set("com.emilflach.recipes.DevMainKt")
 }
