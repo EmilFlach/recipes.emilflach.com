@@ -22,7 +22,7 @@ import com.emilflach.recipes.data.Ingredient
 import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
-fun recipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false) {
+fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false) {
     val checkedState = remember { mutableStateOf(false) }
     if(!ingredient.sectionTitle.isNullOrEmpty() && !displayBasicsOnly) {
         Text(

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Instruction
 
 @Composable
-fun recipeInstruction(index: Int, instruction: Instruction) {
+fun RecipeInstruction(index: Int, instruction: Instruction) {
     Text(
         text = "Step ${index + 1}:",
         style = MaterialTheme.typography.h4,
@@ -30,6 +30,6 @@ fun recipeInstruction(index: Int, instruction: Instruction) {
         )
     )
     instruction.ingredients.forEach { ingredient ->
-        recipeIngredient(ingredient, displayBasicsOnly = true)
+        RecipeIngredient(ingredient, displayBasicsOnly = true)
     }
 }

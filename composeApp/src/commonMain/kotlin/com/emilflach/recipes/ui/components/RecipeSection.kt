@@ -29,7 +29,7 @@ import com.emilflach.recipes.data.InstructionSection
 import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
-fun recipeSection(section: InstructionSection) {
+fun RecipeSection(section: InstructionSection) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 360f,
@@ -90,7 +90,7 @@ fun recipeSection(section: InstructionSection) {
     ) {
         Column {
             section.instructions.forEachIndexed { index, instruction ->
-                recipeInstruction(index, instruction)
+                RecipeInstruction(index, instruction)
             }
         }
     }

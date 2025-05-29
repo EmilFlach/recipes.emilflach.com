@@ -27,9 +27,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.emilflach.recipes.ui.components.recipeIngredient
-import com.emilflach.recipes.ui.components.recipeInstruction
-import com.emilflach.recipes.ui.components.recipeSection
+import com.emilflach.recipes.ui.components.RecipeIngredient
+import com.emilflach.recipes.ui.components.RecipeInstruction
+import com.emilflach.recipes.ui.components.RecipeSection
 import com.emilflach.recipes.ui.theme.recipesColors
 
 
@@ -128,7 +128,7 @@ fun RecipeDetailScreen(
                             )
                         }
                         itemsIndexed(ingredients) { _, ingredient ->
-                            recipeIngredient(ingredient)
+                            RecipeIngredient(ingredient)
                         }
 
                         item {
@@ -143,12 +143,12 @@ fun RecipeDetailScreen(
                         if(recipe.hasInstructionSections) {
                             sectionedInstructions.forEach { section ->
                                 item {
-                                    recipeSection(section)
+                                    RecipeSection(section)
                                 }
                             }
                         } else {
                             itemsIndexed(instructions) { index, instruction ->
-                                recipeInstruction(index, instruction)
+                                RecipeInstruction(index, instruction)
                             }
                         }
                         item {
