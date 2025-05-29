@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -37,8 +38,12 @@ fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false)
     ){
         Checkbox(
             onCheckedChange = { checkedState.value = it},
+            colors = CheckboxDefaults.colors(
+                checkmarkColor = MaterialTheme.recipesColors.onBackgroundBrand
+            ),
             checked = checkedState.value,
             modifier = Modifier.height(24.dp)
+
         )
         Column {
             Row (verticalAlignment = Alignment.CenterVertically){

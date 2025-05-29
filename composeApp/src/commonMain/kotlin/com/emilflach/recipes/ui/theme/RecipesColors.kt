@@ -6,41 +6,24 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-// Light theme palette
-val LightBrandPrimary = Color(0xFF538538) // Bright orange (brand color)
-val LightBackground = Color(0xFFf7f1e7) // Very light gray
-val LightSurface1 = Color(0xFFfefdfb) // White
-val LightForeground = Color(0xFF24150f) // Very dark gray for text
-val LightForegroundSupport = Color(0xFF672013) // Medium gray for support text
 
-val LightSurface2 = Color(0xFFF5F5F5) // Light gray
-val LightSurface3 = Color(0xFFEEEEEE) // Slightly darker gray
-val LightDisabled = Color(0xFFEEEEEE) // Light gray for disabled state
-val LightForegroundDisabled = Color(0xFFBDBDBD) // Light gray for disabled text
-
-// Dark theme palette
-val DarkBrandPrimary = Color(0xFF538538) // Bright orange (brand color)
-val DarkBackground = Color(0xFF24150f) // Darkened purple
-val DarkSurface1 = Color(0xFF672013) // Darkened slightly lighter purple
-val DarkForeground = Color(0xFFf7f1e7) // Almost white for better readability
-val DarkForegroundSupport = Color(0xFFdcd0bb) // Darkened light purple for support text
-
-val DarkSurface2 = Color(0xFF3A0055) // Darkened medium purple
-val DarkSurface3 = Color(0xFF450065) // Darkened lighter purple
-val DarkDisabled = Color(0xFF2A0048) // Darkened disabled state with purple hue
-val DarkForegroundDisabled = Color(0xFF705080) // Darkened disabled text with purple hue
+val BrandDarkest = Color(0xFF811818)
+val BrandDarker = Color(0xFFb62323)
+val BrandDefault = Color(0xFFea2e2e)
+val BrandLighter = Color(0xFFef5d5d)
+val BrandLightest = Color(0xFFf48c8c)
 
 // Neutral palette
-val Neutral50 = Color(0xFFFAFAFA)
-val Neutral100 = Color(0xFFF5F5F5)
-val Neutral200 = Color(0xFFEEEEEE)
-val Neutral300 = Color(0xFFE0E0E0)
-val Neutral400 = Color(0xFFBDBDBD)
-val Neutral500 = Color(0xFF9E9E9E)
-val Neutral600 = Color(0xFF757575)
-val Neutral700 = Color(0xFF616161)
-val Neutral800 = Color(0xFF424242)
-val Neutral900 = Color(0xFF212121)
+val Neutral50 = Color(0xFFf7f1e7)
+val Neutral100 = Color(0xFFe3d8cf)
+val Neutral200 = Color(0xFFcdbdb7)
+val Neutral300 = Color(0xFFb7a29f)
+val Neutral400 = Color(0xFFa18787)
+val Neutral500 = Color(0xFF8b6c6f)
+val Neutral600 = Color(0xFF755157)
+val Neutral700 = Color(0xFF5f363f)
+val Neutral800 = Color(0xFF491b27)
+val Neutral900 = Color(0xFF33000f)
 
 // Contextual colors
 val InfoLight = Color(0xFF90CAF9)
@@ -136,16 +119,16 @@ class RecipesColors(
         // Light theme colors
         val Light = RecipesColors(
             // Background Colors
-            backgroundPage = LightBackground,
-            backgroundSurface1 = LightSurface1,
-            backgroundSurface2 = LightSurface2,
-            backgroundSurface1Hover = LightSurface2,
-            backgroundSurface1Pressed = LightSurface3,
+            backgroundPage = Neutral50,
+            backgroundSurface1 = Neutral100,
+            backgroundSurface2 = Neutral200,
+            backgroundSurface1Hover = Neutral200,
+            backgroundSurface1Pressed = Neutral300,
 
-            backgroundBrand = LightBrandPrimary,
-            backgroundBrandSubtle = LightBrandPrimary.copy(alpha = 0.15f),
-            backgroundBrandHover = LightBrandPrimary.copy(alpha = 0.8f),
-            backgroundBrandPressed = LightBrandPrimary.copy(alpha = 0.9f),
+            backgroundBrand = BrandDefault,
+            backgroundBrandSubtle = BrandLightest,
+            backgroundBrandHover = BrandDarker,
+            backgroundBrandPressed = BrandDarkest,
 
             backgroundInfo = Info,
             backgroundInfoSubtle = InfoLight.copy(alpha = 0.15f),
@@ -156,49 +139,49 @@ class RecipesColors(
             backgroundDanger = Danger,
             backgroundDangerSubtle = DangerLight.copy(alpha = 0.15f),
 
-            backgroundDisabled = LightDisabled,
-            backgroundSelected = LightBrandPrimary.copy(alpha = 0.1f),
-            backgroundLoading = LightSurface3,
+            backgroundDisabled = Neutral300,
+            backgroundSelected = BrandLightest,
+            backgroundLoading = Neutral300,
 
             // On Background Colors
             onBackgroundBrand = Color.White,
-            onBackgroundBrandSubtle = LightBrandPrimary,
+            onBackgroundBrandSubtle = BrandDefault,
             onBackgroundInfo = Color.White,
             onBackgroundInfoSubtle = Info,
             onBackgroundSuccess = Color.White,
             onBackgroundSuccessSubtle = Success,
-            onBackgroundWarning = LightForeground,
+            onBackgroundWarning = Neutral900,
             onBackgroundWarningSubtle = WarningDark,
             onBackgroundDanger = Color.White,
             onBackgroundDangerSubtle = Danger,
 
             // Foreground Colors
-            foregroundDefault = LightForeground,
-            foregroundSupport = LightForegroundSupport,
-            foregroundBrand = LightBrandPrimary,
+            foregroundDefault = Neutral900,
+            foregroundSupport = Neutral700,
+            foregroundBrand = BrandDefault,
             foregroundInfo = Info,
             foregroundSuccess = Success,
             foregroundWarning = Warning,
             foregroundDanger = Danger,
-            foregroundDisabled = LightForegroundDisabled,
+            foregroundDisabled = Neutral600,
 
             // Border Colors
-            borderDefault = LightSurface3,
-            borderStrong = LightForegroundSupport,
-            borderBrand = LightBrandPrimary,
+            borderDefault = Neutral200,
+            borderStrong = Neutral700,
+            borderBrand = BrandDefault,
             borderInfo = Info,
             borderSuccess = Success,
             borderWarning = Warning,
             borderDanger = Danger,
-            borderDisabled = LightDisabled,
-            borderFocus = LightBrandPrimary,
-            borderSeparator = LightSurface2,
+            borderDisabled = Neutral300,
+            borderFocus = Neutral200,
+            borderSeparator = Neutral300,
 
             // Link Colors
-            linkDefault = LightBrandPrimary,
-            linkHover = LightBrandPrimary.copy(alpha = 0.8f),
-            linkPressed = LightBrandPrimary.copy(alpha = 0.9f),
-            linkVisited = LightBrandPrimary.copy(alpha = 0.7f),
+            linkDefault = BrandDefault,
+            linkHover = BrandDarker,
+            linkPressed = BrandDarkest,
+            linkVisited = BrandDarker,
 
             isDark = false
         )
@@ -206,16 +189,16 @@ class RecipesColors(
         // Dark theme colors with darkened blue/purple hues
         val Dark = RecipesColors(
             // Background Colors
-            backgroundPage = DarkBackground,
-            backgroundSurface1 = DarkSurface1,
-            backgroundSurface2 = DarkSurface2,
-            backgroundSurface1Hover = DarkSurface2,
-            backgroundSurface1Pressed = DarkSurface3,
+            backgroundPage = Neutral900,
+            backgroundSurface1 = Neutral800,
+            backgroundSurface2 = Neutral700,
+            backgroundSurface1Hover = Neutral700,
+            backgroundSurface1Pressed = Neutral600,
 
-            backgroundBrand = DarkBrandPrimary,
-            backgroundBrandSubtle = DarkBrandPrimary.copy(alpha = 0.2f),
-            backgroundBrandHover = DarkBrandPrimary.copy(alpha = 0.8f),
-            backgroundBrandPressed = DarkBrandPrimary.copy(alpha = 0.9f),
+            backgroundBrand = BrandDefault,
+            backgroundBrandSubtle = BrandDarker,
+            backgroundBrandHover = BrandLighter,
+            backgroundBrandPressed = BrandLightest,
 
             backgroundInfo = Info,
             backgroundInfoSubtle = Info.copy(alpha = 0.2f),
@@ -226,13 +209,13 @@ class RecipesColors(
             backgroundDanger = Danger,
             backgroundDangerSubtle = Danger.copy(alpha = 0.2f),
 
-            backgroundDisabled = DarkDisabled,
-            backgroundSelected = DarkBrandPrimary.copy(alpha = 0.3f),
-            backgroundLoading = DarkDisabled,
+            backgroundDisabled = Neutral600,
+            backgroundSelected = BrandDarkest,
+            backgroundLoading = Neutral600,
 
             // On Background Colors
             onBackgroundBrand = Color.White,
-            onBackgroundBrandSubtle = DarkBrandPrimary,
+            onBackgroundBrandSubtle = BrandDefault,
             onBackgroundInfo = Color.White,
             onBackgroundInfoSubtle = InfoLight,
             onBackgroundSuccess = Color.White,
@@ -243,32 +226,32 @@ class RecipesColors(
             onBackgroundDangerSubtle = DangerLight,
 
             // Foreground Colors
-            foregroundDefault = DarkForeground,
-            foregroundSupport = DarkForegroundSupport,
-            foregroundBrand = DarkBrandPrimary,
+            foregroundDefault = Neutral50,
+            foregroundSupport = Neutral200,
+            foregroundBrand = BrandDefault,
             foregroundInfo = InfoLight,
             foregroundSuccess = SuccessLight,
             foregroundWarning = WarningLight,
             foregroundDanger = DangerLight,
-            foregroundDisabled = DarkForegroundDisabled,
+            foregroundDisabled = Neutral300,
 
             // Border Colors
-            borderDefault = DarkSurface3,
-            borderStrong = DarkForegroundSupport,
-            borderBrand = DarkBrandPrimary,
+            borderDefault = Neutral700,
+            borderStrong = Neutral200,
+            borderBrand = BrandDefault,
             borderInfo = InfoLight,
             borderSuccess = SuccessLight,
             borderWarning = WarningLight,
             borderDanger = DangerLight,
-            borderDisabled = DarkDisabled,
-            borderFocus = DarkBrandPrimary,
-            borderSeparator = DarkSurface2,
+            borderDisabled = Neutral600,
+            borderFocus = BrandDefault,
+            borderSeparator = Neutral600,
 
             // Link Colors
-            linkDefault = DarkBrandPrimary,
-            linkHover = DarkBrandPrimary.copy(alpha = 0.8f),
-            linkPressed = DarkBrandPrimary.copy(alpha = 0.9f),
-            linkVisited = DarkBrandPrimary.copy(alpha = 0.7f),
+            linkDefault = BrandDefault,
+            linkHover = BrandLighter,
+            linkPressed = BrandLightest,
+            linkVisited = BrandDarker,
 
             isDark = true
         )
