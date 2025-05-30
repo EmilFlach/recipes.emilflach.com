@@ -19,7 +19,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +30,7 @@ import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
 fun RecipeSection(section: InstructionSection) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by rememberSaveable(section.title) { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 360f,
     )
@@ -46,7 +46,7 @@ fun RecipeSection(section: InstructionSection) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -55,8 +55,6 @@ fun RecipeSection(section: InstructionSection) {
                     style = MaterialTheme.typography.h3,
                     modifier = Modifier.padding(
                         end = 16.dp,
-                        top = 16.dp,
-                        bottom = 8.dp
                     )
                 )
 
@@ -72,15 +70,18 @@ fun RecipeSection(section: InstructionSection) {
 
                 )
             }
-            Text(
-                text = section.subtitle,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp,
+            if(section.subtitle.isNotEmpty()) {
+                Text(
+                    text = section.subtitle,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 16.dp,
+                    )
                 )
-            )
+            }
+
         }
     }
     AnimatedVisibility(

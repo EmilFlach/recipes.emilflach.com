@@ -14,7 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -24,7 +24,7 @@ import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
 fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false) {
-    val checkedState = remember { mutableStateOf(false) }
+    val checkedState = rememberSaveable(ingredient.text) { mutableStateOf(false) }
     if(!ingredient.sectionTitle.isNullOrEmpty() && !displayBasicsOnly) {
         Text(
             text = ingredient.sectionTitle,

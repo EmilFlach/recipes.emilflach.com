@@ -53,7 +53,7 @@ fun RecipeServingsScaler(
             Icon(
                 imageVector = Icons.Default.Remove,
                 contentDescription = "Decrease servings",
-                tint = MaterialTheme.recipesColors.onBackgroundBrand
+                tint = MaterialTheme.recipesColors.foregroundDefault
             )
         }
         Text(
@@ -66,7 +66,7 @@ fun RecipeServingsScaler(
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Increase servings",
-                tint = MaterialTheme.recipesColors.onBackgroundBrand,
+                tint = MaterialTheme.recipesColors.foregroundDefault,
             )
         }
     }
