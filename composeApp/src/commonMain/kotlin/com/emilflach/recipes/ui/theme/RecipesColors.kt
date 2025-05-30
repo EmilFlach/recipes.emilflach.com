@@ -7,11 +7,11 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 
-val BrandDarkest = Color(0xFF811818)
-val BrandDarker = Color(0xFFb62323)
-val BrandDefault = Color(0xFFea2e2e)
-val BrandLighter = Color(0xFFef5d5d)
-val BrandLightest = Color(0xFFf48c8c)
+val BrandDarkest = Color(0xFF2d3307)
+val BrandDarker = Color(0xFF394109)
+val BrandDefault = Color(0xFF464d0a)
+val BrandLighter = Color(0xFF737942)
+val BrandLightest = Color(0xFFa0a57a)
 
 // Neutral palette
 val Neutral50 = Color(0xFFf7f1e7)
