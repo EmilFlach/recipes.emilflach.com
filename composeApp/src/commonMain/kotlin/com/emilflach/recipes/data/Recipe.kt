@@ -1,5 +1,6 @@
 package com.emilflach.recipes.data
 
+import com.emilflach.recipes.utils.NumberUtils.formatQuantity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -42,8 +43,8 @@ data class Recipe(
     val imageUrl: String
         get() = "${AppConfig.BASE_URL}/media/recipes/$id/images/min-original.webp?rnd=1&version=$image"
 
-    val calories: String?
-        get() = tags.find { it.slug.contains("kcal") }?.name
+    val calories: String
+        get() = tags.find { it.slug.contains("kcal") }?.name.toString()
 
     val servingsCount: Int
         get() = recipeServings?.toInt() ?: 0
@@ -111,7 +112,7 @@ data class Recipe(
 
             Ingredient(ingredient.referenceId, buildString {
                 ingredient.quantity?.let { quantity ->
-                    append(quantity.formatAmount())
+                    append(quantity.formatQuantity())
                 }
 
                 ingredient.unit?.let { unit ->
@@ -148,15 +149,6 @@ data class Recipe(
                 ingredient.quantity > 1.0 &&
                 !ingredient.unit?.pluralName.isNullOrEmpty()
     }
-
-    private fun Double.formatAmount(): String {
-        return if (this % 1 == 0.0) {
-            toInt().toString()
-        } else {
-            toString()
-        }
-    }
-
 }
 
 @Serializable

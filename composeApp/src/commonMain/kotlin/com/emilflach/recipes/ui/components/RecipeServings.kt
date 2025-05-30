@@ -22,11 +22,9 @@ fun RecipeServings(recipe: Recipe) {
         verticalAlignment = CenterVertically,
         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
     ){
-        recipe.calories?.let {
-            Text(
-                text = it,
-            )
-        }
+        Text(
+            text = recipe.calories,
+        )
         Text(
             text = "($servingsText)",
             style = MaterialTheme.typography.body2,

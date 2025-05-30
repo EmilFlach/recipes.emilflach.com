@@ -85,7 +85,7 @@ kotlin {
             implementation(libs.ktor.client.auth)
             implementation(libs.ktor.client.cio)
             implementation(libs.navigation.compose)
-            implementation(libs.material.icons.core)
+            implementation(libs.material.icons)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
