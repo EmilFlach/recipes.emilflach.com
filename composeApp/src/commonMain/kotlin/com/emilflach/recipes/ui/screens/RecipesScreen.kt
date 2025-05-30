@@ -5,14 +5,20 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,6 +32,7 @@ import com.emilflach.recipes.ui.components.DessertRecipes
 import com.emilflach.recipes.ui.components.SpecialOccasionRecipes
 import com.emilflach.recipes.ui.components.WeeknightRecipes
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RecipesScreen(
     viewModel: RecipesViewModel,
@@ -33,17 +40,26 @@ fun RecipesScreen(
 ) {
     val recipes by viewModel.recipes.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
     val isError by viewModel.isError.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val weeknightRecipes by viewModel.weeknightRecipes.collectAsState()
     val specialOccasionRecipes by viewModel.specialOccasionRecipes.collectAsState()
     val bakingRecipes by viewModel.bakingRecipes.collectAsState()
 
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = { viewModel.loadRecipes(true) }
+    )
+
     LaunchedEffect(Unit) {
         viewModel.loadRecipes()
     }
-    Column (
-        modifier = Modifier.background(MaterialTheme.colors.background)
+
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colors.background)
+            .safeDrawingPadding()
     ) {
         when {
             isLoading -> {
@@ -60,31 +76,43 @@ fun RecipesScreen(
             }
             else -> {
                 val listState = rememberLazyListState()
-                LazyColumn(
-                    state = listState
+                BoxWithConstraints(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .pullRefresh(pullRefreshState)
                 ) {
-                    item {
-                        Spacer(modifier = Modifier.height(100.dp))
-                        Text(
-                            text = "Emil & Lucia's ${recipes.count()} recipes",
-                            style = MaterialTheme.typography.h1,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 48.dp),
-                        )
-                        Spacer(modifier = Modifier.height(48.dp))
+                    LazyColumn(
+                        state = listState
+                    ) {
+                        item {
+                            Spacer(modifier = Modifier.height(60.dp))
+                            Text(
+                                text = "Emil & Lucia's ${recipes.count()} recipes",
+                                style = MaterialTheme.typography.h1,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(horizontal = 48.dp),
+                            )
+                            Spacer(modifier = Modifier.height(48.dp))
+                        }
+                        item {
+                            WeeknightRecipes(weeknightRecipes, onRecipeClick)
+                            Spacer(modifier = Modifier.height(60.dp))
+                        }
+                        item {
+                            SpecialOccasionRecipes(specialOccasionRecipes, onRecipeClick)
+                            Spacer(modifier = Modifier.height(60.dp))
+                        }
+                        item {
+                            DessertRecipes(bakingRecipes, onRecipeClick)
+                            Spacer(modifier = Modifier.height(32.dp))
+                        }
                     }
-                    item {
-                        WeeknightRecipes(weeknightRecipes, onRecipeClick)
-                        Spacer(modifier = Modifier.height(60.dp))
-                    }
-                    item {
-                        SpecialOccasionRecipes(specialOccasionRecipes, onRecipeClick)
-                        Spacer(modifier = Modifier.height(60.dp))
-                    }
-                    item {
-                        DessertRecipes(bakingRecipes, onRecipeClick)
-                        Spacer(modifier = Modifier.height(32.dp))
-                    }
+
+                    PullRefreshIndicator(
+                        refreshing = isRefreshing,
+                        state = pullRefreshState,
+                        modifier = Modifier.align(Alignment.TopCenter)
+                    )
                 }
             }
         }

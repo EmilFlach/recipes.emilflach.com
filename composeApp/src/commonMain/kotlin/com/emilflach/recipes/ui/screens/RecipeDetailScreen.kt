@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
@@ -63,6 +64,7 @@ fun RecipeDetailScreen(
                 .background(MaterialTheme.recipesColors.backgroundPage)
                 .fillMaxHeight()
                 .fillMaxWidth()
+                .safeDrawingPadding()
         ) {
             item {
                 BoxWithConstraints(
@@ -89,8 +91,7 @@ fun RecipeDetailScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = "Back",
-                            tint = MaterialTheme.recipesColors.onBackgroundBrand,
-                            modifier = Modifier.padding(top = 48.dp)
+                            tint = MaterialTheme.recipesColors.onBackgroundBrand
                         )
                     }
                 }

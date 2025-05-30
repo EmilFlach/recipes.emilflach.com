@@ -16,6 +16,9 @@ class RecipesViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+
     private val _isError = MutableStateFlow(false)
     val isError: StateFlow<Boolean> = _isError.asStateFlow()
 
@@ -31,11 +34,15 @@ class RecipesViewModel(
     private val _bakingRecipes = MutableStateFlow<List<Recipe>>(emptyList())
     val bakingRecipes: StateFlow<List<Recipe>> = _bakingRecipes.asStateFlow()
 
-    fun loadRecipes() {
+    fun loadRecipes(refresh: Boolean = false) {
         viewModelScope.launch {
-            _isLoading.value = true
+            if (!refresh) {
+                _isLoading.value = true
+            } else {
+                _isRefreshing.value = true
+            }
             try {
-                _recipes.value = recipeRepository.getRecipes().items
+                _recipes.value = recipeRepository.getRecipes(refresh).items
                 _weeknightRecipes.value = recipesByCategory(_recipes.value, "Weeknight")
                 _specialOccasionRecipes.value = recipesByCategory(_recipes.value, "Special Occasion")
                 _bakingRecipes.value = recipesByCategory(_recipes.value, "Baking")
@@ -43,7 +50,11 @@ class RecipesViewModel(
                 _errorMessage.value = e.message
                 _isError.value = true
             } finally {
-                _isLoading.value = false
+                if (!refresh) {
+                    _isLoading.value = false
+                } else {
+                    _isRefreshing.value = false
+                }
             }
         }
     }
