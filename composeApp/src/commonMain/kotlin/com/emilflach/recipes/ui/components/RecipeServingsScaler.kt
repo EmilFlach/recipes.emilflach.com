@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -18,11 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.text.style.TextAlign.Companion.Center
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.ui.screens.RecipeDetailViewModel
 import com.emilflach.recipes.ui.theme.recipesColors
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RecipeServingsScaler(
@@ -38,16 +42,21 @@ fun RecipeServingsScaler(
             .background(MaterialTheme.recipesColors.backgroundSurface1),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "Servings",
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-        Text(
-            text = "(${recipe.calories} each)",
-            style = MaterialTheme.typography.body2,
-            modifier = Modifier.padding(start = 8.dp)
-        )
+        Row(
+            modifier = Modifier.padding(start = 16.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = "Servings",
+                style = MaterialTheme.typography.body1,
+            )
+            Text(
+                text = "(${recipe.calories} each)",
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier
+                    .padding(start = 8.dp, bottom = 1.dp)
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = { viewModel.decreaseServings() }) {
             Icon(

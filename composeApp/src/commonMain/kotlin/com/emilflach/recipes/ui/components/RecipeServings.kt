@@ -12,12 +12,6 @@ import com.emilflach.recipes.data.Recipe
 
 @Composable
 fun RecipeServings(recipe: Recipe) {
-    val servingsText = when {
-        recipe.yieldCount > 0 -> "${recipe.yieldCount} ${recipe.recipeYield}"
-        recipe.servingsCount > 0 -> "Serves ${recipe.servingsCount}"
-        else -> return
-    }
-
     Row (
         verticalAlignment = CenterVertically,
         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
@@ -26,10 +20,9 @@ fun RecipeServings(recipe: Recipe) {
             text = recipe.calories,
         )
         Text(
-            text = "($servingsText)",
+            text = "(Serves ${recipe.servingsCount})",
             style = MaterialTheme.typography.body2,
-            modifier = Modifier.padding(start = 4.dp)
+            modifier = Modifier.padding(start = 4.dp, top = 3.dp)
         )
-
     }
 }
