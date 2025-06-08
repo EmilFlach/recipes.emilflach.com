@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -147,26 +149,33 @@ fun RecipeDetailScreen(
 
                         item {
                             Spacer(modifier = Modifier.height(32.dp))
-                            Text(
-                                text = "Procedure",
-                                style = MaterialTheme.typography.h2,
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                            )
-                        }
+                            Column (
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(
+                                        color = MaterialTheme.recipesColors.backgroundSurface1,
+                                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                                    )
+                                    .padding(16.dp)
 
-                        if(recipe.hasInstructionSections) {
-                            sectionedInstructions.forEach { section ->
-                                item {
-                                    RecipeSection(section)
+                            ) {
+                                Text(
+                                    text = "Procedure",
+                                    style = MaterialTheme.typography.h2,
+                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                )
+                                if(recipe.hasInstructionSections) {
+                                    sectionedInstructions.forEach { section ->
+                                        RecipeSection(section)
+                                    }
+                                } else {
+                                    instructions.forEachIndexed { index, instruction ->
+                                        RecipeInstruction(index, instructions.size, instruction)
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                    }
                                 }
+
                             }
-                        } else {
-                            itemsIndexed(instructions) { index, instruction ->
-                                RecipeInstruction(index, instruction)
-                            }
-                        }
-                        item {
-                            Spacer(modifier = Modifier.height(32.dp))
                         }
                     }
                 }

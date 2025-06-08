@@ -80,8 +80,8 @@ fun RecipeCard(
 
 private fun cardRounding(index: Int, size: Dp): RoundedCornerShape {
     return when (index) {
-        0 -> RoundedCornerShape(size, size, 0.dp, 0.dp)
-        2 -> RoundedCornerShape(0.dp, 0.dp, size, size)
-        else -> RoundedCornerShape(0.dp, 0.dp, 0.dp, 0.dp)
+        0 -> RoundedCornerShape(size, size, 4.dp, 4.dp)
+        2 -> RoundedCornerShape(4.dp, 4.dp, size, size)
+        else -> RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp)
     }
 }

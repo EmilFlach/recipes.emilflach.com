@@ -45,8 +45,8 @@ fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
         HorizontalPager(
             state = pagerState,
             pageSpacing = 16.dp,
-            // Card height is set to 160, spacing to 8 (160 x 3 + 2 x 8 = 496)
-            modifier = Modifier.height(496.dp),
+            // Card height is set to 160, spacing to 8 (160 x 3 + 2 x 4 = 488)
+            modifier = Modifier.height(488.dp),
             contentPadding = when (pagerState.currentPage) {
                 pagerState.pageCount - 1 -> PaddingValues(start = 32.dp, end = 16.dp)
                 else -> PaddingValues(start = 16.dp, end = 32.dp)
@@ -60,7 +60,7 @@ fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
                 recipesOnPage.forEachIndexed { index, recipe ->
                     RecipeCard(index, recipe, onRecipeClick)
                     if (index < recipesOnPage.size - 1) {
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
                 }
             }

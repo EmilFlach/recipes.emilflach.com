@@ -23,7 +23,7 @@ import com.emilflach.recipes.data.Ingredient
 import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
-fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false) {
+fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false, disabled : Boolean = false) {
     val checkedState = rememberSaveable(ingredient.text) { mutableStateOf(false) }
     if(!ingredient.sectionTitle.isNullOrEmpty() && !displayBasicsOnly) {
         Text(
@@ -39,7 +39,12 @@ fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false)
         Checkbox(
             onCheckedChange = { checkedState.value = it},
             colors = CheckboxDefaults.colors(
-                checkmarkColor = MaterialTheme.recipesColors.onBackgroundBrand
+                checkmarkColor = if (disabled)
+                    MaterialTheme.recipesColors.foregroundDisabled
+                else MaterialTheme.recipesColors.onBackgroundBrand,
+                uncheckedColor = if (disabled)
+                    MaterialTheme.recipesColors.foregroundDisabled
+                else MaterialTheme.recipesColors.foregroundSupport,
             ),
             checked = checkedState.value,
             modifier = Modifier.height(24.dp)
@@ -50,6 +55,9 @@ fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false)
                 Text(
                     text = ingredient.text,
                     style = MaterialTheme.typography.body1,
+                    color = if (disabled)
+                        MaterialTheme.recipesColors.foregroundDisabled
+                    else MaterialTheme.recipesColors.foregroundDefault,
                 )
                 if (!ingredient.url.isNullOrEmpty() && !displayBasicsOnly) {
                     val uriHandler = LocalUriHandler.current
