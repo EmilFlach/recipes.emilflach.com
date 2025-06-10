@@ -33,34 +33,38 @@ class RecipeDetailViewModel(
     private val _currentServings = MutableStateFlow<Double?>(null)
     val currentServings = _currentServings.asStateFlow()
 
-    val formattedIngredients: StateFlow<List<Ingredient>> =
+    private val scaledRecipe: StateFlow<Recipe?> =
         combine(recipe, currentServings) { recipe, servings ->
             when {
-                recipe == null -> emptyList()
-                servings == null -> recipe.formatIngredients()
+                recipe == null -> null
+                servings == null -> recipe
                 else -> {
                     val scalingFactor = servings / (recipe.recipeServings ?: servings)
-                    val scaledRecipe = recipe.copy(
+                    recipe.copy(
                         recipeIngredient = recipe.recipeIngredient.map { ingredient ->
                             ingredient.copy(
                                 quantity = ingredient.quantity?.let { it * scalingFactor }
                             )
                         }
                     )
-                    scaledRecipe.formatIngredients()
                 }
             }
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    val formattedIngredients: StateFlow<List<Ingredient>> =
+        scaledRecipe.map { recipe ->
+            recipe?.formatIngredients() ?: emptyList()
         }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-
     val sectionedInstructions: StateFlow<List<InstructionSection>> =
-        recipe.map { it?.sectionedInstructions() ?: emptyList() }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+        scaledRecipe.map { recipe ->
+            recipe?.sectionedInstructions() ?: emptyList()
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     val instructions: StateFlow<List<Instruction>> =
-        recipe.map { it?.instructionsWithIngredients() ?: emptyList() }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-
+        scaledRecipe.map { recipe ->
+            recipe?.instructionsWithIngredients() ?: emptyList()
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun setRecipe(recipe: Recipe, servings: Double? = recipe.recipeServings) {
         _recipe.value = recipe
