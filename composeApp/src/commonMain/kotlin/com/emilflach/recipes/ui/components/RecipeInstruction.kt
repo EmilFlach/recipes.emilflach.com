@@ -2,17 +2,25 @@ package com.emilflach.recipes.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Instruction
 import com.emilflach.recipes.ui.theme.recipesColors
@@ -36,33 +44,48 @@ fun RecipeInstruction(index: Int, size: Int, instruction: Instruction) {
                 else MaterialTheme.recipesColors.backgroundPage)
             .clickable { checkedState.value = !checkedState.value }
     ) {
-        Text(
-            text = "Step ${index + 1}:",
-            style = MaterialTheme.typography.h4,
-            color = if (checkedState.value)
-                MaterialTheme.recipesColors.foregroundDisabled
-            else MaterialTheme.recipesColors.foregroundDefault,
-            modifier = Modifier.padding(
-                start = 16.dp,
-                end = 16.dp,
-                top = 8.dp,
-                bottom = 8.dp
+        Spacer(modifier = Modifier.height(24.dp))
+        Row {
+            Text(
+                text = "${index + 1}",
+                style = MaterialTheme.typography.h4,
+                color = if (checkedState.value)
+                    MaterialTheme.recipesColors.foregroundDisabled
+                else MaterialTheme.recipesColors.foregroundDefault,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.recipesColors.backgroundSurface2)
+                    .height(40.dp)
+                    .width(40.dp)
+                    .wrapContentHeight(align = Alignment.CenterVertically)
             )
-        )
-        Text(
-            text = instruction.text,
-            color = if (checkedState.value)
-                MaterialTheme.recipesColors.foregroundDisabled
-            else MaterialTheme.recipesColors.foregroundDefault,
-            modifier = Modifier.padding(
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 16.dp
-            )
-        )
-        instruction.ingredients.forEach { ingredient ->
-            RecipeIngredient(ingredient, displayBasicsOnly = true, disabled = checkedState.value)
+            Column {
+                Text(
+                    text = instruction.text,
+                    color = if (checkedState.value)
+                        MaterialTheme.recipesColors.foregroundDisabled
+                    else MaterialTheme.recipesColors.foregroundDefault,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                if (instruction.ingredients.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    instruction.ingredients.forEach { ingredient ->
+                        RecipeIngredient(ingredient, displayBasicsOnly = true, disabled = checkedState.value)
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                } else {
+                    Spacer(modifier = Modifier.height(28.dp))
+                }
+            }
+
+
         }
+
+
+
+
     }
 
 }
