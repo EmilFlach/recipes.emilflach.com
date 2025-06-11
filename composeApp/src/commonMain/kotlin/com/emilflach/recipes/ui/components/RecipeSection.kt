@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -36,7 +35,14 @@ import com.emilflach.recipes.data.InstructionSection
 import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
-fun RecipeSection(section: InstructionSection) {
+fun RecipeSection(
+    section: InstructionSection,
+    isCookingMode: Boolean = false,
+    currentInstruction: Int? = null,
+    startIndex: Int = 0,
+    onInstructionClick: (Int) -> Unit = {}
+
+) {
     var isExpanded by rememberSaveable(section.title) { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 360f,
@@ -105,8 +111,17 @@ fun RecipeSection(section: InstructionSection) {
         exit = shrinkVertically(),
     ) {
         Column {
-            section.instructions.forEachIndexed { index, instruction ->
-                RecipeInstruction(index, section.instructions.size, instruction)
+            section.instructions.forEachIndexed { localIndex, instruction ->
+                val globalIndex = startIndex + localIndex
+                RecipeInstruction(
+                    index = globalIndex,
+                    size = section.instructions.size,
+                    instruction = instruction,
+                    isCookingMode = isCookingMode,
+                    isCurrentInstruction = currentInstruction == globalIndex,
+                    onInstructionClick = onInstructionClick
+                )
+
                 Spacer(modifier = Modifier.height(4.dp))
             }
         }

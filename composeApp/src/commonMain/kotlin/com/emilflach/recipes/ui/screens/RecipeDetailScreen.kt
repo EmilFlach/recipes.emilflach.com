@@ -1,10 +1,12 @@
 package com.emilflach.recipes.ui.screens
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -43,8 +48,11 @@ import com.emilflach.recipes.ui.theme.recipesColors
 fun RecipeDetailScreen(
     viewModel: RecipeDetailViewModel, recipeSlug: String, onBackClick: () -> Unit
 ) {
+    val listState = rememberLazyListState()
     val isError by viewModel.isError.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val isCookingMode by viewModel.isCookingMode.collectAsState()
+    val currentInstruction by viewModel.currentInstruction.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val viewModelRecipe by viewModel.recipe.collectAsState()
     val currentServings by viewModel.currentServings.collectAsState()
@@ -53,6 +61,7 @@ fun RecipeDetailScreen(
     val sectionedInstructions by viewModel.sectionedInstructions.collectAsState()
 
     val recipeData = viewModelRecipe
+
     LaunchedEffect(recipeSlug, recipeData) {
         if (recipeData != null) {
             viewModel.enrichRecipe(recipeData)
@@ -60,11 +69,13 @@ fun RecipeDetailScreen(
             viewModel.getRecipeBySlug(recipeSlug)
         }
     }
+
     AnimatedContent(
         targetState = recipeData,
         contentKey = { it?.slug ?: "" }
     ) { recipe ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .background(MaterialTheme.recipesColors.backgroundPage)
                 .fillMaxHeight()
@@ -159,18 +170,55 @@ fun RecipeDetailScreen(
                                     .padding(16.dp)
 
                             ) {
-                                Text(
-                                    text = "Procedure",
-                                    style = MaterialTheme.typography.h2,
-                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                )
+                                Row (verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = "Method",
+                                        style = MaterialTheme.typography.h2,
+                                        modifier = Modifier.padding(16.dp),
+                                    )
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    if (isCookingMode) {
+                                        OutlinedButton(
+                                            border = BorderStroke (
+                                                1.dp,
+                                                MaterialTheme.recipesColors.borderBrand
+                                            ),
+                                            onClick = { viewModel.toggleCookingMode() }
+                                        ) {
+                                            Text("Stop cooking")
+                                        }
+                                    } else {
+                                        Button(
+                                            onClick = { viewModel.toggleCookingMode() }
+                                        ) {
+                                            Text("Start cooking")
+                                        }
+                                    }
+
+                                }
+
                                 if(recipe.hasInstructionSections) {
+                                    var globalInstructionIndex = 0
                                     sectionedInstructions.forEach { section ->
-                                        RecipeSection(section)
+                                        RecipeSection(
+                                            section = section,
+                                            isCookingMode = isCookingMode,
+                                            currentInstruction = currentInstruction,
+                                            startIndex = globalInstructionIndex,
+                                            onInstructionClick = viewModel::setCurrentInstruction
+                                        )
+                                        globalInstructionIndex += section.instructions.size
                                     }
                                 } else {
                                     instructions.forEachIndexed { index, instruction ->
-                                        RecipeInstruction(index, instructions.size, instruction)
+                                        RecipeInstruction(
+                                            index = index,
+                                            size = instructions.size,
+                                            instruction = instruction,
+                                            isCookingMode = isCookingMode,
+                                            isCurrentInstruction = currentInstruction == index,
+                                            onInstructionClick = viewModel::setCurrentInstruction
+                                        )
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
                                 }

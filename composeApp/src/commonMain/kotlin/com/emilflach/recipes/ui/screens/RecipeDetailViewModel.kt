@@ -30,6 +30,12 @@ class RecipeDetailViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
+    private val _isCookingMode = MutableStateFlow(false)
+    val isCookingMode: StateFlow<Boolean> = _isCookingMode.asStateFlow()
+
+    private val _currentInstruction = MutableStateFlow(0)
+    val currentInstruction = _currentInstruction.asStateFlow()
+
     private val _currentServings = MutableStateFlow<Double?>(null)
     val currentServings = _currentServings.asStateFlow()
 
@@ -77,6 +83,8 @@ class RecipeDetailViewModel(
             _isError.value = false
             _isLoading.value = true
             _errorMessage.value = null
+            _isCookingMode.value = false
+            _currentInstruction.value = 0
             try {
                 setRecipe(recipeRepository.getRecipeBySlug(recipeSlug))
             } catch (e: Exception) {
@@ -94,6 +102,8 @@ class RecipeDetailViewModel(
             _isError.value = false
             _isLoading.value = true
             _errorMessage.value = null
+            _isCookingMode.value = false
+            _currentInstruction.value = 0
             try {
                 setRecipe(recipeRepository.enrichRecipe(recipe))
             } catch (e: Exception) {
@@ -116,5 +126,19 @@ class RecipeDetailViewModel(
     fun setServings(value: Double?) {
         _currentServings.value = value?.coerceAtLeast(1.0)
     }
+
+    fun toggleCookingMode() {
+        _isCookingMode.value = !_isCookingMode.value
+        if (_isCookingMode.value) {
+            _currentInstruction.value = 0
+        }
+    }
+
+    fun setCurrentInstruction(index: Int) {
+        if (_isCookingMode.value) {
+            _currentInstruction.value = index
+        }
+    }
+
 
 }
