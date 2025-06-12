@@ -39,9 +39,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.ui.components.RecipeIngredient
 import com.emilflach.recipes.ui.components.RecipeInstruction
-import com.emilflach.recipes.ui.components.RecipeSection
 import com.emilflach.recipes.ui.components.RecipeServingsScaler
 import com.emilflach.recipes.ui.theme.recipesColors
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -67,6 +67,33 @@ fun RecipeDetailScreen(
             viewModel.enrichRecipe(recipeData)
         } else {
             viewModel.getRecipeBySlug(recipeSlug)
+        }
+    }
+
+    LaunchedEffect(currentInstruction, isCookingMode) {
+        if(isCookingMode) {
+            val staticListItems = 5
+            val ingredientListItems = ingredients.size
+            val sectionHeadersCount = if (recipeData!!.hasInstructionSections) {
+                sectionedInstructions.size  // Count of section headers
+            } else 0
+
+            val listItemIndex = currentInstruction + staticListItems + ingredientListItems + sectionHeadersCount
+
+            delay(300) // Delay to ensure size animation is complete
+
+            val layoutInfo = listState.layoutInfo
+            val viewportHeight = layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset
+            val itemInfo = layoutInfo.visibleItemsInfo.firstOrNull { it.index == listItemIndex }
+            if (itemInfo != null) {
+                val itemHeight = itemInfo.size
+                val centerOffset = (viewportHeight - itemHeight) / 2
+
+                listState.animateScrollToItem(
+                    index = listItemIndex,
+                    scrollOffset = -centerOffset
+                )
+            }
         }
     }
 
@@ -157,72 +184,108 @@ fun RecipeDetailScreen(
                         itemsIndexed(ingredients) { _, ingredient ->
                             RecipeIngredient(ingredient)
                         }
-
                         item {
                             Spacer(modifier = Modifier.height(32.dp))
-                            Column (
+                        }
+
+                        item {
+                            Row (
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .background(
                                         color = MaterialTheme.recipesColors.backgroundSurface1,
                                         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                                     )
-                                    .padding(16.dp)
-
+                                    .padding(start = 4.dp, end = 16.dp, top = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Row (verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        text = "Method",
-                                        style = MaterialTheme.typography.h2,
-                                        modifier = Modifier.padding(16.dp),
-                                    )
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    if (isCookingMode) {
-                                        OutlinedButton(
-                                            border = BorderStroke (
-                                                1.dp,
-                                                MaterialTheme.recipesColors.borderBrand
-                                            ),
-                                            onClick = { viewModel.toggleCookingMode() }
-                                        ) {
-                                            Text("Stop cooking")
-                                        }
-                                    } else {
-                                        Button(
-                                            onClick = { viewModel.toggleCookingMode() }
-                                        ) {
-                                            Text("Start cooking")
-                                        }
-                                    }
-
-                                }
-
-                                if(recipe.hasInstructionSections) {
-                                    var globalInstructionIndex = 0
-                                    sectionedInstructions.forEach { section ->
-                                        RecipeSection(
-                                            section = section,
-                                            isCookingMode = isCookingMode,
-                                            currentInstruction = currentInstruction,
-                                            startIndex = globalInstructionIndex,
-                                            onInstructionClick = viewModel::setCurrentInstruction
-                                        )
-                                        globalInstructionIndex += section.instructions.size
+                                Text(
+                                    text = "Method",
+                                    style = MaterialTheme.typography.h2,
+                                    modifier = Modifier.padding(16.dp),
+                                )
+                                Spacer(modifier = Modifier.weight(1f))
+                                if (isCookingMode) {
+                                    OutlinedButton(
+                                        border = BorderStroke (
+                                            1.dp,
+                                            MaterialTheme.recipesColors.borderBrand
+                                        ),
+                                        onClick = { viewModel.toggleCookingMode() }
+                                    ) {
+                                        Text("Stop cooking")
                                     }
                                 } else {
-                                    instructions.forEachIndexed { index, instruction ->
+                                    Button(
+                                        onClick = { viewModel.toggleCookingMode() }
+                                    ) {
+                                        Text("Start cooking")
+                                    }
+                                }
+                            }
+                        }
+                        if(recipe.hasInstructionSections) {
+                            sectionedInstructions.forEach { section ->
+                                stickyHeader {
+                                    Box(
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .background(MaterialTheme.recipesColors.backgroundSurface1)
+                                            .padding(horizontal = 16.dp)
+                                    ) {
+                                        SectionHeader(
+                                            title = section.title,
+                                            subtitle = section.subtitle
+                                        )
+                                    }
+                                }
+
+                                // Instructions for this section
+                                itemsIndexed(section.instructions) { index, instruction ->
+                                    Box(
+                                        Modifier
+                                            .background(MaterialTheme.recipesColors.backgroundSurface1)
+                                            .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+                                    ) {
                                         RecipeInstruction(
                                             index = index,
-                                            size = instructions.size,
+                                            size = section.instructions.size,
                                             instruction = instruction,
                                             isCookingMode = isCookingMode,
                                             isCurrentInstruction = currentInstruction == index,
                                             onInstructionClick = viewModel::setCurrentInstruction
                                         )
-                                        Spacer(modifier = Modifier.height(4.dp))
                                     }
                                 }
+                                item {
+                                    Box(modifier = Modifier
+                                        .height(32.dp)
+                                        .fillMaxWidth()
+                                        .background(MaterialTheme.recipesColors.backgroundSurface1))
+                                }
+                            }
 
+                        } else {
+                            itemsIndexed(instructions) { index, instruction ->
+                                Box(Modifier.background(
+                                    MaterialTheme.recipesColors.backgroundSurface1
+                                )
+                                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)) {
+                                    RecipeInstruction(
+                                        index = index,
+                                        size = instructions.size,
+                                        instruction = instruction,
+                                        isCookingMode = isCookingMode,
+                                        isCurrentInstruction = currentInstruction == index,
+                                        onInstructionClick = viewModel::setCurrentInstruction
+                                    )
+                                }
+                            }
+                            item {
+                                Box(modifier = Modifier
+                                    .height(32.dp)
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.recipesColors.backgroundSurface1))
                             }
                         }
                     }
@@ -231,3 +294,28 @@ fun RecipeDetailScreen(
         }
     }
 }
+
+@Composable
+private fun SectionHeader(
+    title: String,
+    subtitle: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.h3,
+            modifier = Modifier.padding(bottom = if (subtitle.isNotEmpty()) 8.dp else 0.dp)
+        )
+        if (subtitle.isNotEmpty()) {
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.body1
+            )
+        }
+    }
+}
+
