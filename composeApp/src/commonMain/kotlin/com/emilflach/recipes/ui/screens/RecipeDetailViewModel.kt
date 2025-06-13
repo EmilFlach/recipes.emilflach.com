@@ -39,6 +39,9 @@ class RecipeDetailViewModel(
     private val _currentServings = MutableStateFlow<Double?>(null)
     val currentServings = _currentServings.asStateFlow()
 
+    private val _expandedSections = MutableStateFlow<Set<String>>(emptySet())
+    val expandedSections = _expandedSections.asStateFlow()
+
     private val scaledRecipe: StateFlow<Recipe?> =
         combine(recipe, currentServings) { recipe, servings ->
             when {
@@ -104,6 +107,7 @@ class RecipeDetailViewModel(
             _errorMessage.value = null
             _isCookingMode.value = false
             _currentInstruction.value = 0
+            _expandedSections.value = emptySet()
             try {
                 setRecipe(recipeRepository.enrichRecipe(recipe))
             } catch (e: Exception) {
@@ -113,6 +117,19 @@ class RecipeDetailViewModel(
                 _isLoading.value = false
             }
         }
+    }
+
+    fun toggleSectionExpanded(sectionTitle: String) {
+        val currentExpanded = _expandedSections.value
+        _expandedSections.value = if (currentExpanded.contains(sectionTitle)) {
+            currentExpanded - sectionTitle
+        } else {
+            currentExpanded + sectionTitle
+        }
+    }
+
+    fun isSectionExpanded(sectionTitle: String): Boolean {
+        return _expandedSections.value.contains(sectionTitle)
     }
 
     fun decreaseServings() {
