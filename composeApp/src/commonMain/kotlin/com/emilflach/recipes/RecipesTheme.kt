@@ -19,7 +19,6 @@ fun RecipesAppTheme(
 ) {
     val colors = if (darkTheme) RecipesColors.Dark else RecipesColors.Light
 
-    // Provide RecipesColors for backward compatibility
     CompositionLocalProvider(LocalRecipesColors provides colors) {
         MaterialTheme(
             colors = colors.toMaterialColors(),

@@ -38,7 +38,7 @@ fun RecipeInstruction(
     onInstructionClick: (Int) -> Unit = {}
     ) {
 
-    val isExpanded = isCurrentInstruction && isCookingMode
+    val isExpanded = isCookingMode
     val isDisabled = isCookingMode && !isCurrentInstruction
 
     val padding by animateDpAsState(
@@ -113,7 +113,7 @@ fun RecipeInstruction(
 
 fun expandedPadding(selected: Boolean) : Dp {
     return if(!selected) {
-        100.dp
+        60.dp
     } else {
         24.dp
     }
@@ -121,7 +121,7 @@ fun expandedPadding(selected: Boolean) : Dp {
 
 fun expandedPaddingWithCheckboxes(selected: Boolean) : Dp {
     return if(!selected) {
-        88.dp
+        48.dp
     } else {
         12.dp
     }

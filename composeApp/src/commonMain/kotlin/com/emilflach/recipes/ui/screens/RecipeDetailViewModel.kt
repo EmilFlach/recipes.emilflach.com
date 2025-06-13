@@ -130,7 +130,18 @@ class RecipeDetailViewModel(
     fun toggleCookingMode() {
         _isCookingMode.value = !_isCookingMode.value
         if (_isCookingMode.value) {
-            _currentInstruction.value = 0
+            if (recipe.value?.hasInstructionSections == true) {
+                // For recipes with sections, find the first instruction in the first section
+                val sections = sectionedInstructions.value
+                if (sections.isNotEmpty() && sections[0].instructions.isNotEmpty()) {
+                    _currentInstruction.value = sections[0].instructions[0].globalIndex
+                } else {
+                    _currentInstruction.value = 0
+                }
+            } else {
+                // For recipes without sections, just use index 0
+                _currentInstruction.value = 0
+            }
         }
     }
 
@@ -141,4 +152,72 @@ class RecipeDetailViewModel(
     }
 
 
+    /**
+     * Finds the section and instruction index for a given global instruction index
+     * Returns Pair(sectionIndex, instructionIndexInSection)
+     */
+    fun findSectionAndInstructionIndex(globalIndex: Int): Pair<Int, Int> {
+        val sections = sectionedInstructions.value
+
+        for ((sectionIndex, section) in sections.withIndex()) {
+            // Find the instruction with the matching globalIndex
+            val instructionIndexInSection = section.instructions.indexOfFirst { it.globalIndex == globalIndex }
+            if (instructionIndexInSection != -1) {
+                // Found the instruction in this section
+                return Pair(sectionIndex, instructionIndexInSection)
+            }
+        }
+
+        // If we didn't find the instruction (e.g., globalIndex is invalid),
+        // default to the last instruction of the last section
+        if (sections.isNotEmpty()) {
+            val lastSectionIndex = sections.size - 1
+            val lastInstructionIndex = sections.last().instructions.size - 1
+            return Pair(lastSectionIndex, lastInstructionIndex)
+        }
+
+        return Pair(0, 0)
+    }
+
+    /**
+     * Calculates the LazyList index for a given instruction
+     * @param staticItemsCount Number of static items before the instructions (headers, etc.)
+     * @param ingredientsCount Number of ingredients in the list
+     * @param globalInstructionIndex Global index of the instruction
+     * @param hasInstructionSections Whether the recipe has instruction sections
+     */
+    fun calculateLazyListIndex(
+        staticItemsCount: Int,
+        ingredientsCount: Int,
+        globalInstructionIndex: Int,
+        hasInstructionSections: Boolean
+    ): Int {
+        if (!hasInstructionSections) {
+            // For non-sectioned instructions, the calculation is simple
+            return globalInstructionIndex + staticItemsCount + ingredientsCount
+        }
+
+        // For sectioned instructions, we need to calculate the position in the LazyList
+        var itemCount = staticItemsCount + ingredientsCount
+
+        // Find which section contains the instruction
+        val (sectionIndex, instructionIndexInSection) = findSectionAndInstructionIndex(globalInstructionIndex)
+
+        // Add items for all sections before the target section
+        // Each section adds: 1 header + instructions.size + 1 spacer
+        val sections = sectionedInstructions.value
+        for (i in 0 until sectionIndex) {
+            itemCount += 1 // Header
+            itemCount += sections[i].instructions.size // Instructions
+            itemCount += 1 // Spacer
+        }
+
+        // Add header for the target section
+        itemCount += 1
+
+        // Add the instruction index within the target section
+        itemCount += instructionIndexInSection
+
+        return itemCount
+    }
 }

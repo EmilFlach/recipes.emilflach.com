@@ -74,13 +74,14 @@ fun RecipeDetailScreen(
         if(isCookingMode) {
             val staticListItems = 5
             val ingredientListItems = ingredients.size
-            val sectionHeadersCount = if (recipeData!!.hasInstructionSections) {
-                sectionedInstructions.size  // Count of section headers
-            } else 0
 
-            val listItemIndex = currentInstruction + staticListItems + ingredientListItems + sectionHeadersCount
-
-            delay(300) // Delay to ensure size animation is complete
+            // Use the ViewModel's utility function to calculate the LazyList index
+            val listItemIndex = viewModel.calculateLazyListIndex(
+                staticItemsCount = staticListItems,
+                ingredientsCount = ingredientListItems,
+                globalInstructionIndex = currentInstruction,
+                hasInstructionSections = recipeData!!.hasInstructionSections
+            )
 
             val layoutInfo = listState.layoutInfo
             val viewportHeight = layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset
@@ -247,13 +248,16 @@ fun RecipeDetailScreen(
                                             .background(MaterialTheme.recipesColors.backgroundSurface1)
                                             .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
                                     ) {
+                                        // Use the globalIndex property from the instruction
+                                        val globalInstructionIndex = instruction.globalIndex
+
                                         RecipeInstruction(
                                             index = index,
                                             size = section.instructions.size,
                                             instruction = instruction,
                                             isCookingMode = isCookingMode,
-                                            isCurrentInstruction = currentInstruction == index,
-                                            onInstructionClick = viewModel::setCurrentInstruction
+                                            isCurrentInstruction = currentInstruction == globalInstructionIndex,
+                                            onInstructionClick = { viewModel.setCurrentInstruction(globalInstructionIndex) }
                                         )
                                     }
                                 }
@@ -318,4 +322,3 @@ private fun SectionHeader(
         }
     }
 }
-

@@ -68,10 +68,13 @@ data class Recipe(
         return instructions.fold(mutableListOf()) { sections, currentInstruction ->
             when {
                 currentInstruction.section.isNullOrEmpty() && sections.isNotEmpty() -> {
+                    // Add the instruction to the last section, preserving its globalIndex
                     sections.last().instructions.add(currentInstruction)
                     sections
                 }
                 !currentInstruction.section.isNullOrEmpty() -> {
+                    // Create a new section with the instruction as the header
+                    // The instruction itself is not added to the section's instructions list
                     sections.add(
                         InstructionSection(
                             title = currentInstruction.section,
@@ -88,10 +91,16 @@ data class Recipe(
 
     fun instructionsWithIngredients(): List<Instruction> {
         val ingredients = formatIngredients()
-        return recipeInstructions.map { instruction ->
-            Instruction(instruction.id, instruction.text, instruction.title, instruction.ingredientReferences.map { reference ->
-                ingredients.find { it.id == reference.referenceId } ?: Ingredient("", "", null, null, null)
-            })
+        return recipeInstructions.mapIndexed { index, instruction ->
+            Instruction(
+                id = instruction.id, 
+                text = instruction.text, 
+                section = instruction.title, 
+                ingredients = instruction.ingredientReferences.map { reference ->
+                    ingredients.find { it.id == reference.referenceId } ?: Ingredient("", "", null, null, null)
+                },
+                globalIndex = index
+            )
         }
     }
 
@@ -204,7 +213,8 @@ data class Instruction(
     val id: String,
     val text: String,
     val section: String? = null,
-    val ingredients: List<Ingredient> = emptyList()
+    val ingredients: List<Ingredient> = emptyList(),
+    val globalIndex: Int = 0
 )
 
 data class InstructionSection(
