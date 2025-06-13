@@ -75,21 +75,28 @@ class RecipeDetailViewModel(
             recipe?.instructionsWithIngredients() ?: emptyList()
         }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    fun setRecipe(recipe: Recipe, servings: Double? = recipe.recipeServings) {
-        _recipe.value = recipe
-        _currentServings.value = servings
-    }
-
     fun getRecipeBySlug(recipeSlug: String) {
         viewModelScope.launch {
-            _recipe.value = null
-            _isError.value = false
-            _isLoading.value = true
-            _errorMessage.value = null
-            _isCookingMode.value = false
-            _currentInstruction.value = 0
+            resetRecipe(null)
             try {
                 setRecipe(recipeRepository.getRecipeBySlug(recipeSlug))
+                initializedRecipeSlug = recipeSlug
+            } catch (e: Exception) {
+                _errorMessage.value = e.message
+                _isError.value = true
+                initializedRecipeSlug = null
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun enrichRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            resetRecipe(recipe)
+            try {
+                setRecipe(recipeRepository.enrichRecipe(recipe))
+                initializedRecipeSlug = recipe.slug
             } catch (e: Exception) {
                 _errorMessage.value = e.message
                 _isError.value = true
@@ -99,23 +106,30 @@ class RecipeDetailViewModel(
         }
     }
 
-    fun enrichRecipe(recipe: Recipe) {
-        viewModelScope.launch {
-            _recipe.value = recipe
-            _isError.value = false
-            _isLoading.value = true
-            _errorMessage.value = null
-            _isCookingMode.value = false
-            _currentInstruction.value = 0
-            _expandedSections.value = emptySet()
-            try {
-                setRecipe(recipeRepository.enrichRecipe(recipe))
-            } catch (e: Exception) {
-                _errorMessage.value = e.message
-                _isError.value = true
-            } finally {
-                _isLoading.value = false
-            }
+    private var initializedRecipeSlug: String? = null
+
+    fun setRecipe(recipe: Recipe, servings: Double? = recipe.recipeServings) {
+        _recipe.value = recipe
+        _currentServings.value = servings
+    }
+
+    private fun resetRecipe(recipe: Recipe?) {
+        _recipe.value = recipe
+        _isError.value = false
+        _isLoading.value = true
+        _errorMessage.value = null
+        _isCookingMode.value = false
+        _currentInstruction.value = 0
+        _expandedSections.value = emptySet()
+    }
+
+    fun initialize(recipeSlug: String) {
+        if (initializedRecipeSlug == recipeSlug) return
+        val currentRecipe = _recipe.value
+        if (currentRecipe != null && currentRecipe.slug == recipeSlug) {
+            enrichRecipe(currentRecipe)
+        } else {
+            getRecipeBySlug(recipeSlug)
         }
     }
 
@@ -126,10 +140,6 @@ class RecipeDetailViewModel(
         } else {
             currentExpanded + sectionTitle
         }
-    }
-
-    fun isSectionExpanded(sectionTitle: String): Boolean {
-        return _expandedSections.value.contains(sectionTitle)
     }
 
     fun decreaseServings() {
@@ -166,75 +176,5 @@ class RecipeDetailViewModel(
         if (_isCookingMode.value) {
             _currentInstruction.value = index
         }
-    }
-
-
-    /**
-     * Finds the section and instruction index for a given global instruction index
-     * Returns Pair(sectionIndex, instructionIndexInSection)
-     */
-    fun findSectionAndInstructionIndex(globalIndex: Int): Pair<Int, Int> {
-        val sections = sectionedInstructions.value
-
-        for ((sectionIndex, section) in sections.withIndex()) {
-            // Find the instruction with the matching globalIndex
-            val instructionIndexInSection = section.instructions.indexOfFirst { it.globalIndex == globalIndex }
-            if (instructionIndexInSection != -1) {
-                // Found the instruction in this section
-                return Pair(sectionIndex, instructionIndexInSection)
-            }
-        }
-
-        // If we didn't find the instruction (e.g., globalIndex is invalid),
-        // default to the last instruction of the last section
-        if (sections.isNotEmpty()) {
-            val lastSectionIndex = sections.size - 1
-            val lastInstructionIndex = sections.last().instructions.size - 1
-            return Pair(lastSectionIndex, lastInstructionIndex)
-        }
-
-        return Pair(0, 0)
-    }
-
-    /**
-     * Calculates the LazyList index for a given instruction
-     * @param staticItemsCount Number of static items before the instructions (headers, etc.)
-     * @param ingredientsCount Number of ingredients in the list
-     * @param globalInstructionIndex Global index of the instruction
-     * @param hasInstructionSections Whether the recipe has instruction sections
-     */
-    fun calculateLazyListIndex(
-        staticItemsCount: Int,
-        ingredientsCount: Int,
-        globalInstructionIndex: Int,
-        hasInstructionSections: Boolean
-    ): Int {
-        if (!hasInstructionSections) {
-            // For non-sectioned instructions, the calculation is simple
-            return globalInstructionIndex + staticItemsCount + ingredientsCount
-        }
-
-        // For sectioned instructions, we need to calculate the position in the LazyList
-        var itemCount = staticItemsCount + ingredientsCount
-
-        // Find which section contains the instruction
-        val (sectionIndex, instructionIndexInSection) = findSectionAndInstructionIndex(globalInstructionIndex)
-
-        // Add items for all sections before the target section
-        // Each section adds: 1 header + instructions.size + 1 spacer
-        val sections = sectionedInstructions.value
-        for (i in 0 until sectionIndex) {
-            itemCount += 1 // Header
-            itemCount += sections[i].instructions.size // Instructions
-            itemCount += 1 // Spacer
-        }
-
-        // Add header for the target section
-        itemCount += 1
-
-        // Add the instruction index within the target section
-        itemCount += instructionIndexInSection
-
-        return itemCount
     }
 }
