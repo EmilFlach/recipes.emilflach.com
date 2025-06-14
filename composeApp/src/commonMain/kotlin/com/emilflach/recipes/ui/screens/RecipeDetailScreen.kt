@@ -103,7 +103,7 @@ fun RecipeDetailScreen(
                         Text(
                             text = recipe?.name ?: "",
                             style = MaterialTheme.typography.h1,
-                            color = Color.White,
+                            color = MaterialTheme.recipesColors.foregroundDefault,
                             modifier = Modifier
                                 .clip(
                                     RoundedCornerShape(

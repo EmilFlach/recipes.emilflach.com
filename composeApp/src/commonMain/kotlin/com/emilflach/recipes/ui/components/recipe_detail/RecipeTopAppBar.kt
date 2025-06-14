@@ -52,7 +52,9 @@ fun RecipeTopAppBar (
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = "Back",
-                    tint = MaterialTheme.recipesColors.onBackgroundBrand
+                    tint = if (listState.firstVisibleItemIndex > 0)
+                        MaterialTheme.recipesColors.foregroundDefault
+                    else MaterialTheme.recipesColors.onBackgroundBrand
                 )
             }
         },

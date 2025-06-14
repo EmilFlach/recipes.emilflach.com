@@ -55,7 +55,7 @@ fun RecipeMethodSection(
             Button(
                 onClick = onToggleCookingMode
             ) {
-                Text("Start cooking")
+                Text("Start cooking", color = MaterialTheme.recipesColors.onBackgroundBrand)
             }
         }
     }
