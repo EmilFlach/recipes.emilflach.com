@@ -124,7 +124,6 @@ class RecipeDetailViewModel(
     }
 
     fun initialize(recipeSlug: String) {
-        if (initializedRecipeSlug == recipeSlug) return
         val currentRecipe = _recipe.value
         if (currentRecipe != null && currentRecipe.slug == recipeSlug) {
             enrichRecipe(currentRecipe)
@@ -132,6 +131,7 @@ class RecipeDetailViewModel(
             getRecipeBySlug(recipeSlug)
         }
     }
+
 
     fun toggleSectionExpanded(sectionTitle: String) {
         val currentExpanded = _expandedSections.value
