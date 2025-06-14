@@ -31,7 +31,7 @@ class RecipeScrollManager(
         if (!isCookingMode) return
 
         coroutineScope.launch {
-            val staticListItems = 5 // Headers, spacers, etc.
+            val staticListItems = 6 // Headers, spacers, etc.
             val ingredientListItems = ingredients.size
 
             val listItemIndex = calculateLazyListIndex(

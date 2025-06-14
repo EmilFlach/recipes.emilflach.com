@@ -2,64 +2,72 @@ package com.emilflach.recipes.ui.components.recipe_detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.emilflach.recipes.data.Recipe
-import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
 fun RecipeHeader(
-    recipe: Recipe?,
-    onBackClick: () -> Unit
-) {
-    BoxWithConstraints(
-        modifier = Modifier.fillMaxWidth().height(400.dp)
+        recipe: Recipe?,
+        scrollState: LazyListState,
+        modifier: Modifier
     ) {
-        if (recipe != null) {
-            AsyncImage(
-                model = recipe.imageUrl,
-                contentDescription = recipe.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth().fillMaxHeight()
-            )
+        val maxHeight = 500.dp
+        val minHeight = 300.dp
+
+        val density = LocalDensity.current
+        val headerHeight by remember {
+            derivedStateOf {
+                with(density) {
+                    val totalScrollOffset = scrollState.firstVisibleItemIndex * maxHeight.toPx() +
+                            scrollState.firstVisibleItemScrollOffset.toFloat()
+                    val height = (maxHeight.toPx() - totalScrollOffset).coerceIn(
+                        minHeight.toPx(),
+                        maxHeight.toPx()
+                    )
+                    height.toDp()
+                }
+            }
         }
+
         Box(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight().background(
-                Brush.verticalGradient(
-                    // Gradient hacks, onSecondary is always black
-                    0f to MaterialTheme.colors.onSecondary.copy(alpha = 0.9f),
-                    0.3f to MaterialTheme.colors.onSecondary.copy(alpha = 0f),
+            modifier = modifier
+                .fillMaxWidth()
+                .height(headerHeight)
+        ) {
+            if (recipe != null) {
+                AsyncImage(
+                    model = recipe.imageUrl,
+                    contentDescription = recipe.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
-            )
-        )
-        IconButton(onClick = onBackClick) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                contentDescription = "Back",
-                tint = MaterialTheme.recipesColors.onBackgroundBrand
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Black.copy(alpha = 0.7f),
+                                Color.Transparent,
+                                Color.Transparent
+                            )
+                        )
+                    )
             )
         }
     }
-    Text(
-        text = recipe?.name ?: "",
-        style = MaterialTheme.typography.h1,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
-    )
-}

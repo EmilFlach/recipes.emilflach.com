@@ -3,15 +3,19 @@ package com.emilflach.recipes.ui.screens
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,11 +26,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.emilflach.recipes.ui.components.RecipeIngredient
 import com.emilflach.recipes.ui.components.RecipeServingsScaler
 import com.emilflach.recipes.ui.components.recipe_detail.RecipeHeader
 import com.emilflach.recipes.ui.components.recipe_detail.RecipeMethodSection
+import com.emilflach.recipes.ui.components.recipe_detail.RecipeTopAppBar
 import com.emilflach.recipes.ui.components.recipe_detail.recipeInstructions
 import com.emilflach.recipes.ui.theme.recipesColors
 
@@ -55,7 +63,6 @@ fun RecipeDetailScreen(
         viewModel.initialize(recipeSlug)
     }
 
-    // Use the ScrollToCurrentInstructionEffect to handle scrolling
     if (recipeData != null) {
         ScrollToCurrentInstructionEffect(
             scrollManager = scrollManager,
@@ -71,81 +78,116 @@ fun RecipeDetailScreen(
         targetState = recipeData,
         contentKey = { it?.slug ?: "" }
     ) { recipe ->
-        LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .background(MaterialTheme.recipesColors.backgroundPage)
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .safeDrawingPadding()
-        ) {
-            item {
-                RecipeHeader(recipe = recipe, onBackClick = onBackClick)
-            }
-            when {
-                isLoading -> {
-                    item {
-                        BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-                            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                        }
-                    }
-                }
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .background(MaterialTheme.recipesColors.backgroundPage)
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .safeDrawingPadding()
 
-                isError -> {
-                    item {
+            ) {
+                item {
+                    RecipeHeader(
+                        recipe = recipe,
+                        scrollState = listState,
+                        modifier = Modifier.zIndex(0f)
+                    )
+                }
+                item {
+                    Column(
+                        modifier = Modifier
+                            .offset(y = (-16).dp)
+                            .zIndex(1f)
+                    ) {
                         Text(
-                            text = "Error: $errorMessage",
-                            color = MaterialTheme.recipesColors.foregroundDanger,
-                            modifier = Modifier.padding(16.dp)
+                            text = recipe?.name ?: "",
+                            style = MaterialTheme.typography.h1,
+                            color = Color.White,
+                            modifier = Modifier
+                                .clip(
+                                    RoundedCornerShape(
+                                        topEnd = 16.dp,
+                                        topStart = 16.dp
+                                    )
+                                )
+                                .fillMaxWidth()
+                                .background(MaterialTheme.recipesColors.backgroundPage)
+                                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                         )
                     }
                 }
 
-                else -> {
-                    recipe?.let { recipe ->
+                when {
+                    isLoading -> {
+                        item {
+                            BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            }
+                        }
+                    }
+
+                    isError -> {
                         item {
                             Text(
-                                text = "Ingredients",
-                                style = MaterialTheme.typography.h2,
-                                modifier = Modifier.fillMaxWidth()
-                                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                                text = "Error: $errorMessage",
+                                color = MaterialTheme.recipesColors.foregroundDanger,
+                                modifier = Modifier.padding(16.dp)
                             )
                         }
-                        item {
-                            RecipeServingsScaler(
-                                recipe,
-                                viewModel,
-                                currentServings
-                            )
-                        }
-                        itemsIndexed(ingredients) { _, ingredient ->
-                            RecipeIngredient(ingredient)
-                        }
-                        item {
-                            Spacer(modifier = Modifier.height(32.dp))
-                        }
+                    }
 
-                        item {
-                            RecipeMethodSection(
+                    else -> {
+                        recipe?.let { recipe ->
+                            item {
+                                Text(
+                                    text = "Ingredients",
+                                    style = MaterialTheme.typography.h2,
+                                    modifier = Modifier.fillMaxWidth()
+                                        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                                )
+                            }
+                            item {
+                                RecipeServingsScaler(
+                                    recipe,
+                                    viewModel,
+                                    currentServings
+                                )
+                            }
+                            itemsIndexed(ingredients) { _, ingredient ->
+                                RecipeIngredient(ingredient)
+                            }
+                            item {
+                                Spacer(modifier = Modifier.height(32.dp))
+                            }
+
+                            item {
+                                RecipeMethodSection(
+                                    isCookingMode = isCookingMode,
+                                    onToggleCookingMode = { viewModel.toggleCookingMode() }
+                                )
+                            }
+
+                            recipeInstructions(
+                                hasInstructionSections = recipe.hasInstructionSections,
+                                sectionedInstructions = sectionedInstructions,
+                                instructions = instructions,
+                                expandedSections = expandedSections,
                                 isCookingMode = isCookingMode,
-                                onToggleCookingMode = { viewModel.toggleCookingMode() }
+                                currentInstruction = currentInstruction,
+                                listState = listState,
+                                onInstructionClick = viewModel::setCurrentInstruction,
+                                onToggleSectionExpanded = viewModel::toggleSectionExpanded
                             )
                         }
-
-                        recipeInstructions(
-                            hasInstructionSections = recipe.hasInstructionSections,
-                            sectionedInstructions = sectionedInstructions,
-                            instructions = instructions,
-                            expandedSections = expandedSections,
-                            isCookingMode = isCookingMode,
-                            currentInstruction = currentInstruction,
-                            listState = listState,
-                            onInstructionClick = viewModel::setCurrentInstruction,
-                            onToggleSectionExpanded = viewModel::toggleSectionExpanded
-                        )
                     }
                 }
             }
-        }
+
+        RecipeTopAppBar(
+            recipe = recipeData,
+            listState = listState,
+            onBackClick = onBackClick
+        )
     }
 }
