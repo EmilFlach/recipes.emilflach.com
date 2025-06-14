@@ -5,6 +5,9 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -14,6 +17,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
@@ -27,6 +31,7 @@ fun RecipeTopAppBar (
     onBackClick: () -> Unit,
 ) {
     TopAppBar(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
         elevation = if (listState.firstVisibleItemIndex > 0) 16.dp else 0.dp,
         title = {
             AnimatedVisibility(
@@ -53,9 +58,9 @@ fun RecipeTopAppBar (
         },
         backgroundColor =
             if (listState.firstVisibleItemIndex > 0)
-                MaterialTheme.recipesColors.backgroundSurface1
+                MaterialTheme.recipesColors.backgroundPage
             else
-                MaterialTheme.recipesColors.backgroundSurface1.copy(
+                MaterialTheme.recipesColors.backgroundPage.copy(
                     alpha = lerp(
                         0f,
                         1f,
