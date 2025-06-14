@@ -29,7 +29,7 @@ fun RecipeMethodSection(
                 color = MaterialTheme.recipesColors.backgroundSurface1,
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
-            .padding(start = 4.dp, end = 16.dp, top = 16.dp),
+            .padding(start = 8.dp, end = 24.dp, top = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

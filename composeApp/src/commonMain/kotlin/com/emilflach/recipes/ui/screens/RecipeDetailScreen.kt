@@ -85,7 +85,6 @@ fun RecipeDetailScreen(
                     .fillMaxHeight()
                     .fillMaxWidth()
                     .safeDrawingPadding()
-
             ) {
                 item {
                     RecipeHeader(
@@ -113,7 +112,7 @@ fun RecipeDetailScreen(
                                 )
                                 .fillMaxWidth()
                                 .background(MaterialTheme.recipesColors.backgroundPage)
-                                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                                .padding(top = 16.dp, start = 24.dp, end = 24.dp, bottom = 8.dp)
                         )
                     }
                 }
@@ -144,7 +143,7 @@ fun RecipeDetailScreen(
                                     text = "Ingredients",
                                     style = MaterialTheme.typography.h2,
                                     modifier = Modifier.fillMaxWidth()
-                                        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                                        .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                                 )
                             }
                             item {

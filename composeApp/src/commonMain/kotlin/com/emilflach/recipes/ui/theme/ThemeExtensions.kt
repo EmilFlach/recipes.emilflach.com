@@ -54,7 +54,7 @@ fun createTypography(darkTheme: Boolean): Typography {
         h1 = TextStyle(
             fontFamily = FontFamily.Serif,
             fontWeight = FontWeight.Bold,
-            fontSize = 44.sp,
+            fontSize = 36.sp,
             color = colors.foregroundDefault
         ),
         h2 = TextStyle(

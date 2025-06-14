@@ -51,7 +51,11 @@ fun LazyListScope.recipeInstructions(
                 Box(
                     Modifier
                         .background(MaterialTheme.recipesColors.backgroundSurface1)
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = when { isExpanded -> 16.dp else -> 0.dp })
+                        .padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = when { isExpanded -> 16.dp else -> 0.dp })
                         .offset(y = offsetY)
                 ) {
                     SectionHeader(

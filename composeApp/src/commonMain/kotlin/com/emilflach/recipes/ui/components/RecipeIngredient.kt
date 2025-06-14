@@ -29,12 +29,15 @@ fun RecipeIngredient(ingredient: Ingredient, displayBasicsOnly: Boolean = false,
         Text(
             text = ingredient.sectionTitle,
             style = MaterialTheme.typography.h3,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+            modifier = Modifier.padding(start = 24.dp, top = 8.dp, bottom = 16.dp)
         )
     }
     Row (
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 12.dp, end = 16.dp)
+        modifier = Modifier.padding(
+            bottom = 12.dp,
+            start = if(displayBasicsOnly) 2.dp else 10.dp,
+            end = 16.dp)
     ){
         Checkbox(
             onCheckedChange = { checkedState.value = it},
