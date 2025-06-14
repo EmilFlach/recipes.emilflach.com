@@ -70,7 +70,11 @@ fun RecipeInstruction(
     ) {
         Spacer(modifier = Modifier.height(padding))
         Row {
-            InstructionNumber(index = index, isDisabled = isDisabled)
+            InstructionNumber(
+                index = index,
+                isDisabled = isDisabled,
+                paddingBottom = padding
+            )
             InstructionContent(
                 instruction = instruction,
                 isDisabled = isDisabled,

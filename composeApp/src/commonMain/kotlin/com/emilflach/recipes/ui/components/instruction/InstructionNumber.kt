@@ -13,13 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
 fun InstructionNumber(
     index: Int,
-    isDisabled: Boolean
+    isDisabled: Boolean,
+    paddingBottom: Dp
 ) {
     Text(
         text = "${index + 1}",
@@ -28,7 +30,7 @@ fun InstructionNumber(
             else MaterialTheme.recipesColors.foregroundDefault,
         textAlign = TextAlign.Center,
         modifier = Modifier
-            .padding(start = 16.dp)
+            .padding(start = 16.dp, bottom = paddingBottom)
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.recipesColors.backgroundSurface2)
             .height(40.dp)

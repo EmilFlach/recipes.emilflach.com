@@ -26,7 +26,7 @@ fun RecipeHeader(
         modifier: Modifier
     ) {
         val maxHeight = 500.dp
-        val minHeight = 300.dp
+        val minHeight = 400.dp
 
         val density = LocalDensity.current
         val headerHeight by remember {
