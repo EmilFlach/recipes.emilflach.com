@@ -32,7 +32,7 @@ fun RecipeTopAppBar (
 ) {
     TopAppBar(
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
-        elevation = if (listState.firstVisibleItemIndex > 0) 16.dp else 0.dp,
+        elevation = if (listState.firstVisibleItemIndex > 0) 0.dp else 0.dp,
         title = {
             AnimatedVisibility(
                 visible = listState.firstVisibleItemIndex > 0,
