@@ -66,7 +66,7 @@ fun RecipeTopAppBar (
                     alpha = lerp(
                         0f,
                         1f,
-                        listState.firstVisibleItemScrollOffset / 600f
+                        (listState.firstVisibleItemScrollOffset / 500f) - 0.85f
                     ).coerceIn(0f, 1f)
                 )
     )

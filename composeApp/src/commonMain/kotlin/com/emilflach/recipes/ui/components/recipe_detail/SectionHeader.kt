@@ -37,7 +37,7 @@ fun SectionHeader(
     isClickable: Boolean = false,
     onToggleExpanded: () -> Unit = {}
 ) {
-    val showSubtitle = subtitle.isNotEmpty() && isClickable
+    val showSubtitle = subtitle.isNotEmpty() && !isExpanded
     val showSubtitleSpacing = showSubtitle && !isSticking
 
     Row(
@@ -65,9 +65,9 @@ fun SectionHeader(
                 style = MaterialTheme.typography.h3,
                 modifier = Modifier.padding(bottom = if (showSubtitleSpacing) 8.dp else 0.dp)
             )
-            if (showSubtitle) {
+
                 AnimatedVisibility(
-                    visible = !isSticking,
+                    visible = showSubtitle,
                     enter = expandVertically(),
                     exit = shrinkVertically()
                 ) {
@@ -76,7 +76,7 @@ fun SectionHeader(
                         style = MaterialTheme.typography.body1
                     )
                 }
-            }
+
         }
 
         if (isClickable) {
