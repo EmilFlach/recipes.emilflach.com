@@ -65,18 +65,12 @@ fun SectionHeader(
                 style = MaterialTheme.typography.h3,
                 modifier = Modifier.padding(bottom = if (showSubtitleSpacing) 8.dp else 0.dp)
             )
-
-                AnimatedVisibility(
-                    visible = showSubtitle,
-                    enter = expandVertically(),
-                    exit = shrinkVertically()
-                ) {
-                    Text(
-                        text = subtitle,
-                        style = MaterialTheme.typography.body1
-                    )
-                }
-
+            if(showSubtitle) {
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.body1
+                )
+            }
         }
 
         if (isClickable) {
