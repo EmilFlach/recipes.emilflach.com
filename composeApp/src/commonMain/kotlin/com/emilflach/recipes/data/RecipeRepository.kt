@@ -19,7 +19,7 @@ object RecipeRepository {
         }
 
         val recipes: RecipesListResponse =
-            client.get("${HttpClientProvider.BASE_URL}/recipes?requireAllCategories=true&orderBy=updatedAt").body()
+            client.get("${HttpClientProvider.BASE_URL}/explore/groups/home/recipes?requireAllCategories=true&orderBy=updatedAt").body()
         cacheMutex.withLock {
             recipesCache = recipes
         }
@@ -33,7 +33,8 @@ object RecipeRepository {
             }
         }
 
-        val recipe: Recipe = client.get("${HttpClientProvider.BASE_URL}/recipes/$slug").body()
+        val recipe: Recipe =
+            client.get("${HttpClientProvider.BASE_URL}/explore/groups/home/recipes/$slug").body()
         cacheMutex.withLock {
             recipeCache[slug] = recipe
         }
@@ -48,7 +49,7 @@ object RecipeRepository {
         }
 
         val enrichedRecipe: Recipe =
-            client.get("${HttpClientProvider.BASE_URL}/recipes/${recipe.slug}").body()
+            client.get("${HttpClientProvider.BASE_URL}/explore/groups/home/recipes/${recipe.slug}").body()
         cacheMutex.withLock {
             recipeCache[recipe.slug] = enrichedRecipe
         }
