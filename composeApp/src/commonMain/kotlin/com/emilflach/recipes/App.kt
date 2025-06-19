@@ -5,6 +5,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,12 +23,18 @@ import com.emilflach.recipes.ui.screens.RecipesViewModel
 import com.emilflach.recipes.ui.screens.Screen
 
 @Composable
-fun App() {
+fun App(
+    onNavHostReady: suspend (NavHostController) -> Unit = {}
+) {
     val navController = rememberNavController()
     val recipesViewModel = RecipesViewModel(RecipeRepository)
     val recipeDetailViewModel = RecipeDetailViewModel(RecipeRepository)
     setSingletonImageLoaderFactory { context ->
         ImageLoader.Builder(context).crossfade(true).build()
+    }
+
+    LaunchedEffect(navController) {
+        onNavHostReady(navController)
     }
 
     RecipesAppTheme {
