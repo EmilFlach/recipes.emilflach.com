@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,29 +43,59 @@ fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
     ) {
         val chunkedRecipes = remember { recipes.chunked(3) }
         val pagerState = rememberPagerState { chunkedRecipes.size }
+        val scope = rememberCoroutineScope()
+        val maxWidth = maxWidth
+        val showTwoPages = maxWidth >= 700.dp
 
-        HorizontalPager(
-            state = pagerState,
-            pageSpacing = 16.dp,
-            // Card height is set to 160, spacing to 8 (160 x 3 + 2 x 4 = 488)
-            modifier = Modifier.height(488.dp),
-            contentPadding = when (pagerState.currentPage) {
-                pagerState.pageCount - 1 -> PaddingValues(start = 32.dp, end = 16.dp)
-                else -> PaddingValues(start = 16.dp, end = 32.dp)
-            }
-        ) {
-            val recipesOnPage = chunkedRecipes[it]
-            Column (
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.Top
+        Column {
+            HorizontalPager(
+                state = pagerState,
+                pageSpacing = 16.dp,
+                // Card height is set to 160, spacing to 8 (160 x 3 + 2 x 4 = 488)
+                modifier = Modifier
+                    .height(488.dp)
+                    .padding(end = if(showTwoPages) 16.dp else 0.dp),
+                contentPadding = pagerPadding(pagerState.currentPage, showTwoPages),
+                pageSize = if (showTwoPages) {
+                    PageSize.Fixed((maxWidth - 48.dp) / 2) // Account for padding and spacing
+                } else {
+                    PageSize.Fill
+                }
+
             ) {
-                recipesOnPage.forEachIndexed { index, recipe ->
-                    RecipeCard(index, recipe, onRecipeClick)
-                    if (index < recipesOnPage.size - 1) {
-                        Spacer(modifier = Modifier.height(4.dp))
+                val recipesOnPage = chunkedRecipes[it]
+                Column (
+                    modifier = Modifier.fillMaxHeight(),
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    recipesOnPage.forEachIndexed { index, recipe ->
+                        RecipeCard(index, recipe, onRecipeClick)
+                        if (index < recipesOnPage.size - 1) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                        }
                     }
                 }
             }
+
+            if(showTwoPages) {
+                Spacer(modifier = Modifier.height(16.dp))
+                RecipePager(scope, pagerState, chunkedRecipes.size)
+            }
+        }
+
+    }
+}
+
+fun pagerPadding(page: Int, showTwoPages: Boolean): PaddingValues {
+    return if (showTwoPages) {
+        when (page) {
+            page - 1 -> PaddingValues(start = 0.dp, end = 0.dp)
+            else -> PaddingValues(start = 16.dp, end = 0.dp)
+        }
+    } else {
+        when (page) {
+            page - 1 -> PaddingValues(start = 32.dp, end = 16.dp)
+            else -> PaddingValues(start = 16.dp, end = 32.dp)
         }
     }
 }

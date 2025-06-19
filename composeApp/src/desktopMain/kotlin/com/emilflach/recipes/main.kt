@@ -9,9 +9,14 @@ import androidx.compose.ui.window.application
 fun main() = application {
     Window(
         title = "Recipes",
+//        state = WindowState(
+//            position = WindowPosition(580.dp, 50.dp),
+//            width = 450.dp,
+//            height = 1000.dp
+//        ),
         state = WindowState(
-            position = WindowPosition(580.dp, 50.dp),
-            width = 450.dp,
+            position = WindowPosition(50.dp, 50.dp),
+            width = 1200.dp,
             height = 1000.dp
         ),
         alwaysOnTop = true,
