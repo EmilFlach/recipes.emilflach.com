@@ -1,8 +1,10 @@
 package com.emilflach.recipes.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -105,17 +107,20 @@ private fun PagerButton (
     contentDescription: String,
     onClick: () -> Unit,
 ) {
-    IconButton(
-        onClick = onClick,
-        enabled = isEnabled,
+    BoxWithConstraints (
         modifier = Modifier
             .clip(CircleShape)
-            .background(if(isEnabled) MaterialTheme.recipesColors.backgroundSurface1
-            else Transparent)
+            .background(
+                if (isEnabled)
+                    MaterialTheme.recipesColors.backgroundSurface1
+                else Transparent
+            )
+            .clickable(onClick = onClick, enabled = isEnabled),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
+            modifier = Modifier.padding(16.dp),
             tint = if(isEnabled) MaterialTheme.recipesColors.foregroundDefault
             else MaterialTheme.recipesColors.foregroundDisabled
         )
