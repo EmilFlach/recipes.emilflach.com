@@ -52,6 +52,7 @@ fun RecipesScreen(
 
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .background(MaterialTheme.colors.background)
             .safeDrawingPadding()
     ) {

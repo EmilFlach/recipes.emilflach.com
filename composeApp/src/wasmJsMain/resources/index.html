@@ -11,60 +11,44 @@
             // Check for system dark mode preference
             const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (prefersDarkMode) {
-                document.body.classList.add('dark-mode');
                 document.documentElement.classList.add('dark-mode');
             }
             
             // Listen for changes in dark mode preference
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
                 if (event.matches) {
-                    document.body.classList.add('dark-mode');
                     document.documentElement.classList.add('dark-mode');
                 } else {
-                    document.body.classList.remove('dark-mode');
                     document.documentElement.classList.remove('dark-mode');
                 }
             });
-            
-            // Function to check if the app is actually rendered and ready
+
             function checkAppReady() {
-                // Look for canvas or other elements that indicate the app has rendered
                 const canvas = document.querySelector('canvas');
-                if (canvas && canvas.offsetHeight > 0) {
-                    // The app has rendered the canvas
-                    document.body.classList.add('app-ready');
-                    return true;
-                }
-                return false;
+                return canvas && canvas.offsetHeight > 0;
             }
-            
-            // Setup for splash screen hiding
+
             let appLoaded = false;
-            
-            // Directly handle the composeApp.js loaded event
             window.addEventListener('load', function() {
-                // Start checking if app is ready at intervals
                 const readyCheckInterval = setInterval(function() {
                     if (checkAppReady() || appLoaded) {
                         clearInterval(readyCheckInterval);
                         hideSplashScreen();
                     }
-                }, 250);
+                }, 50);
                 
                 // Failsafe - hide splash after reasonable timeout
                 setTimeout(function() {
                     clearInterval(readyCheckInterval);
                     appLoaded = true;
                     hideSplashScreen();
-                }, 10000); // 10 second maximum wait time
+                }, 15000);
             });
-            
-            // Function to hide splash screen
+
             function hideSplashScreen() {
                 const splashScreen = document.getElementById('splash-screen');
                 if (splashScreen) {
                     document.body.classList.add('app-ready');
-                    console.log("Hiding splash screen");
                 }
             }
         });
@@ -72,8 +56,8 @@
 </head>
 <body>
     <div id="splash-screen">
-        <h1>Emil & Lucia's Recipes</h1>
-        <p>Our delicious recipes are still simmering... just a moment!</p>
+        <h1>Emil & Lucia's 0 recipes</h1>
+        <p>Our recipes are still simmering...</p>
         <div class="splash-spinner"></div>
     </div>
 </body>
