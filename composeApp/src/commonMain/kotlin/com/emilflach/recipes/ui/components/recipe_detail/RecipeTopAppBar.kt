@@ -8,13 +8,19 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.IconButton
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -36,7 +42,9 @@ fun RecipeTopAppBar (
     val isSticking = listState.firstVisibleItemIndex > 0
 
     TopAppBar(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .widthIn(max = 1000.dp),
         elevation = if (isSticking) 0.dp else 0.dp,
         title = {
             AnimatedVisibility(
