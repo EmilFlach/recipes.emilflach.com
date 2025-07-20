@@ -256,7 +256,7 @@ fun RecipeDetailScreen(
                                                                     instruction.globalIndex
                                                                 RecipeInstruction(
                                                                     index = index,
-                                                                    size = sectionedInstructions.size,
+                                                                    size = section.instructions.size,
                                                                     instruction = instruction,
                                                                     isCookingMode = isCookingMode,
                                                                     isCurrentInstruction = currentInstruction == globalInstructionIndex,
