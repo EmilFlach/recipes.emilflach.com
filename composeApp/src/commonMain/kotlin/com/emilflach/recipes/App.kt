@@ -16,6 +16,7 @@ import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
 import com.emilflach.recipes.data.RecipeRepository
+import com.emilflach.recipes.ui.screens.CookingModeScreen
 import com.emilflach.recipes.ui.screens.RecipeDetailScreen
 import com.emilflach.recipes.ui.screens.RecipeDetailViewModel
 import com.emilflach.recipes.ui.screens.RecipesScreen
@@ -40,6 +41,7 @@ fun App(
     RecipesAppTheme {
         NavHost(navController = navController, startDestination = Screen.RecipesList.route) {
             composable(Screen.RecipesList.route,
+                // Use standard fade transitions with appropriate durations for the home screen
                 enterTransition = {
                     fadeIn(
                         animationSpec = tween(50)
@@ -47,7 +49,7 @@ fun App(
                 },
                 exitTransition = {
                     fadeOut(
-                        animationSpec = tween(1000)
+                        animationSpec = tween(300)
                     )
                 }
             ) {
@@ -61,20 +63,50 @@ fun App(
             composable(
                 route = Screen.RecipeDetail.route,
                 arguments = listOf(navArgument("recipeSlug") { type = NavType.StringType }),
+                // Forward navigation (list to detail)
                 enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(300)
-                    )
+                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left)
                 },
+                // Exit when navigating to cooking mode
                 exitTransition = {
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(200)
+                    fadeOut(
+                        animationSpec = tween(300)
                     )
                 },
+                // Enter when returning from cooking mode
+                popEnterTransition = {
+                    fadeIn(
+                        animationSpec = tween(50)
+                    )
+                },
+                // Exit when returning to list
+                popExitTransition = {
+                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right)
+                }
             ) { backStackEntry ->
                 val recipeSlug = backStackEntry.arguments?.getString("recipeSlug")
                 recipeSlug?.let {
                     RecipeDetailScreen(
+                        viewModel = recipeDetailViewModel,
+                        recipeSlug = it,
+                        onBackClick = { navController.popBackStack() },
+                        onCookingModeClick = { navController.navigate(Screen.CookingMode.createRoute(recipeSlug)) })
+                }
+            }
+            composable(
+                route = Screen.CookingMode.route,
+                arguments = listOf(navArgument("recipeSlug") { type = NavType.StringType }),
+                enterTransition = {
+                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up)
+                },
+                // Exit with a slide down animation
+                exitTransition = {
+                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                }
+            ) { backStackEntry ->
+                val recipeSlug = backStackEntry.arguments?.getString("recipeSlug")
+                recipeSlug?.let {
+                    CookingModeScreen(
                         viewModel = recipeDetailViewModel,
                         recipeSlug = it,
                         onBackClick = { navController.popBackStack() })

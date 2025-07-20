@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.emilflach.recipes.data.Recipe
@@ -38,13 +39,14 @@ fun RecipeTopAppBar (
     recipe: Recipe?,
     listState: LazyListState,
     onBackClick: () -> Unit,
+    maxWidth: Dp = 1000.dp,
 ) {
     val isSticking = listState.firstVisibleItemIndex > 0
 
     TopAppBar(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.statusBars)
-            .widthIn(max = 1000.dp),
+            .widthIn(max = maxWidth),
         elevation = if (isSticking) 0.dp else 0.dp,
         title = {
             AnimatedVisibility(

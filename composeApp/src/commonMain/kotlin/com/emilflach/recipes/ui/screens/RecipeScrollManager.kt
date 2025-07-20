@@ -26,13 +26,18 @@ class RecipeScrollManager(
         currentInstruction: Int,
         ingredients: List<Ingredient>,
         hasInstructionSections: Boolean,
-        sectionedInstructions: List<InstructionSection>
+        sectionedInstructions: List<InstructionSection>,
+        isCookingModeScreen: Boolean = false
     ) {
         if (!isCookingMode) return
 
         coroutineScope.launch {
-            val staticListItems = 6 // Headers, spacers, etc.
-            val ingredientListItems = ingredients.size
+            var staticListItems = 6 // Headers, spacers, etc.
+            var ingredientListItems = ingredients.size
+            if(isCookingModeScreen) {
+                staticListItems = 4 // Headers, spacers, etc.
+                 ingredientListItems = 0
+            }
 
             val listItemIndex = calculateLazyListIndex(
                 staticItemsCount = staticListItems,
@@ -158,7 +163,8 @@ fun ScrollToCurrentInstructionEffect(
     currentInstruction: Int,
     ingredients: List<Ingredient>,
     hasInstructionSections: Boolean,
-    sectionedInstructions: List<InstructionSection>
+    sectionedInstructions: List<InstructionSection>,
+    isCookingModeScreen: Boolean = false
 ) {
     LaunchedEffect(currentInstruction, isCookingMode) {
         scrollManager.scrollToCurrentInstruction(
@@ -166,7 +172,8 @@ fun ScrollToCurrentInstructionEffect(
             currentInstruction = currentInstruction,
             ingredients = ingredients,
             hasInstructionSections = hasInstructionSections,
-            sectionedInstructions = sectionedInstructions
+            sectionedInstructions = sectionedInstructions,
+            isCookingModeScreen = isCookingModeScreen
         )
     }
 }

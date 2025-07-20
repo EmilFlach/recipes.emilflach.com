@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.ui.components.RecipeIngredient
 import com.emilflach.recipes.ui.components.RecipeInstruction
 import com.emilflach.recipes.ui.components.RecipeServingsScaler
@@ -47,7 +48,10 @@ import com.emilflach.recipes.ui.theme.recipesColors
 
 @Composable
 fun RecipeDetailScreen(
-    viewModel: RecipeDetailViewModel, recipeSlug: String, onBackClick: () -> Unit
+    viewModel: RecipeDetailViewModel,
+    recipeSlug: String,
+    onBackClick: () -> Unit,
+    onCookingModeClick: (Recipe) -> Unit,
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -199,8 +203,8 @@ fun RecipeDetailScreen(
                                         ) {
                                             RecipeMethodSection(
                                                 isCookingMode = isCookingMode,
-                                                onToggleCookingMode = { viewModel.toggleCookingMode() },
-                                                showCookingButton = false
+                                                onToggleCookingMode = { onCookingModeClick(recipe) },
+                                                showCookingButton = true
                                             )
                                             if (recipe.hasInstructionSections) {
                                                 sectionedInstructions.forEachIndexed { index, section ->

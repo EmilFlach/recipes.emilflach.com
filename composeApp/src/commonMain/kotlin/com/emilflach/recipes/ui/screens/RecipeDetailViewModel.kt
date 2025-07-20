@@ -75,7 +75,7 @@ class RecipeDetailViewModel(
             recipe?.instructionsWithIngredients() ?: emptyList()
         }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    fun getRecipeBySlug(recipeSlug: String) {
+    fun getRecipeBySlug(recipeSlug: String, cookingMode: Boolean = false) {
         viewModelScope.launch {
             resetRecipe(null)
             try {
@@ -87,11 +87,12 @@ class RecipeDetailViewModel(
                 initializedRecipeSlug = null
             } finally {
                 _isLoading.value = false
+                if(cookingMode) toggleCookingMode()
             }
         }
     }
 
-    fun enrichRecipe(recipe: Recipe) {
+    fun enrichRecipe(recipe: Recipe, cookingMode: Boolean = false) {
         viewModelScope.launch {
             resetRecipe(recipe)
             try {
@@ -102,6 +103,7 @@ class RecipeDetailViewModel(
                 _isError.value = true
             } finally {
                 _isLoading.value = false
+                if(cookingMode) toggleCookingMode()
             }
         }
     }
@@ -113,22 +115,22 @@ class RecipeDetailViewModel(
         _currentServings.value = servings
     }
 
-    private fun resetRecipe(recipe: Recipe?) {
+    private fun resetRecipe(recipe: Recipe?, cookingMode : Boolean = false) {
         _recipe.value = recipe
         _isError.value = false
         _isLoading.value = true
         _errorMessage.value = null
-        _isCookingMode.value = false
+        _isCookingMode.value = cookingMode
         _currentInstruction.value = 0
         _expandedSections.value = emptySet()
     }
 
-    fun initialize(recipeSlug: String) {
+    fun initialize(recipeSlug: String, cookingMode: Boolean = false) {
         val currentRecipe = _recipe.value
         if (currentRecipe != null && currentRecipe.slug == recipeSlug) {
-            enrichRecipe(currentRecipe)
+            enrichRecipe(currentRecipe, cookingMode)
         } else {
-            getRecipeBySlug(recipeSlug)
+            getRecipeBySlug(recipeSlug, cookingMode)
         }
     }
 

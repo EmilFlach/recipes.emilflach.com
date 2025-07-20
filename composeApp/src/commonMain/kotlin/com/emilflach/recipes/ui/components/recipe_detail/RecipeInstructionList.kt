@@ -1,22 +1,21 @@
 package com.emilflach.recipes.ui.components.recipe_detail
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Instruction
 import com.emilflach.recipes.data.InstructionSection
@@ -37,6 +36,7 @@ fun LazyListScope.recipeInstructions(
     onInstructionClick: (Int) -> Unit,
     onToggleSectionExpanded: (String) -> Unit
 ) {
+    val breakWidth = 700.dp
     if (hasInstructionSections) {
         sectionedInstructions.forEachIndexed { index, section ->
             val isExpanded = expandedSections.contains(section.title) || isCookingMode
@@ -51,6 +51,7 @@ fun LazyListScope.recipeInstructions(
                 Box(
                     Modifier
                         .background(MaterialTheme.recipesColors.backgroundSurface1)
+                        .widthIn(max = breakWidth)
                         .padding(
                             start = 16.dp,
                             end = 16.dp,
@@ -69,9 +70,12 @@ fun LazyListScope.recipeInstructions(
                 }
                 if (index == sectionedInstructions.size - 1 && !isExpanded) {
                     Box(modifier = Modifier
+                        .widthIn(max = breakWidth)
                         .height(16.dp)
                         .fillMaxWidth()
-                        .background(MaterialTheme.recipesColors.backgroundSurface1))
+                        .background(MaterialTheme.recipesColors.backgroundSurface1)
+
+                    )
                 }
             }
 
@@ -79,6 +83,7 @@ fun LazyListScope.recipeInstructions(
                 itemsIndexed(section.instructions) { index, instruction ->
                     Box(
                         Modifier
+                            .widthIn(max = breakWidth)
                             .background(MaterialTheme.recipesColors.backgroundSurface1)
                             .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
                     ) {
@@ -95,17 +100,22 @@ fun LazyListScope.recipeInstructions(
                 }
                 item {
                     Box(modifier = Modifier
+                        .widthIn(max = breakWidth)
                         .height(32.dp)
                         .fillMaxWidth()
-                        .background(MaterialTheme.recipesColors.backgroundSurface1))
+                        .background(MaterialTheme.recipesColors.backgroundSurface1)
+
+                    )
                 }
             }
         }
     } else {
         itemsIndexed(instructions) { index, instruction ->
             Box(Modifier
+                .widthIn(max = breakWidth)
                 .background(MaterialTheme.recipesColors.backgroundSurface1)
-                .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)) {
+                .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+            ) {
                 RecipeInstruction(
                     index = index,
                     size = instructions.size,
@@ -118,9 +128,11 @@ fun LazyListScope.recipeInstructions(
         }
         item {
             Box(modifier = Modifier
+                .widthIn(max = breakWidth)
                 .height(32.dp)
                 .fillMaxWidth()
-                .background(MaterialTheme.recipesColors.backgroundSurface1))
+                .background(MaterialTheme.recipesColors.backgroundSurface1)
+            )
         }
     }
 }

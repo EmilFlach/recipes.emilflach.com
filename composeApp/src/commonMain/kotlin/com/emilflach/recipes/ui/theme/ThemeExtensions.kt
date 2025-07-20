@@ -121,6 +121,17 @@ fun createTypography(darkTheme: Boolean): Typography {
 }
 
 /**
+ * Creates larger Typography for cooking mode with better readability
+ */
+fun createCookingTypography(darkTheme: Boolean): Typography {
+    val baseTypography = createTypography(darkTheme)
+    return baseTypography.copy(
+        body1 = baseTypography.body1.copy(fontSize = 22.sp),
+    )
+}
+
+
+/**
  * Provides RecipesColors to the composition
  */
 @Composable
