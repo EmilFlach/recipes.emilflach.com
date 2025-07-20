@@ -92,22 +92,32 @@ fun RecipeDetailScreen(
                 .safeDrawingPadding(),
             contentAlignment = Alignment.TopCenter,
         ) {
+            val maxWidth = maxWidth
+            val showTwoColumns = maxWidth >= 700.dp
+            val breakWidth = 1000.dp
             LazyColumn(
                 state = listState,
-                modifier = Modifier.widthIn(max = 1000.dp),
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = if(showTwoColumns) {Alignment.CenterHorizontally} else {Alignment.Start},
             ) {
+
                 item {
-                    RecipeHeader(
-                        recipe = recipe,
-                        scrollState = listState,
-                        modifier = Modifier.zIndex(0f)
-                    )
+                    Column (
+                        modifier = Modifier.widthIn(max = breakWidth)
+                    ) {
+                        RecipeHeader(
+                            recipe = recipe,
+                            scrollState = listState,
+                            modifier = Modifier.zIndex(0f)
+                        )
+                    }
                 }
                 item {
                     Column(
                         modifier = Modifier
                             .offset(y = (-16).dp)
                             .zIndex(1f)
+                            .widthIn(max = breakWidth)
                     ) {
                         Text(
                             text = recipe?.name ?: "",
@@ -130,29 +140,37 @@ fun RecipeDetailScreen(
                 when {
                     isLoading -> {
                         item {
-                            BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            Column (
+                                modifier = Modifier.widthIn(max = breakWidth)
+                            ) {
+                                BoxWithConstraints(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+                                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                                }
                             }
                         }
                     }
 
                     isError -> {
                         item {
-                            Text(
-                                text = "Error: $errorMessage",
-                                color = MaterialTheme.recipesColors.foregroundDanger,
-                                modifier = Modifier.padding(16.dp)
-                            )
+                            Column (
+                                modifier = Modifier.widthIn(max = breakWidth)
+                            ) {
+                                Text(
+                                    text = "Error: $errorMessage",
+                                    color = MaterialTheme.recipesColors.foregroundDanger,
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                            }
                         }
                     }
 
                     else -> {
                         recipe?.let { recipe ->
-                            val maxWidth = maxWidth
-                            val showTwoColumns = maxWidth >= 700.dp
                             if (showTwoColumns) {
                                 item {
-                                    Row {
+                                    Row (
+                                        modifier = Modifier.widthIn(max = breakWidth)
+                                    ) {
                                         Column(
                                             modifier = Modifier.weight(1f)
                                         ) {
