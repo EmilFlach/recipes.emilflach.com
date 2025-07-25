@@ -74,6 +74,14 @@ fun RecipeDetailScreen(
         viewModel.initialize(recipeSlug)
     }
 
+    // TODO: Remove this hack to ensure the LazyColumn is scrollable on web platform
+    LaunchedEffect(recipeData) {
+        if (recipeData != null) {
+            kotlinx.coroutines.delay(200)
+            listState.scrollToItem(0)
+        }
+    }
+
     if (recipeData != null) {
         ScrollToCurrentInstructionEffect(
             scrollManager = scrollManager,
@@ -101,7 +109,9 @@ fun RecipeDetailScreen(
             val breakWidth = 1000.dp
             LazyColumn(
                 state = listState,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 horizontalAlignment = if(showTwoColumns) {Alignment.CenterHorizontally} else {Alignment.Start},
             ) {
 
