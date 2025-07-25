@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -55,7 +57,7 @@ fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
                 modifier = Modifier
                     .height(488.dp)
                     .padding(end = if(showTwoPages) 16.dp else 0.dp),
-                contentPadding = pagerPadding(pagerState.currentPage, showTwoPages),
+                contentPadding = pagerPadding(pagerState.currentPage, chunkedRecipes.size, showTwoPages),
                 pageSize = if (showTwoPages) {
                     PageSize.Fixed((maxWidth - 48.dp) / 2) // Account for padding and spacing
                 } else {
@@ -86,15 +88,12 @@ fun WeeknightRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit
     }
 }
 
-fun pagerPadding(page: Int, showTwoPages: Boolean): PaddingValues {
+fun pagerPadding(page: Int, totalPages: Int, showTwoPages: Boolean): PaddingValues {
     return if (showTwoPages) {
-        when (page) {
-            page - 1 -> PaddingValues(start = 0.dp, end = 0.dp)
-            else -> PaddingValues(start = 16.dp, end = 0.dp)
-        }
+        PaddingValues(start = 16.dp, end = 0.dp)
     } else {
         when (page) {
-            page - 1 -> PaddingValues(start = 32.dp, end = 16.dp)
+            totalPages - 1 -> PaddingValues(start = 32.dp, end = 16.dp)
             else -> PaddingValues(start = 16.dp, end = 32.dp)
         }
     }

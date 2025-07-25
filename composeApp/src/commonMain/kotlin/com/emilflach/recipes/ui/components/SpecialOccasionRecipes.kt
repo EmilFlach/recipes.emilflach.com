@@ -2,7 +2,6 @@ package com.emilflach.recipes.ui.components
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,7 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,7 +47,7 @@ fun SpecialOccasionRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Uni
             HorizontalPager(
                 state = pagerState,
                 pageSpacing = 16.dp,
-                contentPadding = pagerPadding(pagerState.currentPage, showTwoPages),
+                contentPadding = pagerPadding(pagerState.currentPage, recipes.size, showTwoPages),
                 modifier = Modifier
                     .height(if (showTwoPages) 400.dp else 250.dp)
                     .padding(end = if(showTwoPages) 16.dp else 0.dp),

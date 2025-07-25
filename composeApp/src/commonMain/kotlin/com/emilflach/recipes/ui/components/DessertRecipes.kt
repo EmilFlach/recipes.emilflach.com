@@ -3,7 +3,6 @@ package com.emilflach.recipes.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -24,7 +25,6 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.emilflach.recipes.data.Recipe
-import com.emilflach.recipes.ui.components.pagerPadding
 
 @Composable
 fun DessertRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit) {
@@ -53,7 +53,7 @@ fun DessertRecipes(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit) {
             HorizontalPager(
                 state = pagerState,
                 pageSpacing = 16.dp,
-                contentPadding = pagerPadding(pagerState.currentPage, showFourPages),
+                contentPadding = pagerPadding(pagerState.currentPage, chunkedRecipes.size, showFourPages),
                 modifier = if(showFourPages) {
                     Modifier
                         .height(450.dp)
