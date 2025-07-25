@@ -10,8 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +23,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.emilflach.recipes.data.Recipe
 import com.emilflach.recipes.ui.theme.recipesColors
 
@@ -39,7 +45,10 @@ fun RecipeCard(
     ){
         Row {
             AsyncImage(
-                model = recipe.imageUrl,
+                model = ImageRequest.Builder(LocalPlatformContext.current)
+                    .data(recipe.imageUrl)
+                    .crossfade(true)
+                    .build(),
                 contentScale = ContentScale.Crop,
                 contentDescription = recipe.name,
                 modifier = Modifier
