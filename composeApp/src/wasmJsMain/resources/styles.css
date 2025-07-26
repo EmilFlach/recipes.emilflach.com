@@ -36,19 +36,21 @@ html.dark-mode #splash-screen {
     justify-content: start;
     align-items: center;
     z-index: 9999;
-    transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+    transition: opacity 0.2s 0.2s ease-out, visibility 0.2s 0.2s ease-out;
     padding: 20px;
     box-sizing: border-box;
     text-align: center;
 }
 
 #splash-screen h1 {
+    font-family: "Roboto Serif", serif;
+    font-weight: 600;
     font-size: 3rem;
-    font-stretch: normal;
-    font-weight: 500;
-    margin-top: 2.35rem;
+    letter-spacing: 0.1rem;
+    margin-top: 2.5rem;
     margin-bottom: 1rem;
     max-width: 100%;
+    padding: 0 2rem;
     word-wrap: break-word;
 }
 
@@ -81,6 +83,10 @@ html.dark-mode #splash-screen {
 @media (max-width: 480px) {
     #splash-screen {
         padding: 15px;
+    }
+
+    #splash-screen h1 {
+        margin-top: 2.8rem;
     }
 
     .splash-spinner {

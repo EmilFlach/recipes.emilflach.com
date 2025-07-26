@@ -1,7 +1,10 @@
 package com.emilflach.recipes.ui.theme
 
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Colors
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -11,6 +14,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.Font
+import recipes.composeapp.generated.resources.Res
+import recipes.composeapp.generated.resources.RobotoSerif_Bold
+import recipes.composeapp.generated.resources.RobotoSerif_Medium
+
+
 
 /**
  * Extension properties to access RecipesColors from MaterialTheme
@@ -46,26 +55,32 @@ fun RecipesColors.toMaterialColors(): Colors {
 /**
  * Creates Typography directly for MaterialTheme using semantic colors
  */
+@Composable
 fun createTypography(darkTheme: Boolean): Typography {
     // Use the appropriate RecipesColors instance based on the theme
     val colors = if (darkTheme) RecipesColors.Dark else RecipesColors.Light
 
+    val serifFontFamily = FontFamily(
+        Font( Res.font.RobotoSerif_Medium, FontWeight.Medium),
+        Font(Res.font.RobotoSerif_Bold, FontWeight.Bold),
+    )
+
     return Typography(
         h1 = TextStyle(
-            fontFamily = FontFamily.Serif,
+            fontFamily = serifFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 36.sp,
             color = colors.foregroundDefault
         ),
         h2 = TextStyle(
-            fontFamily = FontFamily.Serif,
-            fontWeight = FontWeight.Normal,
+            fontFamily = serifFontFamily,
+            fontWeight = FontWeight.Medium,
             fontSize = 28.sp,
             color = colors.foregroundDefault
         ),
         h3 = TextStyle(
-            fontFamily = FontFamily.Serif,
-            fontWeight = FontWeight.Normal,
+            fontFamily = serifFontFamily,
+            fontWeight = FontWeight.Medium,
             fontSize = 18.sp,
             color = colors.foregroundDefault
         ),
@@ -123,6 +138,7 @@ fun createTypography(darkTheme: Boolean): Typography {
 /**
  * Creates larger Typography for cooking mode with better readability
  */
+@Composable
 fun createCookingTypography(darkTheme: Boolean): Typography {
     val baseTypography = createTypography(darkTheme)
     return baseTypography.copy(
