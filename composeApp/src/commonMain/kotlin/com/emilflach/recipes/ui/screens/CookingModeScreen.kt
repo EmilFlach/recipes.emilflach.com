@@ -1,6 +1,5 @@
 package com.emilflach.recipes.ui.screens
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -21,6 +20,7 @@ import androidx.compose.material.MaterialTheme
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,6 +61,13 @@ fun CookingModeScreen(
         viewModel.initialize(recipeSlug, cookingMode = true)
     }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.setShouldPreserveStateOnDispose(false)
+        }
+    }
+
+
     if (recipeData != null) {
         ScrollToCurrentInstructionEffect(
             scrollManager = scrollManager,
@@ -73,20 +80,15 @@ fun CookingModeScreen(
         )
     }
 
-
-
     RecipesAppTheme(cookingMode = true) {
-        AnimatedContent(
-            targetState = recipeData,
-            contentKey = { it?.slug ?: "" }
-        ) { recipe ->
-            BoxWithConstraints(
-                modifier = Modifier
-                    .background(MaterialTheme.recipesColors.backgroundPage)
-                    .fillMaxSize()
-                    .safeDrawingPadding(),
-                contentAlignment = Alignment.TopCenter,
-            ) {
+        BoxWithConstraints(
+            modifier = Modifier
+                .background(MaterialTheme.recipesColors.backgroundPage)
+                .fillMaxSize()
+                .safeDrawingPadding(),
+            contentAlignment = Alignment.TopCenter,
+        ) {
+                val recipe = recipeData
                 val breakWidth = 700.dp
                 LazyColumn(
                     state = listState,
@@ -200,5 +202,4 @@ fun CookingModeScreen(
                 )
             }
         }
-    }
 }

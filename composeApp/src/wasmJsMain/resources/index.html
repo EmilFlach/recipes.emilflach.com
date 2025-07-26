@@ -13,7 +13,7 @@
             if (prefersDarkMode) {
                 document.documentElement.classList.add('dark-mode');
             }
-            
+
             // Listen for changes in dark mode preference
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
                 if (event.matches) {
@@ -36,7 +36,7 @@
                         hideSplashScreen();
                     }
                 }, 50);
-                
+
                 // Failsafe - hide splash after reasonable timeout
                 setTimeout(function() {
                     clearInterval(readyCheckInterval);

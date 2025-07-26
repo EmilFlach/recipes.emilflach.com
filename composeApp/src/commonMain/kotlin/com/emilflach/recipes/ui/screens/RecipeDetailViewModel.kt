@@ -24,7 +24,7 @@ class RecipeDetailViewModel(
     private val _isError = MutableStateFlow(false)
     val isError: StateFlow<Boolean> = _isError.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     private val _errorMessage = MutableStateFlow<String?>(null)
@@ -41,6 +41,9 @@ class RecipeDetailViewModel(
 
     private val _expandedSections = MutableStateFlow<Set<String>>(emptySet())
     val expandedSections = _expandedSections.asStateFlow()
+
+    private val _shouldPreserveStateOnDispose = MutableStateFlow(false)
+    val shouldPreserveStateOnDispose: StateFlow<Boolean> = _shouldPreserveStateOnDispose.asStateFlow()
 
     private val scaledRecipe: StateFlow<Recipe?> =
         combine(recipe, currentServings) { recipe, servings ->
@@ -115,10 +118,10 @@ class RecipeDetailViewModel(
         _currentServings.value = servings
     }
 
-    private fun resetRecipe(recipe: Recipe?, cookingMode : Boolean = false) {
+    fun resetRecipe(recipe: Recipe?, cookingMode : Boolean = false) {
         _recipe.value = recipe
-        _isError.value = false
         _isLoading.value = true
+        _isError.value = false
         _errorMessage.value = null
         _isCookingMode.value = cookingMode
         _currentInstruction.value = 0
@@ -179,4 +182,9 @@ class RecipeDetailViewModel(
             _currentInstruction.value = index
         }
     }
+
+    fun setShouldPreserveStateOnDispose(preserve: Boolean) {
+        _shouldPreserveStateOnDispose.value = preserve
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.emilflach.recipes.ui.screens
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -26,6 +25,7 @@ import androidx.compose.material.MaterialTheme
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -60,6 +60,7 @@ fun RecipeDetailScreen(
     val isError by viewModel.isError.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val isCookingMode by viewModel.isCookingMode.collectAsState()
+    val shouldPreserveStateOnDispose by viewModel.shouldPreserveStateOnDispose.collectAsState()
     val currentInstruction by viewModel.currentInstruction.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val viewModelRecipe by viewModel.recipe.collectAsState()
@@ -82,6 +83,15 @@ fun RecipeDetailScreen(
         }
     }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            if (!shouldPreserveStateOnDispose) {
+                viewModel.resetRecipe(null)
+            }
+        }
+    }
+
+
     if (recipeData != null) {
         ScrollToCurrentInstructionEffect(
             scrollManager = scrollManager,
@@ -93,17 +103,14 @@ fun RecipeDetailScreen(
         )
     }
 
-    AnimatedContent(
-        targetState = recipeData,
-        contentKey = { it?.slug ?: "" }
-    ) { recipe ->
-        BoxWithConstraints(
-            modifier = Modifier
-                .background(MaterialTheme.recipesColors.backgroundPage)
-                .fillMaxSize()
-                .safeDrawingPadding(),
-            contentAlignment = Alignment.TopCenter,
-        ) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .background(MaterialTheme.recipesColors.backgroundPage)
+            .fillMaxSize()
+            .safeDrawingPadding(),
+        contentAlignment = Alignment.TopCenter,
+    ) {
+        val recipe = recipeData
             val maxWidth = maxWidth
             val showTwoColumns = maxWidth >= 700.dp
             val breakWidth = 1000.dp
@@ -213,7 +220,9 @@ fun RecipeDetailScreen(
                                         ) {
                                             RecipeMethodSection(
                                                 isCookingMode = isCookingMode,
-                                                onToggleCookingMode = { onCookingModeClick(recipe) },
+                                                onToggleCookingMode = {
+                                                    viewModel.setShouldPreserveStateOnDispose(true)
+                                                    onCookingModeClick(recipe) },
                                                 showCookingButton = true
                                             )
                                             if (recipe.hasInstructionSections) {
@@ -374,6 +383,7 @@ fun RecipeDetailScreen(
                         }
                     }
                 }
+
             }
             RecipeTopAppBar(
                 recipe = recipeData,
@@ -381,5 +391,5 @@ fun RecipeDetailScreen(
                 onBackClick = onBackClick
             )
         }
-    }
+
 }
