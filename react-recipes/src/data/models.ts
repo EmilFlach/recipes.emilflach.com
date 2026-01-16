@@ -215,7 +215,7 @@ export interface UserBase {
 // Helper functions for Recipe model
 export const getImageUrl = (recipe: Recipe): string => {
   const baseUrl = "https://mealie.emilflach.com/api";
-  return `${baseUrl}/media/recipes/${recipe.id}/images/min-original.webp?rnd=1&version=${recipe.image}`;
+  return `${baseUrl}/media/recipes/${recipe.id}/images/tiny-original.webp?rnd=1&version=${recipe.image}`;
 };
 
 export const getCalories = (recipe: Recipe): string => {

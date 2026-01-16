@@ -175,14 +175,16 @@ data class RecipesListResponse(
 data class RecipeCategory(
     val id: String? = null,
     val name: String? = null,
-    val slug: String? = null
+    val slug: String? = null,
+    val groupId: String? = null
 )
 
 @Serializable
 data class RecipeTag(
     val id: String? = null,
     val name: String,
-    val slug: String
+    val slug: String,
+    val groupId: String? = null
 )
 
 @Serializable
@@ -197,6 +199,7 @@ data class RecipeIngredient(
     val title: String? = null,
     val originalText: String? = null,
     val referenceId: String,
+    val referencedRecipe: String? = null,
     val ingredientReferences: List<IngredientReference> = emptyList()
 )
 
