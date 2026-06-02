@@ -15,9 +15,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.Font
-import recipes.composeapp.generated.resources.Res
-import recipes.composeapp.generated.resources.RobotoSerif_Bold
-import recipes.composeapp.generated.resources.RobotoSerif_Medium
+import com.emilflach.recipes.generated.resources.Res
+import com.emilflach.recipes.generated.resources.RobotoSerif_Bold
+import com.emilflach.recipes.generated.resources.RobotoSerif_Medium
 
 
 

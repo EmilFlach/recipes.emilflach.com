@@ -23,7 +23,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -80,6 +79,10 @@ kotlin {
             implementation(libs.ktor.client.js.wasm.js)
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "com.emilflach.recipes.generated.resources"
 }
 
 composeCompiler {
